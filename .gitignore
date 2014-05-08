@@ -1,17 +1,33 @@
-*.gem
+# General
 *.rbc
-.bundle
-.config
+*.gem
+.DS_Store
+
+# Yardoc
 .yardoc
-Gemfile.lock
-InstalledFiles
-_yardoc
-coverage
-doc/
-lib/bundler/man
-pkg
-rdoc
+/doc
+
+# Specs
+tmp
 spec/reports
 test/tmp
 test/version_tmp
-tmp
+
+# Examples
+DerivedData
+
+# IDEs
+xcuserdata
+*.xccheckout
+.idea/
+
+# RVM files
+/.rvmrc
+/.ruby-version
+/.ruby-gemset
+
+# RBENV files
+/.rbenv-version
+
+# Bundler files
+/.bundle
