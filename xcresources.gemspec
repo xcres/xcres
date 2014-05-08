@@ -5,7 +5,7 @@ require 'xcresources/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "xcresources"
-  spec.version       = Xcresources::VERSION
+  spec.version       = XCResources::VERSION
   spec.authors       = ["Marius Rackwitz"]
   spec.email         = ["git@mariusrackwitz.de"]
   spec.description   = %q{TODO: Write a gem description}
