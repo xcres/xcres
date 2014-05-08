@@ -21,7 +21,7 @@ class XCResources::Command < Clamp::Command
   end
 
   parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
-  parameter '[XCODEPROJ]', 'Xcode project file to inspect (will tried to locate automatically on base of current directory if not given)', attribute_name: :xcodeproj
+  parameter '[XCODEPROJ]', 'Xcode project file to inspect (automatically located on base of the current directory if not given)', attribute_name: :xcodeproj
 
   def execute
     if version?
