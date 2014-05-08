@@ -1,0 +1,11 @@
+/* 
+  File.strings
+  Example
+
+  Created by Marius Rackwitz on 01.05.14.
+  Copyright (c) 2014 XCResources. All rights reserved.
+*/
+
+"foo" = "Foo String";
+"bar" = "Bar String";
+"example" = "Lorem Ipsum";
