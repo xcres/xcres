@@ -16,8 +16,9 @@ class XCResources::Command < Clamp::Command
   option ['-i', '--img-src'], 'FILE_PATH', 'Images which should be included in the resources header', multivalued: true, attribute_name: :img_src_file_paths
   option ['-x', '--exclude'], 'FILE_PATH', 'File paths which should be excluded', multivalued: true, attribute_name: :exclude_file_paths
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
-  option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :language, default: 'en' do |s|
-    String(s).length == 2
+  option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :language, default: 'en' do |language|
+    raise ArgumentError.new 'Expected a two-letter code conforming ISO 639-1 as LANGUAGE' unless String(language).length == 2
+    language
   end
 
   parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
