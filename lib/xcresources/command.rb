@@ -29,8 +29,15 @@ class XCResources::Command < Clamp::Command
       return
     end
 
-    # Use current dir, if no output path was set
-    output_path ||= File.realpath('.') + '/R'
+    # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
+    resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
+
+    if output_path.nil?
+      # Use current dir, if no output path was set
+      self.output_path ||= File.realpath('.') + '/' + resources_constant_name
+    else
+      self.output_path ||= File.absolute_path output_path
+    end
 
     builder = XCResources::ResourcesBuilder.new
     builder.output_path = output_path
