@@ -6,5 +6,3 @@ module XCResources
   require 'xcresources/version'
   require 'xcresources/command'
 end
-
-XCResources::Command.run
