@@ -7,7 +7,7 @@ class XCResources::Command < Clamp::Command
   # TODO: Make this configurable
   ICON_FILTER_WORDS = ['icon', 'image']
 
-  #option ['--silent'], :flag, 'Show nothing'
+  option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
   #option ['--no-ansi'], :flag, 'Show output without ANSI codes'
   #option ['-v', '--verbose'], :flag, 'Show more debugging information'
@@ -25,7 +25,7 @@ class XCResources::Command < Clamp::Command
 
   def execute
     if version?
-      puts XCResources::VERSION
+      inform XCResources::VERSION
       return
     end
 
@@ -55,7 +55,11 @@ class XCResources::Command < Clamp::Command
     # Write the files, if needed
     builder.build
 
-    puts ('✓ Successfully updated: %s' % output_path + '.h').green
+    inform ('✓ Successfully updated: %s' % output_path + '.h').green
+  end
+
+  def inform *args
+    puts *args unless silent?
   end
 
   def build_icons_section
