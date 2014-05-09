@@ -30,7 +30,7 @@ class XCResources::Command < Clamp::Command
     end
 
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
-    resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
+    self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
 
     if output_path.nil?
       # Use current dir, if no output path was set
