@@ -16,7 +16,7 @@ class XCResources::Command < Clamp::Command
   option ['-i', '--img-src'], 'FILE_PATH', 'Images which should be included in the resources header', multivalued: true, attribute_name: :img_src_file_paths
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
-  option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :language, default: 'en' do |language|
+  option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :default_language do |language|
     raise ArgumentError.new 'Expected a two-letter code conforming ISO 639-1 as LANGUAGE' unless String(language).length == 2
     language
   end
@@ -159,12 +159,68 @@ class XCResources::Command < Clamp::Command
     image_keys_to_paths
   end
 
+  def find_strings_files
+    # Discover all .strings files (e.g. Localizable.strings)
+    xcodeproj.files.select { |file| File.fnmatch '*.strings', file.path }
+  end
+
+  def find_preferred_languages strings_files
+    if default_language != nil
+      # Use specified default language as primary language
+      [language]
+    else
+      # Discover Info.plist files by build settings of all application targets
+      application_targets = xcodeproj.targets.select { |t| t.product_type == 'com.apple.product-type.application' }
+      info_plist_paths = application_targets.map do |target|
+        target.build_configurations.map do |config|
+          config.build_settings['INFOPLIST_FILE']
+        end
+      end.reduce([], :+).to_set
+
+      log 'Info.plist paths: %s', info_plist_paths.to_a
+
+      # Try to use the "Localization native development region" from Info.plist
+      native_dev_languages = info_plist_paths.map do |path|
+        absolute_path = File.absolute_path xcodeproj_file_path + '/../' + path
+        `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{absolute_path}`.gsub /\n$/, ''
+      end
+
+      log 'Native development languages: %s', native_dev_languages
+
+      # Try to use the languages, which are used
+      used_languages = strings_files.map(&:name).to_set
+
+      log 'Used languages for .strings files: %s', used_languages.to_a
+
+      # Calculate union of native development and used languages, fallback to the latter only, if it is empty
+      languages = native_dev_languages.to_a & used_languages.to_a
+      if languages.empty?
+        used_languages
+      else
+        languages
+      end
+    end
+  end
+
   def build_strings_section
-    # TODO: Discover all .strings files (e.g. Localizable.strings)
-    # TODO: Apply ignore list
-    # TODO: Use specified default lanuage as primary language if there are multiple
-    # TODO: Try to use the only one language, which was used
-    strings_file_paths = []
+    strings_files = find_strings_files
+
+    log 'Strings files in project: %s', (strings_files.map &:path)
+
+    # Find preferred languages
+    languages = find_preferred_languages strings_files
+
+    log 'Preferred languages: %s', languages
+
+    # Select strings files by language
+    strings_files.select! { |file| languages.include? file.name }
+
+    log 'Strings files after language selection: %s', (strings_files.map &:path)
+
+    # Apply ignore list
+    strings_file_paths = filter_exclusions strings_files.map &:path
+
+    log 'Non-ignored .strings files: %s', strings_file_paths
 
     keys = []
     for strings_file_path in strings_file_paths
