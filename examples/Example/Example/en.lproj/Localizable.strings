@@ -9,3 +9,4 @@
 "foo" = "Foo String";
 "bar" = "Bar String";
 "example" = "Lorem Ipsum";
+"en_exclusive" = "Only in english";
