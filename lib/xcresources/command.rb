@@ -57,6 +57,8 @@ class XCResources::Command < Clamp::Command
     builder.build
 
     success 'Successfully updated: %s', output_path + '.h'
+  rescue ArgumentError => error
+    fail error.message
   end
 
   def inform message, *format_args
