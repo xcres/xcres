@@ -10,7 +10,7 @@ class XCResources::Command < Clamp::Command
   option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
   #option ['--no-ansi'], :flag, 'Show output without ANSI codes'
-  #option ['-v', '--verbose'], :flag, 'Show more debugging information'
+  option ['-v', '--verbose'], :flag, 'Show more debugging information'
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
   option ['-i', '--img-src'], 'FILE_PATH', 'Images which should be included in the resources header', multivalued: true, attribute_name: :img_src_file_paths
@@ -29,6 +29,8 @@ class XCResources::Command < Clamp::Command
       inform XCResources::VERSION
       return
     end
+
+    log 'Verbose mode is enabled.'
 
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
     self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
@@ -63,6 +65,10 @@ class XCResources::Command < Clamp::Command
 
   def inform message, *format_args
     puts message % format_args unless silent?
+  end
+
+  def log message, *format_args
+    inform ('Ⓥ' + ' ' + message).magenta, *format_args if verbose?
   end
 
   def success message, *format_args
