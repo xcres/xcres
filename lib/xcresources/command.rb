@@ -22,7 +22,9 @@ class XCResources::Command < Clamp::Command
   end
 
   parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
-  parameter '[XCODEPROJ]', 'Xcode project file to inspect (automatically located on base of the current directory if not given)', attribute_name: :xcodeproj
+  parameter '[XCODEPROJ]', 'Xcode project file to inspect (automatically located on base of the current directory if not given)', attribute_name: :xcodeproj_file_path
+
+  attr_accessor :xcodeproj
 
   def execute
     if version?
@@ -46,8 +48,24 @@ class XCResources::Command < Clamp::Command
     builder.output_path = output_path
     builder.resources_constant_name = resources_constant_name
 
-    # Discover Xcode project
-    # TODO: ...
+
+    # Try to discover Xcode project at given path.
+    if xcodeproj_file_path.nil?
+      warn 'Argument XCODEPROJ is not set. Use the current directory.'
+      self.xcodeproj_file_path = discover_xcodeproj_file_path!
+    elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
+      warn 'Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.'
+      self.xcodeproj_file_path = discover_xcodeproj_file_path! xcodeproj_file_path
+    end
+
+    unless Dir.exist?(xcodeproj_file_path) && File.exist?(xcodeproj_file_path + '/project.pbxproj')
+      raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % xcodeproj_file_path
+    end
+
+    success 'Use %s as XCODEPROJ.' % xcodeproj_file_path
+
+    self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
+
 
     # Build Icons section
     builder.add_section 'Icons', build_icons_section
@@ -81,6 +99,14 @@ class XCResources::Command < Clamp::Command
 
   def fail message, *format_args
     inform ('✗' + ' ' + message).red, *format_args
+  end
+
+  def discover_xcodeproj_file_path! dir = '.'
+    xcodeproj_file_paths = Dir[dir + '/*.xcodeproj']
+    if xcodeproj_file_paths.count == 0
+      raise ArgumentError.new 'Argument XCODEPROJ was not given and no *.xcodeproj file was found in current directory.'
+    end
+    xcodeproj_file_paths.first
   end
   end
 
