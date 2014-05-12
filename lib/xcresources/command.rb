@@ -56,11 +56,24 @@ class XCResources::Command < Clamp::Command
     # Write the files, if needed
     builder.build
 
-    inform ('✓ Successfully updated: %s' % output_path + '.h').green
+    success 'Successfully updated: %s', output_path + '.h'
   end
 
-  def inform *args
-    puts *args unless silent?
+  def inform message, *format_args
+    puts message % format_args unless silent?
+  end
+
+  def success message, *format_args
+    inform ('✓' + ' ' + message).green, *format_args
+  end
+
+  def warn message, *format_args
+    inform ('⚠' + ' ' + message).yellow, *format_args
+  end
+
+  def fail message, *format_args
+    inform ('✗' + ' ' + message).red, *format_args
+  end
   end
 
   def build_icons_section
