@@ -44,6 +44,8 @@ class XCResources::Command < Clamp::Command
       self.output_path ||= File.absolute_path output_path
     end
 
+
+    # Prepare builder
     builder = XCResources::ResourcesBuilder.new
     builder.output_path = output_path
     builder.resources_constant_name = resources_constant_name
