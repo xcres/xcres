@@ -14,7 +14,7 @@ class XCResources::Command < Clamp::Command
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
   option ['-i', '--img-src'], 'FILE_PATH', 'Images which should be included in the resources header', multivalued: true, attribute_name: :img_src_file_paths
-  option ['-x', '--exclude'], 'FILE_PATH', 'File paths which should be excluded', multivalued: true, attribute_name: :exclude_file_paths
+  option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
   option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :language, default: 'en' do |language|
     raise ArgumentError.new 'Expected a two-letter code conforming ISO 639-1 as LANGUAGE' unless String(language).length == 2
@@ -110,11 +110,16 @@ class XCResources::Command < Clamp::Command
     end
     xcodeproj_file_paths.first
   end
+
+  def filter_exclusions file_paths
+    file_paths.select do |path|
+      exclude_file_patterns.map { |pattern| !File.fnmatch '**/' + pattern, path }.reduce true, :&
+    end
   end
 
   def build_icons_section
     # Build dictionary of image keys to names
-    image_file_paths = find_images
+    image_file_paths = filter_exclusions find_images
 
     # Filter out retina images
     image_file_paths.select! { |path| !/@2x\.\w+$/.match path }
