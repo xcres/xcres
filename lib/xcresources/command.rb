@@ -239,7 +239,7 @@ class XCResources::Command < Clamp::Command
       begin
         # TODO: Load strings file contents
         # TODO: Merge keys into array
-      rescue error
+      rescue ArgumentError => error
         raise "Error while reading %s: %s", strings_file_path, error
       end
     end
