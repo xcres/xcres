@@ -235,19 +235,24 @@ class XCResources::Command < Clamp::Command
 
     log 'Non-ignored .strings files: %s', strings_file_paths
 
-    keys = {}
+    keys_by_file = {}
     for strings_file_path in strings_file_paths
       begin
         # Load strings file contents
         strings_file = Apfel.parse absolute_project_file_path(strings_file_path)
-        keys.merge! Hash[strings_file.kv_pairs.map do |kv_pair|
+
+        keys = Hash[strings_file.kv_pairs.map do |kv_pair|
           [kv_pair.key, { value: kv_pair.key, comment: kv_pair.comment }]
         end]
+
+        log 'Found %s keys in file %s', keys.count, strings_file_path
+
+        keys_by_file[strings_file_path] = keys
       rescue ArgumentError => error
         raise "Error while reading %s: %s", strings_file_path, error
       end
     end
 
-    keys
+    keys_by_file.map { |k,v| v }.reduce Hash.new, :merge
   end
 end
