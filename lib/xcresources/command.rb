@@ -181,8 +181,7 @@ class XCResources::Command < Clamp::Command
 
       # Try to use the "Localization native development region" from Info.plist
       native_dev_languages = info_plist_paths.map do |path|
-        absolute_path = File.absolute_path xcodeproj_file_path + '/../' + path
-        `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{absolute_path}`.gsub /\n$/, ''
+        `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{absolute_project_file_path(path)}`.gsub /\n$/, ''
       end
 
       log 'Native development languages: %s', native_dev_languages
@@ -200,6 +199,12 @@ class XCResources::Command < Clamp::Command
         languages
       end
     end
+  end
+
+  # Project file paths are relative to their project.
+  # We need either absolute paths or relative paths to our current location.
+  def absolute_project_file_path file_path
+    File.absolute_path xcodeproj_file_path + '/../' + file_path
   end
 
   def build_strings_section
