@@ -4,6 +4,13 @@ require 'xcresources/builder/resources_builder'
 
 class XCResources::Command < Clamp::Command
 
+  # Monkey-patch PBXFileReference by a helper to get
+  class Xcodeproj::Project::Object::PBXFileReference
+    def absolute_path
+      parents.map(&:path).reverse.reduce { |p1,p2| File.join p1||'', p2||'' } + path
+    end
+  end
+
   # TODO: Make this configurable
   ICON_FILTER_WORDS = ['icon', 'image']
 
@@ -223,7 +230,7 @@ class XCResources::Command < Clamp::Command
     log 'Strings files after language selection: %s', (strings_files.map &:path)
 
     # Apply ignore list
-    strings_file_paths = filter_exclusions strings_files.map &:path
+    strings_file_paths = filter_exclusions strings_files.map &:absolute_path
 
     log 'Non-ignored .strings files: %s', strings_file_paths
 
