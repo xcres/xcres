@@ -95,20 +95,27 @@ class XCResources::Command < Clamp::Command
     puts message % format_args unless silent?
   end
 
+  # Print arguments bold
+  def inform_colored message, color, *format_args
+    # TODO: Test e.g: 'a %s b %10.00d c %1d d' => ["a %s", " b %10.00d", " c %1d", " d"]
+    message = message.gsub(/%\d*\.?\d*[a-z]/, "\0"+'\0'+"\0").split("\0").map(&color).reduce('', :+)
+    inform message, *format_args.map(&:to_s).map(&color).map(&:bold)
+  end
+
   def log message, *format_args
-    inform ('Ⓥ' + ' ' + message).magenta, *format_args if verbose?
+    inform_colored 'Ⓥ' + ' ' + message, :magenta, *format_args if verbose?
   end
 
   def success message, *format_args
-    inform ('✓' + ' ' + message).green, *format_args
+    inform_colored '✓' + ' ' + message, :green, *format_args
   end
 
   def warn message, *format_args
-    inform ('⚠' + ' ' + message).yellow, *format_args
+    inform_colored '⚠' + ' ' + message, :yellow, *format_args
   end
 
   def fail message, *format_args
-    inform ('✗' + ' ' + message).red, *format_args
+    inform_colored '✗' + ' ' + message, :red, *format_args
   end
 
   def discover_xcodeproj_file_path! dir = '.'
