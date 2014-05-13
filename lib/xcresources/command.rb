@@ -242,7 +242,10 @@ class XCResources::Command < Clamp::Command
         strings_file = Apfel.parse absolute_project_file_path(strings_file_path)
 
         keys = Hash[strings_file.kv_pairs.map do |kv_pair|
-          [kv_pair.key, { value: kv_pair.key, comment: kv_pair.comment }]
+          # WORKAROUND: Needed for single-line comments
+          comment = kv_pair.comment.gsub /^\s*\/\/\s*/, ''
+
+          [kv_pair.key, { value: kv_pair.key, comment: comment }]
         end]
 
         log 'Found %s keys in file %s', keys.count, strings_file_path
