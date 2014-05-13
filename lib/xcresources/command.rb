@@ -1,6 +1,7 @@
 require 'xcodeproj'
 require 'clamp'
 require 'xcresources/builder/resources_builder'
+require 'apfel'
 
 class XCResources::Command < Clamp::Command
 
@@ -234,16 +235,19 @@ class XCResources::Command < Clamp::Command
 
     log 'Non-ignored .strings files: %s', strings_file_paths
 
-    keys = []
+    keys = {}
     for strings_file_path in strings_file_paths
       begin
-        # TODO: Load strings file contents
-        # TODO: Merge keys into array
+        # Load strings file contents
+        strings_file = Apfel.parse absolute_project_file_path(strings_file_path)
+        keys.merge! Hash[strings_file.kv_pairs.map do |kv_pair|
+          [kv_pair.key, { value: kv_pair.key, comment: kv_pair.comment }]
+        end]
       rescue ArgumentError => error
         raise "Error while reading %s: %s", strings_file_path, error
       end
     end
 
-    Hash[keys.map { |k| [k,k] }]
+    keys
   end
 end
