@@ -249,7 +249,7 @@ class XCResources::Command < Clamp::Command
 
         keys_by_file[strings_file_path] = keys
       rescue ArgumentError => error
-        raise "Error while reading %s: %s", strings_file_path, error
+        raise 'Error while reading %s: %s', strings_file_path, error
       end
     end
 
