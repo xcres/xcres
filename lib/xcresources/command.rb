@@ -72,7 +72,7 @@ class XCResources::Command < Clamp::Command
       raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % xcodeproj_file_path
     end
 
-    success 'Use %s as XCODEPROJ.' % xcodeproj_file_path
+    success 'Use %s as XCODEPROJ.', xcodeproj_file_path
 
     self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
 
