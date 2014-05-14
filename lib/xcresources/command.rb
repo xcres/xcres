@@ -1,6 +1,7 @@
 require 'xcodeproj'
 require 'clamp'
 require 'xcresources/builder/resources_builder'
+require 'xcresources/logger'
 require 'apfel'
 
 class XCResources::Command < Clamp::Command
@@ -34,13 +35,25 @@ class XCResources::Command < Clamp::Command
 
   attr_accessor :xcodeproj
 
+
+  # Include Logger
+  def logger
+    @logger ||= XCResources::Logger.new
+  end
+
+  delegate :inform, :log, :success, :warn, :fail, to: :logger
+
+
   def execute
     if version?
       inform XCResources::VERSION
       return
     end
 
-    log 'Verbose mode is enabled.'
+    if verbose?
+      logger.verbose = verbose?
+      log 'Verbose mode is enabled.'
+    end
 
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
     self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
@@ -89,33 +102,6 @@ class XCResources::Command < Clamp::Command
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
     fail error.message
-  end
-
-  def inform message, *format_args
-    puts message % format_args unless silent?
-  end
-
-  # Print arguments bold
-  def inform_colored message, color, *format_args
-    # TODO: Test e.g: 'a %s b %10.00d c %1d d' => ["a %s", " b %10.00d", " c %1d", " d"]
-    message = message.gsub(/%\d*\.?\d*[a-z]/, "\0"+'\0'+"\0").split("\0").map(&color).reduce('', :+)
-    inform message, *format_args.map(&:to_s).map(&color).map(&:bold)
-  end
-
-  def log message, *format_args
-    inform_colored 'Ⓥ' + ' ' + message, :magenta, *format_args if verbose?
-  end
-
-  def success message, *format_args
-    inform_colored '✓' + ' ' + message, :green, *format_args
-  end
-
-  def warn message, *format_args
-    inform_colored '⚠' + ' ' + message, :yellow, *format_args
-  end
-
-  def fail message, *format_args
-    inform_colored '✗' + ' ' + message, :red, *format_args
   end
 
   def discover_xcodeproj_file_path! dir = '.'
