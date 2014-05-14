@@ -20,11 +20,11 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency 'bacon', '~> 1.1'
 
   spec.add_runtime_dependency 'clamp', '~> 0.6.3'
   spec.add_runtime_dependency 'colored', '~> 1.2'
   spec.add_runtime_dependency 'activesupport', '>= 3.2.15', '< 4'
   spec.add_runtime_dependency 'apfel', '~> 0.0.5'
-
   spec.add_runtime_dependency 'xcodeproj', '~> 0.16.1'
 end
