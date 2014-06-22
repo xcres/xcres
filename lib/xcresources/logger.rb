@@ -1,3 +1,5 @@
+require 'colored'
+
 class XCResources::Logger
 
   attr_accessor :verbose, :silent, :colored
