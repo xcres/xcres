@@ -128,7 +128,8 @@ class XCResources::Command < Clamp::Command
   def find_image_files
     # TODO: Grasp all the icons!
     # TODO: Remove test entries and write some proper tests!
-    ["test.png", "test@2x.png", "camelCaseTest.png", "snake_case_test.png", "123.png"]
+    #["test.png", "test@2x.png", "camelCaseTest.png", "snake_case_test.png", "123.png"]
+    xcodeproj.files.select { |file| file.match /\.(png|jpe?g|gif)$/ }
   end
 
   def build_icons_section_map image_file_paths
