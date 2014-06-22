@@ -18,7 +18,7 @@ class XCResources::Command < Clamp::Command
 
   option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
-  #option ['--no-ansi'], :flag, 'Show output without ANSI codes'
+  option ['--[no-]ansi'], :flag, 'Show output without ANSI codes', default: true
   option ['-v', '--verbose'], :flag, 'Show more debugging information'
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
@@ -50,6 +50,7 @@ class XCResources::Command < Clamp::Command
       return
     end
 
+    logger.colored = ansi?
     if verbose?
       logger.verbose = verbose?
       log 'Verbose mode is enabled.'
