@@ -50,6 +50,7 @@ class XCResources::Command < Clamp::Command
       return
     end
 
+    logger.silent = silent?
     logger.colored = ansi?
     if verbose?
       logger.verbose = verbose?
