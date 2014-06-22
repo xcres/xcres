@@ -36,7 +36,17 @@ class XCResources::Logger
   end
 
   def fail message, *format_args
+    exception = nil
+    if message.kind_of? Exception
+      exception = message
+      message = exception.message
+    end
+
     inform_colored '✗' + ' ' + message, :red, *format_args
+
+    if verbose? && exception != nil
+      log "Backtrace:\n"+exception.backtrace.join("\n"), :red
+    end
   end
 
 end

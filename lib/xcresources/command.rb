@@ -101,7 +101,7 @@ class XCResources::Command < Clamp::Command
 
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
-    fail error.message
+    fail error
   end
 
   def discover_xcodeproj_file_path! dir = '.'
