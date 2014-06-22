@@ -116,7 +116,7 @@ class XCResources::Command < Clamp::Command
 
   def build_icons_section
     # Build dictionary of image keys to names
-    image_file_paths = filter_exclusions find_images
+    image_file_paths = filter_exclusions find_image_files
 
     # Filter out retina images
     image_file_paths.select! { |path| !/@2x\.\w+$/.match path }
@@ -125,7 +125,7 @@ class XCResources::Command < Clamp::Command
     build_icons_section_map image_file_paths
   end
 
-  def find_images
+  def find_image_files
     # TODO: Grasp all the icons!
     # TODO: Remove test entries and write some proper tests!
     ["test.png", "test@2x.png", "camelCaseTest.png", "snake_case_test.png", "123.png"]
