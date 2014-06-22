@@ -6,12 +6,6 @@ require 'apfel'
 
 class XCResources::Command < Clamp::Command
 
-  # Monkey-patch PBXFileReference by a helper to get
-  class Xcodeproj::Project::Object::PBXFileReference
-    def absolute_path
-      parents.map(&:path).reverse.reduce { |p1,p2| File.join p1||'', p2||'' } + path
-    end
-  end
 
   # TODO: Make this configurable
   ICON_FILTER_WORDS = ['icon', 'image']
@@ -207,7 +201,8 @@ class XCResources::Command < Clamp::Command
   # Project file paths are relative to their project.
   # We need either absolute paths or relative paths to our current location.
   def absolute_project_file_path file_path
-    File.absolute_path xcodeproj_file_path + '/../' + file_path
+    file_path = file_path.realpath.to_s if file_path.is_a? Pathname
+    File.absolute_path xcodeproj_file_path + ('/../' + file_path)
   end
 
   def build_strings_section
@@ -225,16 +220,23 @@ class XCResources::Command < Clamp::Command
 
     log 'Strings files after language selection: %s', strings_files.map(&:path)
 
-    # Apply ignore list
-    strings_file_paths = filter_exclusions strings_files.map &:absolute_path
+    # Get relative file paths
+    project_path = Pathname(xcodeproj_file_path) + '..'
+    project_realpath = project_path.realpath
+    strings_file_paths = strings_files.map(&:real_path).map do |path|
+      project_path + path.relative_path_from(project_realpath) rescue path
+    end
 
-    log 'Non-ignored .strings files: %s', strings_file_paths
+    # Apply ignore list
+    strings_file_paths = filter_exclusions strings_file_paths
+
+    log 'Non-ignored .strings files: %s', strings_file_paths.map(&:to_s)
 
     keys_by_file = {}
     for strings_file_path in strings_file_paths
       begin
         # Load strings file contents
-        strings_file = Apfel.parse absolute_project_file_path(strings_file_path)
+        strings_file = Apfel.parse strings_file_path
 
         keys = Hash[strings_file.kv_pairs.map do |kv_pair|
           # WORKAROUND: Needed for single-line comments
