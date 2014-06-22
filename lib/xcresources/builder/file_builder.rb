@@ -1,6 +1,5 @@
 require 'colored'
 require 'xcresources/builder/string_builder'
-require 'xcresources/helper/file_helper'
 
 class XCResources::FileBuilder
 
