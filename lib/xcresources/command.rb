@@ -213,7 +213,7 @@ class XCResources::Command < Clamp::Command
   def build_strings_section
     strings_files = find_strings_files
 
-    log 'Strings files in project: %s', (strings_files.map &:path)
+    log 'Strings files in project: %s', strings_files.map(&:path)
 
     # Find preferred languages
     languages = find_preferred_languages strings_files
@@ -223,7 +223,7 @@ class XCResources::Command < Clamp::Command
     # Select strings files by language
     strings_files.select! { |file| languages.include? file.name }
 
-    log 'Strings files after language selection: %s', (strings_files.map &:path)
+    log 'Strings files after language selection: %s', strings_files.map(&:path)
 
     # Apply ignore list
     strings_file_paths = filter_exclusions strings_files.map &:absolute_path
