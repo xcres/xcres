@@ -88,8 +88,8 @@ class XCResources::Command < Clamp::Command
     self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
 
 
-    # Build Icons section
-    builder.add_section 'Icons', build_icons_section
+    # Build Images section
+    builder.add_section 'Images', build_images_section(find_image_files(xcodeproj.files.map(&:path)))
 
     # Build Strings section
     builder.add_section 'Strings', build_strings_section
@@ -112,13 +112,13 @@ class XCResources::Command < Clamp::Command
 
   def filter_exclusions file_paths
     file_paths.select do |path|
-      exclude_file_patterns.any? { |pattern| !File.fnmatch '**/' + pattern, path.realpath }
+      exclude_file_patterns.any? { |pattern| !File.fnmatch '**/' + pattern, path }
     end
   end
 
-  def build_icons_section
+  def build_images_section image_files
     # Build dictionary of image keys to names
-    image_file_paths = filter_exclusions find_image_files
+    image_file_paths = filter_exclusions image_files
 
     # Filter out retina images
     image_file_paths.select! { |path| !/@2x\.\w+$/.match path }
@@ -127,11 +127,10 @@ class XCResources::Command < Clamp::Command
     build_icons_section_map image_file_paths
   end
 
-  def find_image_files
-    # TODO: Grasp all the icons!
+  def find_image_files files
     # TODO: Remove test entries and write some proper tests!
     #["test.png", "test@2x.png", "camelCaseTest.png", "snake_case_test.png", "123.png"]
-    xcodeproj.files.select { |file| file.match /\.(png|jpe?g|gif)$/ }
+    files.select { |file| file.match /\.(png|jpe?g|gif)$/ }
   end
 
   def build_icons_section_map image_file_paths
