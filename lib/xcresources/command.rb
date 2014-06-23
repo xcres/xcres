@@ -53,15 +53,9 @@ class XCResources::Command < Clamp::Command
       log 'Verbose mode is enabled.'
     end
 
-    # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
-    self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
 
-    if output_path.nil?
-      # Use current dir, if no output path was set
-      self.output_path ||= File.realpath('.') + '/' + resources_constant_name
-    else
-      self.output_path ||= File.absolute_path output_path
-    end
+    # Locate output path
+    locate_output_path
 
 
     # Prepare builder
@@ -101,6 +95,18 @@ class XCResources::Command < Clamp::Command
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
     fail error
+  end
+
+  def locate_output_path
+    # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
+    self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
+
+    if output_path.nil?
+      # Use current dir, if no output path was set
+      self.output_path ||= File.realpath('.') + '/' + resources_constant_name
+    else
+      self.output_path ||= File.absolute_path output_path
+    end
   end
 
   def find_xcodeproj
