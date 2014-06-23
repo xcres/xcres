@@ -49,44 +49,32 @@ class XCResources::Command < Clamp::Command
     # Configure logger
     configure_logger
 
-
     # Locate output path
     locate_output_path
-
-
-    # Prepare builder
-    builder = XCResources::ResourcesBuilder.new
-    builder.output_path = output_path
-    builder.logger = logger
-    builder.documented = documented?
-    builder.resources_constant_name = resources_constant_name
-
 
     # Try to discover Xcode project at given path.
     find_xcodeproj
 
+    build do |builder|
+      # Build a section for each bundle if it contains any Resources
+      for bundle in find_bundles_in_xcodeproj do
+        bundle_files = find_files_in_bundle bundle
+        image_files = find_image_files bundle_files
+        log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
+        next if image_files.empty?
+        section_data = build_images_section image_files
+        next if section_data.empty?
+        section_name = File.basename_without_ext bundle.path
+        log 'Add section for %s with %s elements', section_name, section_data.count
+        builder.add_section section_name, section_data
+      end
 
-    # Build a section for each bundle if it contains any Resources
-    for bundle in find_bundles_in_xcodeproj do
-      bundle_files = find_files_in_bundle bundle
-      image_files = find_image_files bundle_files
-      log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
-      next if image_files.empty?
-      section_data = build_images_section image_files
-      next if section_data.empty?
-      section_name = File.basename_without_ext bundle.path
-      log 'Add section for %s with %s elements', section_name, section_data.count
-      builder.add_section section_name, section_data
+      # Build Images section
+      builder.add_section 'Images', build_images_section(find_image_files(xcodeproj.files.map(&:path)))
+
+      # Build Strings section
+      builder.add_section 'Strings', build_strings_section
     end
-
-    # Build Images section
-    builder.add_section 'Images', build_images_section(find_image_files(xcodeproj.files.map(&:path)))
-
-    # Build Strings section
-    builder.add_section 'Strings', build_strings_section
-
-    # Write the files, if needed
-    builder.build
 
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
@@ -138,6 +126,20 @@ class XCResources::Command < Clamp::Command
       raise ArgumentError.new 'Argument XCODEPROJ was not given and no *.xcodeproj file was found in current directory.'
     end
     xcodeproj_file_paths.first
+  end
+
+  def build &block
+    # Prepare builder
+    builder = XCResources::ResourcesBuilder.new
+    builder.output_path = output_path
+    builder.logger = logger
+    builder.documented = documented?
+    builder.resources_constant_name = resources_constant_name
+
+    block.call(builder)
+
+    # Write the files, if needed
+    builder.build
   end
 
   def filter_exclusions file_paths
