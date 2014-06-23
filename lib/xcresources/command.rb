@@ -18,7 +18,6 @@ class XCResources::Command < Clamp::Command
   option ['-v', '--verbose'], :flag, 'Show more debugging information'
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
-  option ['-i', '--img-src'], 'FILE_PATH', 'Images which should be included in the resources header', multivalued: true, attribute_name: :img_src_file_paths
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
   option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :default_language do |language|
