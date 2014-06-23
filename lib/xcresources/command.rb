@@ -94,8 +94,9 @@ class XCResources::Command < Clamp::Command
       image_files = find_image_files bundle_files
       log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
       next if image_files.empty?
-      section_name = File.basename_without_ext bundle.path
       section_data = build_images_section image_files
+      next if section_data.empty?
+      section_name = File.basename_without_ext bundle.path
       log 'Add section for %s with %s elements', section_name, section_data.count
       builder.add_section section_name, section_data
     end
