@@ -26,8 +26,8 @@ class XCResources::Command < Clamp::Command
     language
   end
 
-  parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
   parameter '[XCODEPROJ]', 'Xcode project file to inspect (automatically located on base of the current directory if not given)', attribute_name: :xcodeproj_file_path
+  parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
 
   attr_accessor :xcodeproj
 
@@ -49,11 +49,11 @@ class XCResources::Command < Clamp::Command
     # Configure logger
     configure_logger
 
-    # Locate output path
-    locate_output_path
-
     # Try to discover Xcode project at given path.
     find_xcodeproj
+
+    # Locate output path
+    locate_output_path
 
     build do |builder|
       # Build a section for each bundle if it contains any Resources
@@ -94,11 +94,11 @@ class XCResources::Command < Clamp::Command
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
     self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
 
-    if output_path.nil?
-      # Use current dir, if no output path was set
-      self.output_path ||= File.realpath('.') + '/' + resources_constant_name
+    self.output_path = if output_path.nil?
+      # Use project dir, if no output path was set
+      (Pathname(xcodeproj_file_path) + "../#{resources_constant_name}").realdirpath
     else
-      self.output_path ||= File.absolute_path output_path
+      Pathname(output_path).realdirpath
     end
   end
 
