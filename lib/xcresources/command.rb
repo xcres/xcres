@@ -73,21 +73,7 @@ class XCResources::Command < Clamp::Command
 
 
     # Try to discover Xcode project at given path.
-    if xcodeproj_file_path.nil?
-      warn 'Argument XCODEPROJ is not set. Use the current directory.'
-      self.xcodeproj_file_path = discover_xcodeproj_file_path!
-    elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
-      warn 'Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.'
-      self.xcodeproj_file_path = discover_xcodeproj_file_path! xcodeproj_file_path
-    end
-
-    unless Dir.exist?(xcodeproj_file_path) && File.exist?(xcodeproj_file_path + '/project.pbxproj')
-      raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % xcodeproj_file_path
-    end
-
-    success 'Use %s as XCODEPROJ.', xcodeproj_file_path
-
-    self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
+    find_xcodeproj
 
 
     # Build a section for each bundle if it contains any Resources
@@ -115,6 +101,24 @@ class XCResources::Command < Clamp::Command
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
     fail error
+  end
+
+  def find_xcodeproj
+    if xcodeproj_file_path.nil?
+      warn 'Argument XCODEPROJ is not set. Use the current directory.'
+      self.xcodeproj_file_path = discover_xcodeproj_file_path!
+    elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
+      warn 'Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.'
+      self.xcodeproj_file_path = discover_xcodeproj_file_path! xcodeproj_file_path
+    end
+
+    unless Dir.exist?(xcodeproj_file_path) && File.exist?(xcodeproj_file_path + '/project.pbxproj')
+      raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % xcodeproj_file_path
+    end
+
+    success 'Use %s as XCODEPROJ.', xcodeproj_file_path
+
+    self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
   end
 
   def discover_xcodeproj_file_path! dir = '.'
