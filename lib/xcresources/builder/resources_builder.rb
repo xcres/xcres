@@ -10,6 +10,8 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
   }
 
   attr_accessor :resources_constant_name
+  attr_accessor :documented
+  alias :documented? :documented
 
   def initialize
     @sections = {}
@@ -100,7 +102,9 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
           struct.writeln 'struct %s {' % section_key
           struct.section do |section_struct|
             enumerate_keys.call do |key, value, comment|
-              section_struct.writeln "/// %s" % (comment || value) #unless comment.nil?
+              if documented?
+                section_struct.writeln "/// %s" % (comment || value) #unless comment.nil?
+              end
               section_struct.writeln "__unsafe_unretained NSString *%s;" % key
             end
           end

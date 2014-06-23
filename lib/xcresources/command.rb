@@ -14,6 +14,7 @@ class XCResources::Command < Clamp::Command
   option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
   option ['--[no-]ansi'], :flag, 'Show output without ANSI codes', default: true
+  option ['--[no-]documented'], :flag, 'Add documentation to the generated files', default: true
   option ['-v', '--verbose'], :flag, 'Show more debugging information'
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
@@ -67,6 +68,7 @@ class XCResources::Command < Clamp::Command
     builder = XCResources::ResourcesBuilder.new
     builder.output_path = output_path
     builder.logger = logger
+    builder.documented = documented?
     builder.resources_constant_name = resources_constant_name
 
 
