@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcresources (0.1.0)
+    xcresources (0.2.0)
       activesupport (>= 3.2.15, < 4)
       apfel (~> 0.0.5)
       clamp (~> 0.6.3)
