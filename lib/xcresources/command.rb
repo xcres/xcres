@@ -3,6 +3,7 @@ require 'clamp'
 require 'xcresources/builder/resources_builder'
 require 'xcresources/logger'
 require 'apfel'
+require 'xcresources/helper/apfel+parse_utf16'
 
 class XCResources::Command < Clamp::Command
 
@@ -237,7 +238,7 @@ class XCResources::Command < Clamp::Command
     for strings_file_path in strings_file_paths
       begin
         # Load strings file contents
-        strings_file = Apfel.parse strings_file_path
+        strings_file = Apfel.parse(strings_file_path) rescue Apfel.parse_utf16(strings_file_path)
 
         keys = Hash[strings_file.kv_pairs.map do |kv_pair|
           # WORKAROUND: Needed for single-line comments
