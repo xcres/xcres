@@ -111,7 +111,7 @@ class XCResources::Command < Clamp::Command
 
   def filter_exclusions file_paths
     file_paths.select do |path|
-      exclude_file_patterns.any? { |pattern| !File.fnmatch '**/' + pattern, path }
+      exclude_file_patterns.any? { |pattern| !File.fnmatch '**/' + pattern, path.realpath }
     end
   end
 
