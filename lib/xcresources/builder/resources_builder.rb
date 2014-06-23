@@ -52,11 +52,11 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
     super
 
     # Build file contents and write them to disk
-    write_file output_path+'.h', (build_contents do |h_file|
+    write_file "#{output_path}.h", (build_contents do |h_file|
       build_header_contents h_file
     end)
 
-    write_file output_path+'.m', (build_contents do |m_file|
+    write_file "#{output_path}.m", (build_contents do |m_file|
       build_impl_contents m_file
     end)
   end

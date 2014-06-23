@@ -76,7 +76,7 @@ class XCResources::Command < Clamp::Command
       builder.add_section 'Strings', build_strings_section
     end
 
-    success 'Successfully updated: %s', output_path + '.h'
+    success 'Successfully updated: %s', "#{output_path}.h"
   rescue ArgumentError => error
     fail error
   end
