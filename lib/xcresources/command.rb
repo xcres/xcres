@@ -46,12 +46,8 @@ class XCResources::Command < Clamp::Command
       return
     end
 
-    logger.silent = silent?
-    logger.colored = ansi?
-    if verbose?
-      logger.verbose = verbose?
-      log 'Verbose mode is enabled.'
-    end
+    # Configure logger
+    configure_logger
 
 
     # Locate output path
@@ -95,6 +91,15 @@ class XCResources::Command < Clamp::Command
     success 'Successfully updated: %s', output_path + '.h'
   rescue ArgumentError => error
     fail error
+  end
+
+  def configure_logger
+    logger.silent = silent?
+    logger.colored = ansi?
+    if verbose?
+      logger.verbose = verbose?
+      log 'Verbose mode is enabled.'
+    end
   end
 
   def locate_output_path
