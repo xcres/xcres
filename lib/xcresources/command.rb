@@ -173,7 +173,7 @@ class XCResources::Command < Clamp::Command
         target.build_configurations.map do |config|
           config.build_settings['INFOPLIST_FILE']
         end
-      end.reduce([], :+).to_set
+      end.reduce([], :+).select(&:present?).to_set
 
       log 'Info.plist paths: %s', info_plist_paths.to_a
 
