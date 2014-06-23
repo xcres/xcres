@@ -66,6 +66,7 @@ class XCResources::Command < Clamp::Command
     # Prepare builder
     builder = XCResources::ResourcesBuilder.new
     builder.output_path = output_path
+    builder.logger = logger
     builder.resources_constant_name = resources_constant_name
 
 

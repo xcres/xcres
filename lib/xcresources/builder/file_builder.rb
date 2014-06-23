@@ -4,19 +4,20 @@ require 'xcresources/builder/string_builder'
 class XCResources::FileBuilder
 
   attr_accessor :output_path
+  attr_accessor :logger
 
   def prepare_output_path!
     # Ensure that the given directory exists
     output_dir = File.dirname output_path
     unless Dir.exist? output_dir
-      puts 'Directory did not exist. Will been created.'.green
+      logger.success 'Directory did not exist. Will been created.'
       Dir.mkdir output_dir
     end
 
     # Replace an already existing file, by deleting it and rebuilding from scratch
     if File.exist? output_path
       raise ArgumentError.new 'Output path is a directory!' if Dir.exist? output_path
-      puts "Output path already exists. Will be replaced.".yellow
+      logger.warn "Output path already exists. Will be replaced."
     end
   end
 
@@ -43,7 +44,7 @@ class XCResources::FileBuilder
       # Diff current version and temporary file
       diff = `/usr/bin/diff #{tmp_file_path} #{file_path}`
       if diff.length == 0
-        puts "✓ Existing file is up-to-date. Don't touch.".green
+        logger.success "Existing file is up-to-date. Don't touch."
         return
       end
     end
