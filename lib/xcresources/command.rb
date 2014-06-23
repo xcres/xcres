@@ -166,7 +166,7 @@ class XCResources::Command < Clamp::Command
     image_keys_to_paths = {}
     for file_path in image_file_paths
       # Get rid of the file extension
-      key = File.basename_without_ext file_path
+      key = file_path.gsub File.extname(file_path), ''
 
       # Graphical assets tend to contain words, which you want to strip.
       # Because we want to list the words to ignore only in one variant, we have to ensure that the icon name is
