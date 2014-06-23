@@ -135,8 +135,11 @@ class XCResources::Command < Clamp::Command
     # Build dictionary of image keys to names
     image_file_paths = filter_exclusions image_files
 
-    # Filter out retina images
-    image_file_paths.select! { |path| !/@2x\.\w+$/.match path }
+    # Filter out device scale and idiom specific images (retina, ipad),
+    # but ensure the base exist once
+    image_file_paths = image_file_paths.map do |path|
+      path.gsub /(@2x)?(~(iphone|ipad))?\.\w+$/, ''
+    end.to_set
 
     # Map paths to prepared keys
     build_icons_section_map image_file_paths
