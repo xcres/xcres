@@ -88,6 +88,18 @@ class XCResources::Command < Clamp::Command
     self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
 
 
+    # Build a section for each bundle if it contains any Resources
+    for bundle in find_bundles_in_xcodeproj do
+      bundle_files = find_files_in_bundle bundle
+      image_files = find_image_files bundle_files
+      log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
+      next if image_files.empty?
+      section_name = File.basename_without_ext bundle.path
+      section_data = build_images_section image_files
+      log 'Add section for %s with %s elements', section_name, section_data.count
+      builder.add_section section_name, section_data
+    end
+
     # Build Images section
     builder.add_section 'Images', build_images_section(find_image_files(xcodeproj.files.map(&:path)))
 
@@ -125,6 +137,16 @@ class XCResources::Command < Clamp::Command
 
     # Map paths to prepared keys
     build_icons_section_map image_file_paths
+  end
+
+  def find_bundles_in_xcodeproj
+    xcodeproj.files.select { |file| File.fnmatch '**.bundle', file.path }
+  end
+
+  def find_files_in_bundle bundle_file
+    Dir.chdir bundle_file.real_path do
+      Dir['**/*']
+    end
   end
 
   def find_image_files files
