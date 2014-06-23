@@ -168,7 +168,7 @@ class XCResources::Command < Clamp::Command
       [language]
     else
       # Discover Info.plist files by build settings of all application targets
-      application_targets = xcodeproj.targets.select { |t| t.product_type == 'com.apple.product-type.application' }
+      application_targets = xcodeproj.targets.select { |t| t.is_a? Xcodeproj::Project::Object::PBXNativeTarget }
       info_plist_paths = application_targets.map do |target|
         target.build_configurations.map do |config|
           config.build_settings['INFOPLIST_FILE']
