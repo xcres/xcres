@@ -7,8 +7,6 @@ require 'xcresources/helper/apfel+parse_utf16'
 
 class XCResources::Command < Clamp::Command
 
-
-  # TODO: Make this configurable
   ICON_FILTER_WORDS = ['icon', 'image']
 
   option ['--silent'], :flag, 'Show nothing'
