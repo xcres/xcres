@@ -18,6 +18,8 @@
 		71239DC21912BFF80058657F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DA71912BFF70058657F /* Foundation.framework */; };
 		71239DC31912BFF80058657F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DAB1912BFF70058657F /* UIKit.framework */; };
 		71239DDC1912C07E0058657F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71239DDE1912C07E0058657F /* Localizable.strings */; };
+		715C078F198D029800316E8C /* Icons.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 715C078C198D029800316E8C /* Icons.bundle */; };
+		715C0790198D029800316E8C /* doge.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 715C078E198D029800316E8C /* doge.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		71239DC01912BFF80058657F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		71239DDD1912C07E0058657F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		71239DDF1912C1040058657F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		715C078C198D029800316E8C /* Icons.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Icons.bundle; sourceTree = "<group>"; };
+		715C078E198D029800316E8C /* doge.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = doge.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				71239DB61912BFF80058657F /* AppDelegate.h */,
 				71239DB71912BFF80058657F /* AppDelegate.m */,
 				71239DB91912BFF80058657F /* Images.xcassets */,
+				715C078C198D029800316E8C /* Icons.bundle */,
+				715C078D198D029800316E8C /* Images */,
 				71239DAE1912BFF70058657F /* Supporting Files */,
 			);
 			path = Example;
@@ -122,6 +128,14 @@
 				71239DDE1912C07E0058657F /* Localizable.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		715C078D198D029800316E8C /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				715C078E198D029800316E8C /* doge.jpeg */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +214,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				715C078F198D029800316E8C /* Icons.bundle in Resources */,
+				715C0790198D029800316E8C /* doge.jpeg in Resources */,
 				71239DB21912BFF80058657F /* InfoPlist.strings in Resources */,
 				71239DBA1912BFF80058657F /* Images.xcassets in Resources */,
 				71239DDC1912C07E0058657F /* Localizable.strings in Resources */,
