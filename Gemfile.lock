@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/mrackwitz/clintegracon.git
-  revision: 3d2c4fe50e0ba92ced19bff9f6b5d069ce5040fd
+  revision: a7240a78b9fbaefa1d3f8a9e21e737adc65165b1
   branch: master
   specs:
-    clintegracon (0.4.0)
+    clintegracon (0.4.1)
       colored (~> 1.2)
       diffy
 
@@ -20,7 +20,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.18)
+    activesupport (3.2.19)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     apfel (0.0.5)
@@ -28,9 +28,9 @@ GEM
     clamp (0.6.3)
     colored (1.2)
     diffy (3.0.6)
-    i18n (0.6.9)
-    multi_json (1.10.0)
-    rake (10.3.1)
+    i18n (0.6.11)
+    multi_json (1.10.1)
+    rake (10.3.2)
     xcodeproj (0.16.1)
       activesupport (~> 3.0)
       colored (~> 1.2)
