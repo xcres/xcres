@@ -1,4 +1,5 @@
 require 'bacon'
+require 'pretty_bacon'
 require 'clintegracon'
 
 ROOT = Pathname.new(File.expand_path('../..', __FILE__))
