@@ -1,0 +1,14 @@
+ xcresources --verbose --no-ansi Example 2>&1
+Ⓥ Verbose mode is enabled.
+⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
+✓ Use Example/Example.xcodeproj as XCODEPROJ.
+Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings", "en.lproj/Localizable.strings", "de.lproj/Localizable.strings"]
+Ⓥ Info.plist paths: ["Example/Example-Info.plist", "ExampleTests/ExampleTests-Info.plist"]
+Print: Entry, ":CFBundleDevelopmentRegion", Does Not Exist
+Ⓥ Native development languages: ["en", "File Doesn't Exist, Will Create: ROOT/tmp/integration/build/Example/ExampleTests/ExampleTests-Info.plist"]
+Ⓥ Used languages for .strings files: ["en", "de"]
+Ⓥ Preferred languages: ["en"]
+Ⓥ Strings files after language selection: ["en.lproj/InfoPlist.strings", "en.lproj/Localizable.strings"]
+Ⓥ Non-ignored .strings files: ["Example/Example/en.lproj/Localizable.strings"]
+Ⓥ Found 4 keys in file Example/Example/en.lproj/Localizable.strings
+✓ Successfully updated: ROOT/tmp/integration/build/Example/R.h
