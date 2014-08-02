@@ -53,8 +53,11 @@ class XCResources::Command < Clamp::Command
     locate_output_path
 
     build do |builder|
+      bundles = find_bundles_in_xcodeproj
+      log "Found #%s resource bundles in project.", bundles.count
+
       # Build a section for each bundle if it contains any Resources
-      for bundle in find_bundles_in_xcodeproj do
+      for bundle in bundles do
         bundle_files = find_files_in_bundle bundle
         image_files = find_image_files bundle_files
         log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
