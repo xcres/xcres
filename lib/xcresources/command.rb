@@ -49,8 +49,11 @@ class XCResources::Command < Clamp::Command
     # Try to discover Xcode project at given path.
     find_xcodeproj
 
+    # Derive the name for the resources constant file
+    self.resources_constant_name ||= derive_resources_constant_name
+
     # Locate output path
-    locate_output_path
+    self.output_path = locate_output_path
 
     build do |builder|
       bundles = find_bundles_in_xcodeproj
@@ -90,16 +93,31 @@ class XCResources::Command < Clamp::Command
     end
   end
 
-  def locate_output_path
+  def derive_resources_constant_name
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
-    self.resources_constant_name ||= output_path != nil ? File.basename_without_ext(output_path) : 'R'
-
-    self.output_path = if output_path.nil?
-      # Use project dir, if no output path was set
-      (Pathname(xcodeproj_file_path) + "../#{resources_constant_name}").realdirpath
+    if output_path != nil && !File.directory?(output_path)
+      File.basename_without_ext(output_path)
     else
-      Pathname(output_path).realdirpath
+      'R'
     end
+  end
+
+  def output_dir
+    if output_path.nil?
+      # Use project dir, if no output path was set
+      Pathname(xcodeproj_file_path) + '..'
+    else
+      path = Pathname(output_path)
+      if path.directory?
+        path
+      else
+        path + '..'
+      end
+    end
+  end
+
+  def locate_output_path
+    output_dir.realdirpath + resources_constant_name
   end
 
   def find_xcodeproj
