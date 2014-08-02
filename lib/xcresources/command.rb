@@ -181,7 +181,7 @@ class XCResources::Command < Clamp::Command
   end
 
   def find_bundles_in_xcodeproj
-    xcodeproj.files.select { |file| File.fnmatch '**.bundle', file.path }
+    xcodeproj.files.select { |file| File.extname(file.path) == '.bundle' }
   end
 
   def find_files_in_bundle bundle_file
