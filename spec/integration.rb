@@ -28,6 +28,7 @@ describe_cli 'xcresources' do
     c.ignores '.DS_Store'
     c.ignores '**.DS_Store'
     c.ignores '.gitkeep'
+    c.ignores %r[/xcuserdata/]
   end
 
   describe 'Build' do
