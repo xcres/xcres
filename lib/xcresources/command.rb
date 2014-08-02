@@ -73,7 +73,9 @@ class XCResources::Command < Clamp::Command
       end
 
       # Build Images section
-      builder.add_section 'Images', build_images_section(find_image_files(xcodeproj.files.map(&:path)))
+      image_files = find_image_files xcodeproj.files.map(&:path)
+      log "Found #%s image files in project.", image_files.count
+      builder.add_section 'Images', build_images_section(image_files, use_basename?: true)
 
       # Build Strings section
       builder.add_section 'Strings', build_strings_section
@@ -166,7 +168,7 @@ class XCResources::Command < Clamp::Command
     end
   end
 
-  def build_images_section image_files
+  def build_images_section image_files, options={}
     # Build dictionary of image keys to names
     image_file_paths = filter_exclusions image_files
 
@@ -177,7 +179,7 @@ class XCResources::Command < Clamp::Command
     end.to_set
 
     # Map paths to prepared keys
-    build_icons_section_map image_file_paths
+    build_icons_section_map image_file_paths, options
   end
 
   def find_bundles_in_xcodeproj
@@ -196,15 +198,22 @@ class XCResources::Command < Clamp::Command
     files.select { |file| file.match /\.(png|jpe?g|gif)$/ }
   end
 
-  def build_icons_section_map image_file_paths
+  def build_icons_section_map image_file_paths, options={}
+    options = { use_basename?: false }.merge options
+
     # Prepare icon filter words
     icon_filter_words = ICON_FILTER_WORDS.map &:downcase
 
     # Transform image file paths to keys
     image_keys_to_paths = {}
     for file_path in image_file_paths
+      key = file_path
+
+      # Use only the basename if the option is enabled
+      key = File.basename(key) if options[:use_basename?]
+
       # Get rid of the file extension
-      key = file_path.gsub File.extname(file_path), ''
+      key = key.gsub File.extname(file_path), ''
 
       # Graphical assets tend to contain words, which you want to strip.
       # Because we want to list the words to ignore only in one variant, we have to ensure that the icon name is
