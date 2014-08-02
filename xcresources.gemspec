@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency 'bacon', '~> 1.1'
   spec.add_development_dependency 'prettybacon'
+  spec.add_development_dependency 'mocha'
+  spec.add_development_dependency 'mocha-on-bacon'
 
   spec.add_runtime_dependency 'clamp', '~> 0.6.3'
   spec.add_runtime_dependency 'colored', '~> 1.2'
