@@ -2,12 +2,11 @@ require 'xcodeproj'
 require 'clamp'
 require 'xcresources/builder/resources_builder'
 require 'xcresources/logger'
-require 'apfel'
-require 'xcresources/helper/apfel+parse_utf16'
+require 'xcresources/analyzer/aggregate_analyzer'
+require 'xcresources/analyzer/resources_analyzer'
+require 'xcresources/analyzer/strings_analyzer'
 
 class XCResources::Command < Clamp::Command
-
-  ICON_FILTER_WORDS = ['icon', 'image']
 
   option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
@@ -25,8 +24,6 @@ class XCResources::Command < Clamp::Command
 
   parameter '[XCODEPROJ]', 'Xcode project file to inspect (automatically located on base of the current directory if not given)', attribute_name: :xcodeproj_file_path
   parameter '[OUTPUT_PATH]', 'Path where to write to', attribute_name: :output_path
-
-  attr_accessor :xcodeproj
 
 
   # Include Logger
@@ -47,7 +44,7 @@ class XCResources::Command < Clamp::Command
     configure_logger
 
     # Try to discover Xcode project at given path.
-    find_xcodeproj
+    self.xcodeproj_file_path = find_xcodeproj
 
     # Derive the name for the resources constant file
     self.resources_constant_name ||= derive_resources_constant_name
@@ -55,30 +52,20 @@ class XCResources::Command < Clamp::Command
     # Locate output path
     self.output_path = locate_output_path
 
+    # Open the Xcode project.
+    project = Xcodeproj::Project.open(xcodeproj_file_path)
+
     build do |builder|
-      bundles = find_bundles_in_xcodeproj
-      log "Found #%s resource bundles in project.", bundles.count
+      analyzer = XCResources::AggregateAnalyzer.new(project)
+      analyzer.exclude_file_patterns = exclude_file_patterns
+      analyzer.logger = logger
+      analyzer.add_with_class(XCResources::ResourcesAnalyzer)
+      analyzer.add_with_class(XCResources::StringsAnalyzer, default_language: default_language)
+      sections = analyzer.analyze
 
-      # Build a section for each bundle if it contains any Resources
-      for bundle in bundles do
-        bundle_files = find_files_in_bundle bundle
-        image_files = find_image_files bundle_files
-        log "Found bundle %s with #%s image files of #%s total files.", bundle.path, image_files.count, bundle_files.count
-        next if image_files.empty?
-        section_data = build_images_section image_files
-        next if section_data.empty?
-        section_name = File.basename_without_ext bundle.path
-        log 'Add section for %s with %s elements', section_name, section_data.count
-        builder.add_section section_name, section_data
+      sections.each do |section|
+        builder.add_section section.name, section.items, section.options
       end
-
-      # Build Images section
-      image_files = find_image_files xcodeproj.files.map(&:path)
-      log "Found #%s image files in project.", image_files.count
-      builder.add_section 'Images', build_images_section(image_files, use_basename?: true)
-
-      # Build Strings section
-      builder.add_section 'Strings', build_strings_section
     end
 
     success 'Successfully updated: %s', "#{output_path}.h"
@@ -123,24 +110,30 @@ class XCResources::Command < Clamp::Command
   end
 
   def find_xcodeproj
-    if xcodeproj_file_path.nil?
-      warn 'Argument XCODEPROJ is not set. Use the current directory.'
-      self.xcodeproj_file_path = discover_xcodeproj_file_path!
-    elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
-      warn 'Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.'
-      self.xcodeproj_file_path = discover_xcodeproj_file_path! xcodeproj_file_path
+    path = discover_xcodeproj_file_path!
+
+    if !Dir.exist?(path) || !File.exist?(path + '/project.pbxproj')
+      raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % path
     end
 
-    unless Dir.exist?(xcodeproj_file_path) && File.exist?(xcodeproj_file_path + '/project.pbxproj')
-      raise ArgumentError.new 'XCODEPROJ at %s was not found or is not a valid Xcode project.' % xcodeproj_file_path
-    end
+    success 'Use %s as XCODEPROJ.', path
 
-    success 'Use %s as XCODEPROJ.', xcodeproj_file_path
-
-    self.xcodeproj = Xcodeproj::Project.open xcodeproj_file_path
+    return path
   end
 
-  def discover_xcodeproj_file_path! dir = '.'
+  def discover_xcodeproj_file_path!
+    if xcodeproj_file_path.nil?
+      warn 'Argument XCODEPROJ is not set. Use the current directory.'
+      discover_xcodeproj_file_path_in_dir! '.'
+    elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
+      warn 'Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.'
+      discover_xcodeproj_file_path_in_dir! xcodeproj_file_path
+    else
+      xcodeproj_file_path
+    end
+  end
+
+  def discover_xcodeproj_file_path_in_dir! dir
     xcodeproj_file_paths = Dir[dir + '/*.xcodeproj']
     if xcodeproj_file_paths.count == 0
       raise ArgumentError.new 'Argument XCODEPROJ was not given and no *.xcodeproj file was found in current directory.'
@@ -148,7 +141,7 @@ class XCResources::Command < Clamp::Command
     xcodeproj_file_paths.first
   end
 
-  def build &block
+  def build
     # Prepare builder
     builder = XCResources::ResourcesBuilder.new
     builder.output_path = output_path
@@ -156,177 +149,10 @@ class XCResources::Command < Clamp::Command
     builder.documented = documented?
     builder.resources_constant_name = resources_constant_name
 
-    block.call(builder)
+    yield builder
 
     # Write the files, if needed
     builder.build
   end
 
-  def filter_exclusions file_paths
-    file_paths.select do |path|
-      exclude_file_patterns.any? { |pattern| !File.fnmatch '**/' + pattern, path }
-    end
-  end
-
-  def build_images_section image_files, options={}
-    # Build dictionary of image keys to names
-    image_file_paths = filter_exclusions image_files
-
-    # Filter out device scale and idiom specific images (retina, ipad),
-    # but ensure the base exist once
-    image_file_paths = image_file_paths.map do |path|
-      path.gsub /(@2x)?(~(iphone|ipad))?\.\w+$/, ''
-    end.to_set
-
-    # Map paths to prepared keys
-    build_icons_section_map image_file_paths, options
-  end
-
-  def find_bundles_in_xcodeproj
-    xcodeproj.files.select { |file| File.extname(file.path) == '.bundle' }
-  end
-
-  def find_files_in_bundle bundle_file
-    Dir.chdir bundle_file.real_path do
-      Dir['**/*']
-    end
-  end
-
-  def find_image_files files
-    # TODO: Remove test entries and write some proper tests!
-    #["test.png", "test@2x.png", "camelCaseTest.png", "snake_case_test.png", "123.png"]
-    files.select { |file| file.match /\.(png|jpe?g|gif)$/ }
-  end
-
-  def build_icons_section_map image_file_paths, options={}
-    options = { use_basename?: false }.merge options
-
-    # Prepare icon filter words
-    icon_filter_words = ICON_FILTER_WORDS.map &:downcase
-
-    # Transform image file paths to keys
-    image_keys_to_paths = {}
-    for file_path in image_file_paths
-      key = file_path
-
-      # Use only the basename if the option is enabled
-      key = File.basename(key) if options[:use_basename?]
-
-      # Get rid of the file extension
-      key = key.gsub File.extname(file_path), ''
-
-      # Graphical assets tend to contain words, which you want to strip.
-      # Because we want to list the words to ignore only in one variant, we have to ensure that the icon name is
-      # prepared for that, without loosing word separation if camel case was used.
-      key = key.underscore.downcase
-
-      for filter_word in icon_filter_words do
-        key.gsub! filter_word, ''
-      end
-
-      image_keys_to_paths[key] = file_path
-    end
-
-    image_keys_to_paths
-  end
-
-  def find_strings_files
-    # Discover all .strings files (e.g. Localizable.strings)
-    xcodeproj.files.select { |file| File.fnmatch '*.strings', file.path }
-  end
-
-  def find_preferred_languages strings_files
-    if default_language != nil
-      # Use specified default language as primary language
-      [language]
-    else
-      # Discover Info.plist files by build settings of all application targets
-      application_targets = xcodeproj.targets.select { |t| t.is_a? Xcodeproj::Project::Object::PBXNativeTarget }
-      info_plist_paths = application_targets.map do |target|
-        target.build_configurations.map do |config|
-          config.build_settings['INFOPLIST_FILE']
-        end
-      end.reduce([], :+).select(&:present?).to_set
-
-      log 'Info.plist paths: %s', info_plist_paths.to_a
-
-      # Try to use the "Localization native development region" from Info.plist
-      native_dev_languages = info_plist_paths.map do |path|
-        `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{absolute_project_file_path(path)}`.gsub /\n$/, ''
-      end
-
-      log 'Native development languages: %s', native_dev_languages
-
-      # Try to use the languages, which are used
-      used_languages = strings_files.map(&:name).to_set
-
-      log 'Used languages for .strings files: %s', used_languages.to_a
-
-      # Calculate union of native development and used languages, fallback to the latter only, if it is empty
-      languages = native_dev_languages.to_a & used_languages.to_a
-      if languages.empty?
-        used_languages
-      else
-        languages
-      end
-    end
-  end
-
-  # Project file paths are relative to their project.
-  # We need either absolute paths or relative paths to our current location.
-  def absolute_project_file_path file_path
-    file_path = file_path.realpath.to_s if file_path.is_a? Pathname
-    File.absolute_path xcodeproj_file_path + ('/../' + file_path)
-  end
-
-  def build_strings_section
-    strings_files = find_strings_files
-
-    log 'Strings files in project: %s', strings_files.map(&:path)
-
-    # Find preferred languages
-    languages = find_preferred_languages strings_files
-
-    log 'Preferred languages: %s', languages
-
-    # Select strings files by language
-    strings_files.select! { |file| languages.include? file.name }
-
-    log 'Strings files after language selection: %s', strings_files.map(&:path)
-
-    # Get relative file paths
-    project_path = Pathname(xcodeproj_file_path) + '..'
-    project_realpath = project_path.realpath
-    strings_file_paths = strings_files.map(&:real_path).map do |path|
-      project_path + path.relative_path_from(project_realpath) rescue path
-    end
-
-    # Apply ignore list
-    strings_file_paths = filter_exclusions strings_file_paths
-
-    log 'Non-ignored .strings files: %s', strings_file_paths.map(&:to_s)
-
-    keys_by_file = {}
-    for strings_file_path in strings_file_paths
-      begin
-        # Load strings file contents
-        strings_file = Apfel.parse(strings_file_path) rescue Apfel.parse_utf16(strings_file_path)
-
-        keys = Hash[strings_file.kv_pairs.map do |kv_pair|
-          # WORKAROUND: Needed for single-line comments
-          comment = kv_pair.comment.gsub /^\s*\/\/\s*/, ''
-
-          [kv_pair.key, { value: kv_pair.key, comment: comment }]
-        end]
-
-        log 'Found %s keys in file %s', keys.count, strings_file_path
-
-        keys_by_file[strings_file_path] = keys
-      rescue ArgumentError => error
-        raise ArgumentError.new 'Error while reading %s: %s' % [strings_file_path, error]
-      end
-    end
-
-    keys_by_file.map { |k,v| v }.reduce Hash.new, :merge
-  end
 end

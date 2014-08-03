@@ -75,7 +75,7 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
         next unless component.length > 0
 
         # Ignore components which are already contained in the key, if enabled
-        if options.include? :shorten_keys
+        if options[:shorten_keys]
           next unless key.downcase.scan(component).blank?
         end
 
