@@ -31,5 +31,13 @@ module XCResources
       @options = options
     end
 
+    def ==(other)
+      self.name == other.name \
+        && self.items == other.items \
+        && self.options == other.options
+    end
+
+    alias eql? ==
+
   end
 end

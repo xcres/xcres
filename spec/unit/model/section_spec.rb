@@ -22,4 +22,26 @@ describe 'XCResources::Section' do
     end
   end
 
+  describe '#==' do
+    before do
+      @left = subject.new('Cats', 'cat' => 'cat.gif')
+    end
+
+    it 'should be true for equal sections' do
+      (@left == subject.new('Cats', 'cat' => 'cat.gif')).should.be.true?
+    end
+
+    it 'should be false if name is different' do
+      (@left == subject.new('Dog', 'cat' => 'cat.gif')).should.be.false?
+    end
+
+    it 'should be false if items are different' do
+      (@left == subject.new('Cat', 'dog' => 'dog.gif')).should.be.false?
+    end
+
+    it 'should be false if options are different' do
+      (@left == subject.new('Cat', { 'cat' => 'cat.gif' }, custom_flag: true)).should.be.false?
+    end
+  end
+
 end
