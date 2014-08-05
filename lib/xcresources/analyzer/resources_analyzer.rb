@@ -1,4 +1,5 @@
 require 'xcresources/analyzer/analyzer'
+require 'set'
 
 module XCResources
 
