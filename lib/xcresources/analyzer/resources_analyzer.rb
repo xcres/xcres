@@ -190,6 +190,9 @@ module XCResources
         key.gsub! filter_word, ''
       end
 
+      # Remove unnecessary underscores
+      key = key.gsub(/^_*|_*$|(_)_+/, '\1')
+
       return key
     end
 
