@@ -60,7 +60,7 @@ module XCResources
     #
     def filter_exclusions file_paths
       file_paths.reject do |path|
-        exclude_file_patterns.any? { |pattern| File.fnmatch "**/#{pattern}", path }
+        exclude_file_patterns.any? { |pattern| File.fnmatch("#{pattern}", path) || File.fnmatch("**/#{pattern}", path) }
       end
     end
 
