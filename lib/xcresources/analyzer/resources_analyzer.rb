@@ -124,7 +124,7 @@ module XCResources
     def filter_device_specific_image_paths file_paths
       file_paths.map do |path|
         path.to_s.gsub /(@2x)?(~(iphone|ipad))?(?=\.\w+$)/, ''
-      end.to_set
+      end.to_set.to_a
     end
 
     # Find image files in a given list of file paths
