@@ -31,7 +31,7 @@ module XCResources
       log 'Strings files in project: %s', strings_file_refs.map(&:path)
       log 'Native development languages: %s', native_dev_languages.to_a
       log 'Used languages for .strings files: %s', used_languages.to_a
-      log 'Preferred languages: %s', languages
+      log 'Preferred languages: %s', languages.to_a
       log 'Strings files after language selection: %s', selected_strings_file_refs.map(&:path)
 
       @sections = [build_section]
@@ -99,7 +99,7 @@ module XCResources
     #   - or the intersection of native development and used languages
     #   - or all used languages
     #
-    # @return [Array<String>]
+    # @return [Set<String>]
     #
     def languages
       if default_language != nil
@@ -108,7 +108,7 @@ module XCResources
       else
         # Calculate the intersection of native development and used languages,
         # fallback to the latter only, if it is empty
-        languages = native_dev_languages.to_a & used_languages.to_a
+        languages = native_dev_languages & used_languages
         if languages.empty?
           used_languages
         else
@@ -154,12 +154,12 @@ module XCResources
     # Find the native development languages by trying to use the
     # "Localization native development region" from Info.plist
     #
-    # @return [Array<String>]
+    # @return [Set<String>]
     #
     def native_dev_languages
       @native_dev_languages ||= absolute_info_plist_paths.map do |path|
         `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{path}`.gsub /\n$/, ''
-      end
+      end.to_set
     end
 
     # Calculate the absolute path for a file path given relative to the
