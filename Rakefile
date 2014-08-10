@@ -16,8 +16,8 @@ begin
     end
 
     desc 'Run all unit specs'
-    task :unit do
-      sh "bundle exec bacon #{specs('unit/**/*')}"
+    task :unit, [:spec] do |t, args|
+      sh "bundle exec bacon #{specs(args[:spec] || 'unit/**/*')}"
     end
 
     def specs(dir)
