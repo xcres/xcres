@@ -1,5 +1,12 @@
 begin
   require 'bundler/gem_tasks'
+  require 'rubocop/rake_task'
+
+  namespace :lint do
+    RuboCop::RakeTask.new do |task|
+      task.patterns = ['lib/**/*.rb']
+    end
+  end
 
   namespace :spec do
 
