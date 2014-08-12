@@ -158,8 +158,22 @@ module XCResources
     #
     def native_dev_languages
       @native_dev_languages ||= absolute_info_plist_paths.map do |path|
-        `/usr/libexec/PlistBuddy -c "Print :CFBundleDevelopmentRegion" #{path}`.gsub /\n$/, ''
+        read_plist_key(path, :CFBundleDevelopmentRegion)
       end.to_set
+    end
+
+    # Extracts a given key from a plist file given as a path
+    #
+    # @param  [Pathname] path
+    #         the path of the plist file
+    #
+    # @param  [String] key
+    #         the key, whose value should been extracted
+    #
+    # @return [String]
+    #
+    def read_plist_key(path, key)
+      `/usr/libexec/PlistBuddy -c "Print :#{key}" #{path}`.chomp
     end
 
     # Calculate the absolute path for a file path given relative to the
