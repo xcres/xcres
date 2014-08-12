@@ -1,21 +1,59 @@
 require 'colored'
 
+# A Logger utility help class
+#
 class XCResources::Logger
 
-  attr_accessor :verbose, :silent, :colored
+  # @return [Bool]
+  #         if set to false, calls to #log will be ignored
+  #         otherwise they will be printed, false by default.
+  attr_accessor :verbose
   alias :verbose? verbose
+
+  # @return [Bool]
+  #         if set to true, all log calls of all kinds will be ignored
+  #         otherwise they will be printed, false by default.
+  attr_accessor :silent
   alias :silent? silent
+
+  # @return [Bool]
+  #         if set to true, ANSI colors will be used to color the output
+  #         otherwise it will output plain text, true by default.
+  attr_accessor :colored
   alias :colored? colored
 
+  # Initialize a new logger
+  #
   def initialize
     self.colored = true
   end
 
+  # Prints a formatted message
+  #
+  # @param [String] message
+  #        the message, which can have format placeholders
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def inform message, *format_args
     puts message % format_args unless silent?
   end
 
-  # Print arguments bold
+  # Prints a formatted message in a given color, and prints its arguments
+  # with bold font weight
+  #
+  # @param [String] message
+  #        the message, which can have format placeholders
+  #
+  # @param [Symbol] color
+  #        the color, String has to #respond_to? this
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def inform_colored message, color, *format_args
     if colored?
       # TODO: Test e.g: 'a %s b %10.00d c %1d d' => ["a %s", " b %10.00d", " c %1d", " d"]
@@ -25,18 +63,57 @@ class XCResources::Logger
     inform message, *format_args
   end
 
+  # Print a log message of log level verbose
+  #
+  # @param [String] message
+  #        the message, which can have format placeholders
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def log message, *format_args
     inform_colored 'Ⓥ' + ' ' + message, :magenta, *format_args if verbose?
   end
 
+  # Print a log message to indicate success of an operation in green color
+  #
+  # @param [String] message
+  #        the message, which can have format placeholders
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def success message, *format_args
     inform_colored '✓' + ' ' + message, :green, *format_args
   end
 
+  # Print a warning log message in yellow color
+  #
+  # @param [String] message
+  #        the message, which can have format placeholders
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def warn message, *format_args
     inform_colored '⚠' + ' ' + message, :yellow, *format_args
   end
 
+  # Print a log message to indicate failure of an operation in red color
+  #
+  # @param [String|Exception] message
+  #        The message, which can have format placeholders,
+  #        can also be a kind of Exception, then its message would been
+  #        used instead. The backtrace will be only printed, if the verbose
+  #        mode is enabled.
+  #
+  # @param [#to_s...] format_args
+  #        will be passed as right hand side to the percent operator,
+  #        which will fill the format placeholders used in the message
+  #
   def fail message, *format_args
     exception = nil
     if message.kind_of? Exception
