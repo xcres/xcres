@@ -25,6 +25,8 @@ class XCResources::Logger
   # Initialize a new logger
   #
   def initialize
+    self.silent = false
+    self.verbose = false
     self.colored = true
   end
 
@@ -56,9 +58,17 @@ class XCResources::Logger
   #
   def inform_colored message, color, *format_args
     if colored?
-      message = message.gsub(/%\d*\.?\d*[a-z]/, "\0"+'\0'+"\0")
-                       .split("\0").map(&color).join('')
-      format_args = format_args.map(&:to_s).map(&color).map(&:bold)
+      parts = message
+         .gsub(/%[\ +#]?\d*\.?\d*[a-z]/, "\0"+'\0'+"\0")
+         .split("\0")
+         .reject(&:empty?)
+      message = parts.map do |part|
+        if part[0] == '%' && part[1] != '%'
+          (part % format_args.shift).bold
+        else
+          part
+        end
+      end.map(&color).join('')
     end
     inform message, *format_args
   end
