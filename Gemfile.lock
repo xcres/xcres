@@ -18,7 +18,7 @@ GEM
     ast (2.0.0)
     bacon (1.2.0)
     clamp (0.6.3)
-    clintegracon (0.4.1)
+    clintegracon (0.5.2)
       colored (~> 1.2)
       diffy
     colored (1.2)

@@ -6,10 +6,16 @@ ROOT = Pathname.new(File.expand_path('../..', __FILE__))
 BIN  = ROOT + 'bin'
 
 CLIntegracon.configure do |c|
-  c.context.spec_path = ROOT + 'spec/integration'
-  c.context.temp_path = ROOT + 'tmp/integration'
+  c.spec_path = ROOT + 'spec/integration'
+  c.temp_path = ROOT + 'tmp/integration'
 
   c.hook_into :bacon
+
+  c.ignores '.DS_Store'
+  c.ignores '**.DS_Store'
+  c.ignores '.gitkeep'
+  c.ignores %r[/xcuserdata/]
+  c.ignores %r(^Example/Example[./])
 end
 
 
@@ -21,15 +27,7 @@ describe_cli 'xcresources' do
       '--verbose',
       '--no-ansi'
     ]
-    s.has_special_path ROOT.to_s, 'ROOT'
-  end
-
-  context do |c|
-    c.ignores '.DS_Store'
-    c.ignores '**.DS_Store'
-    c.ignores '.gitkeep'
-    c.ignores %r[/xcuserdata/]
-    c.ignores %r(^Example/Example[./])
+    s.replace_path ROOT.to_s, 'ROOT'
   end
 
   describe 'Build' do
