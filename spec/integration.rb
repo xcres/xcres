@@ -38,4 +38,8 @@ describe_cli 'xcresources' do
     behaves_like cli_spec('help', '--help')
   end
 
+  describe 'Get version' do
+    behaves_like cli_spec('version', '--version')
+  end
+
 end
