@@ -3,23 +3,37 @@ require 'xcresources/helper/file_helper'
 
 class XCResources::ResourcesBuilder < XCResources::FileBuilder
 
+  include XCResources::FileHelper
+
   COMPILER_KEYWORDS = %w{
     auto, break, case, char, const, continue, default, do, double, else, enum, extern, float, for, goto, if, inline,
     int, long, register, restrict, return, short, signed, sizeof, static, struct, switch, typedef, union, unsigned,
     void, volatile, while
   }
 
+  # @return [String]
+  #         the name of the constant in the generated file(s)
   attr_accessor :resources_constant_name
+
+  # @return [Bool]
+  #         whether the generated resources constant should contain inline
+  #         documentation for each key, true by default
   attr_accessor :documented
   alias :documented? :documented
 
+  # Initialize a new instance
+  #
   def initialize
     @sections = {}
+    self.documented = true
   end
 
+  # Extract resource name from #output_path, if not customized
+  #
+  # @return [String]
+  #
   def resources_constant_name
-    # Extract resource name from output path, if not customized
-    @resources_constant_name ||= File.basename_without_ext output_path
+    @resources_constant_name ||= basename_without_ext output_path
   end
 
   def add_section name, items, options = []
