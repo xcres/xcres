@@ -42,8 +42,8 @@ class XCResources::FileBuilder
       write_file tmp_file_path, contents
 
       # Diff current version and temporary file
-      diff = `/usr/bin/diff #{tmp_file_path} #{file_path}`
-      if diff.length == 0
+      `/usr/bin/diff -q #{tmp_file_path} #{file_path}`
+      if $?
         logger.success "Existing file is up-to-date. Don't touch."
         return
       end
