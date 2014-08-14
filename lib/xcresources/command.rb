@@ -1,5 +1,6 @@
 require 'xcodeproj'
 require 'clamp'
+require 'xcresources/helper/file_helper'
 require 'xcresources/builder/resources_builder'
 require 'xcresources/logger'
 require 'xcresources/analyzer/aggregate_analyzer'
@@ -7,6 +8,8 @@ require 'xcresources/analyzer/resources_analyzer'
 require 'xcresources/analyzer/strings_analyzer'
 
 class XCResources::Command < Clamp::Command
+
+  include XCResources::FileHelper
 
   option ['--silent'], :flag, 'Show nothing'
   option ['--version'], :flag, 'Show the version'
@@ -85,7 +88,7 @@ class XCResources::Command < Clamp::Command
   def derive_resources_constant_name
     # Fall back to `basename OUTPUT_PATH` or 'R' if both are not given
     if output_path != nil && !File.directory?(output_path)
-      File.basename_without_ext(output_path)
+      basename_without_ext(output_path)
     else
       'R'
     end
