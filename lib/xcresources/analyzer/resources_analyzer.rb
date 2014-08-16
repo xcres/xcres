@@ -146,7 +146,8 @@ module XCResources
     #
     # @param  [Hash] options
     #         valid options are:
-    #         * :use_basename? => see #key_from_path
+    #         * [Bool] :use_basename?
+    #           if set, it will only use the basename of the path for the key
     #
     # @return [Hash{String => Pathname}]
     #
@@ -155,9 +156,10 @@ module XCResources
 
       # Transform image file paths to keys
       keys_to_paths = {}
-      for file_path in file_paths
-        key = key_from_path(file_path, options[:use_basename?])
-        keys_to_paths[key] = file_path
+      for path in file_paths
+        path = options[:use_basename?] ? File.basename(path) : path.to_s
+        key = key_from_path(path)
+        keys_to_paths[key] = path
       end
 
       keys_to_paths
@@ -168,14 +170,10 @@ module XCResources
     # @param  [String] path
     #         the path to the resource
     #
-    # @param  [Bool] use_basename
-    #         if set, it will only use the basename of the path for the key
-    #
     # @return [String]
     #
-    def key_from_path path, use_basename=false
-      # Use the basename only if the option is enabled
-      key = use_basename ? File.basename(path) : path.to_s
+    def key_from_path path
+      key = path.to_s
 
       # Get rid of the file extension
       key = key.sub /#{File.extname(path)}$/, ''

@@ -161,33 +161,36 @@ describe 'XCResources::ResourcesAnalyzer' do
   end
 
   describe '#build_section_data' do
+    before do
+      @file_paths = [Pathname('a/b')]
+    end
+
     it 'returns an empty hash if no file paths given' do
       @analyzer.build_section_data([]).should.be.eql?({})
     end
 
-    it 'pass option value use_basename? as second argument to #key_from_path' do
-      file_paths = [Pathname('a/b')]
-      @analyzer.expects(:key_from_path).with(file_paths.first, true).returns('b')
-      @analyzer.build_section_data(file_paths, use_basename?: true).should.be.eql?({ 'b' => file_paths.first })
+    it 'returns a hash with the basename if option use_basename? is enabled' do
+      @analyzer.expects(:key_from_path).with('b').returns('b')
+      @analyzer.build_section_data(@file_paths, use_basename?: true)
+        .should.be.eql?({ 'b' => 'b' })
     end
 
-    it 'returns a hash from keys and paths' do
-      file_paths = [Pathname('a/b')]
-      @analyzer.build_section_data(file_paths).should.be.eql?({ 'a/b' => file_paths.first })
+    it 'returns a hash with relative paths if option use_basename? is disabled' do
+      @analyzer.expects(:key_from_path).with('a/b').returns('a/b')
+      @analyzer.build_section_data(@file_paths, use_basename?: false)
+        .should.be.eql?({ 'a/b' => 'a/b' })
+    end
+
+    it 'returns a hash with relative paths if option use_basename? is not given' do
+      @analyzer.expects(:key_from_path).with('a/b').returns('a/b')
+      @analyzer.build_section_data(@file_paths)
+        .should.be.eql?({ 'a/b' => 'a/b' })
     end
   end
 
   describe '#key_from_path' do
-    describe 'argument use_basename is given as true' do
-      it 'should use basename' do
-        @analyzer.key_from_path('b/a', true).should.be.eql?('a')
-      end
-    end
-
-    describe 'argument use_basename is not given' do
-      it 'should keep the path' do
-        @analyzer.key_from_path('b/a').should.be.eql?('b/a')
-      end
+    it 'should keep the path' do
+      @analyzer.key_from_path('b/a').should.be.eql?('b/a')
     end
 
     it 'should cut the file extension' do
