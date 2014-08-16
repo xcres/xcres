@@ -8,7 +8,7 @@ describe 'XCResources::StringsAnalyzer' do
 
   before do
     @project = mock('Project')
-    @project.stubs(files: [], targets: [])
+    @project.stubs(files: [], targets: [], path: Pathname('.'))
 
     @analyzer = subject.new(@project)
     @analyzer.logger = stub('Logger', :log)
@@ -41,9 +41,15 @@ describe 'XCResources::StringsAnalyzer' do
     end
 
     it 'should return a new section if there are strings files' do
-      strings_file_ref = stub('FileRef', name: 'en', path: 'Localizable.strings', real_path: 'en.lproj/Localizable.strings')
+      strings_file_ref = stub('FileRef', {
+        name:      'en',
+        path:      'Localizable.strings',
+        real_path: Pathname(File.expand_path('./en.lproj/Localizable.strings'))
+      })
       @analyzer.stubs(:strings_file_refs).returns([strings_file_ref])
-      @analyzer.stubs(:keys_by_file).with(strings_file_ref.real_path).returns({ 'greeting' => { value: 'greeting' }})
+      @analyzer.stubs(:keys_by_file)
+        .with(Pathname('en.lproj/Localizable.strings'))
+        .returns({ 'greeting' => { value: 'greeting' }})
       @analyzer.build_section.should.be.eql?(XCResources::Section.new 'Strings', { 'greeting' => { value: 'greeting' }})
     end
   end

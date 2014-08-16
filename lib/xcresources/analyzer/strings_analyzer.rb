@@ -47,12 +47,12 @@ module XCResources
       # Apply ignore list
       file_paths = filter_exclusions(selected_file_refs.map(&:path))
       filtered_file_refs = selected_file_refs.select { |file_ref| file_paths.include? file_ref.path }
+      rel_file_paths = filtered_file_refs.map { |p| p.real_path.relative_path_from(Pathname.pwd) }
 
-      log 'Non-ignored .strings files: %s', file_paths.map(&:to_s)
+      log 'Non-ignored .strings files: %s', rel_file_paths.map(&:to_s)
 
       keys_by_file = {}
-      for file_ref in filtered_file_refs
-        path = file_ref.real_path #.relative_path_from(project.path)
+      for path in rel_file_paths
         keys_by_file[path] = keys_by_file(path)
       end
       items = keys_by_file.values.reduce({}, :merge)
