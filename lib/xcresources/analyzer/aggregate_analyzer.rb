@@ -21,7 +21,7 @@ module XCResources
     #         the built sections
     #
     def analyze
-      @sections = analyzers.map(&:analyze).flatten
+      @sections = analyzers.map(&:analyze).flatten.compact
     end
 
     # Instantiate and add an analyzer by its class.
