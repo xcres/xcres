@@ -11,6 +11,7 @@ module XCResources::XCAssets
         :filename,
         :scale,
         :orientation,
+        :size,
         :idiom,
         :subtype,
         :extent,
@@ -28,6 +29,10 @@ module XCResources::XCAssets
     # @return [Symbol]
     #         the orientation, e.g. 'portrait'
     attr_accessor :orientation
+
+    # @return [String]
+    #         the size, e.g. '29x29', '40x40'
+    attr_accessor :size
 
     # @return [Symbol]
     #         the idiom, e.g. 'iphone'
