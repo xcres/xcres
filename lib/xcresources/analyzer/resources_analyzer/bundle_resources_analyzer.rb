@@ -59,7 +59,7 @@ module XCResources
 
         section_name = basename_without_ext(bundle_file_ref.path)
 
-        Section.new section_name, section_data
+        XCResources::Section.new(section_name, section_data)
       end
 
     end
