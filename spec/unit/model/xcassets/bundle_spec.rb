@@ -1,17 +1,10 @@
-require File.expand_path('../../../spec_helper', __FILE__)
-require 'xcresources/model/xcassets/bundle'
+require File.expand_path('../spec_helper', __FILE__)
 
 module XCAssetsSpec
-  include XCResources::XCAssets
-
   describe 'XCResources::XCAssets::Bundle' do
 
     def subject
       Bundle
-    end
-
-    def xcassets_fixture_path
-      fixture_path + 'Example/Example/Images.xcassets'
     end
 
     describe "::open" do
