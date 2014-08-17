@@ -65,6 +65,21 @@ module XCResources::XCAssets
       self.new.read(hash)
     end
 
+    # Initialize a new ResourceImage
+    #
+    # @param  [Hash]
+    #         the initial attribute values
+    #
+    def initialize(attributes={})
+      self.scale = attributes.delete('scale') unless attributes['scale'].nil?
+
+      KNOWN_KEYS.each do |key|
+        self.send "#{key}=".to_sym, attributes.delete(key)
+      end
+
+      self.attributes = attributes
+    end
+
     # Read from hash
     #
     # @param  [Hash]
