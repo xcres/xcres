@@ -4,7 +4,7 @@ require 'xcresources/helper/file_helper'
 require 'xcresources/builder/resources_builder'
 require 'xcresources/logger'
 require 'xcresources/analyzer/aggregate_analyzer'
-require 'xcresources/analyzer/resources_analyzer'
+require 'xcresources/analyzer/resources_aggregate_analyzer'
 require 'xcresources/analyzer/strings_analyzer'
 
 class XCResources::Command < Clamp::Command
@@ -62,7 +62,7 @@ class XCResources::Command < Clamp::Command
       analyzer = XCResources::AggregateAnalyzer.new(project)
       analyzer.exclude_file_patterns = exclude_file_patterns
       analyzer.logger = logger
-      analyzer.add_with_class(XCResources::ResourcesAnalyzer)
+      analyzer.add_with_class(XCResources::ResourcesAggregateAnalyzer)
       analyzer.add_with_class(XCResources::StringsAnalyzer, default_language: default_language)
       sections = analyzer.analyze
 
