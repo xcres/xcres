@@ -100,6 +100,13 @@ module XCResources::XCAssets
       hash
     end
 
+    def ==(other)
+      return false unless other.respond_to?(:to_hash)
+      self.to_hash == other.to_hash
+    end
+
+    alias eql? ==
+
   end
 
 end
