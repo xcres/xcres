@@ -91,7 +91,9 @@ module XCResources::XCAssets
       self.scale = hash.delete('scale').sub(/x$/, '').to_i unless hash['scale'].nil?
 
       KNOWN_KEYS.each do |key|
-        self.send "#{key}=".to_sym, hash.delete(key.to_s.dasherize)
+        value = hash.delete(key.to_s.dasherize)
+        next if value.nil?
+        self.send "#{key}=".to_sym, value
       end
 
       self.attributes = hash
