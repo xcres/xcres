@@ -10,7 +10,7 @@ module XCResources
     #         an array of +Analyzer+.
     attr_accessor :analyzers
 
-    def initialize(project=nil)
+    def initialize(project=nil, options={})
       super
       self.analyzers = []
     end
