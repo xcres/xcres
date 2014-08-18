@@ -1,6 +1,7 @@
 require 'xcresources/analyzer/aggregate_analyzer'
 require 'xcresources/analyzer/resources_analyzer/bundle_resources_analyzer'
 require 'xcresources/analyzer/resources_analyzer/loose_resources_analyzer'
+require 'xcresources/analyzer/resources_analyzer/xcassets_analyzer'
 
 module XCResources
 
@@ -17,6 +18,7 @@ module XCResources
       self.analyzers = []
       add_with_class ResourcesAnalyzer::BundleResourcesAnalyzer
       add_with_class ResourcesAnalyzer::LooseResourcesAnalyzer
+      add_with_class ResourcesAnalyzer::XCAssetsAnalyzer
       super
     end
 
