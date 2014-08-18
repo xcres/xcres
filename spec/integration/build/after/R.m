@@ -6,6 +6,11 @@ const struct R R = {
     .Images = {
         .doge = @"doge.jpeg",
     },
+    .ImagesAssets = {
+        .app = @"AppIcon",
+        .doge = @"Doge",
+        .launch = @"LaunchImage",
+    },
     .Strings = {
         .bar = @"bar",
         .enExclusive = @"en_exclusive",

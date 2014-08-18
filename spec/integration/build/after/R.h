@@ -9,6 +9,14 @@ const struct R {
         /// doge.jpeg
         __unsafe_unretained NSString *doge;
     } Images;
+    struct ImagesAssets {
+        /// AppIcon
+        __unsafe_unretained NSString *app;
+        /// Doge
+        __unsafe_unretained NSString *doge;
+        /// LaunchImage
+        __unsafe_unretained NSString *launch;
+    } ImagesAssets;
     struct Strings {
         /// 
         __unsafe_unretained NSString *bar;
