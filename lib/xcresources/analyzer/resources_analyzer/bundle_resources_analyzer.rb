@@ -34,7 +34,7 @@ module XCResources
       # @return [Array<PBXFileReference>]
       #
       def find_bundle_file_refs
-        project.files.select { |file| File.extname(file.path) == '.bundle' }
+        find_file_refs_by_extname '.bundle'
       end
 
       # Build a section for a resources bundle

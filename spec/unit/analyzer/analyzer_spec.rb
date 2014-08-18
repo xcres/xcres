@@ -36,4 +36,18 @@ describe 'XCResources::Analyzer' do
     end
   end
 
+  describe '#find_files_by_extname' do
+    before do
+      @project = stub('Project')
+      @analyzer.stubs(:project).returns(@project)
+    end
+
+    it 'should return an empty list for an empty project' do
+      @file_ref_bundle = stub('FileRef', path: 'the-whole.bundle')
+      @file_ref_jpg    = stub('FileRef', path: 'awesome.jpg')
+      @project.stubs(:files).returns([@file_ref_bundle, @file_ref_jpg])
+      @analyzer.find_file_refs_by_extname('.bundle').should.be.eql?([@file_ref_bundle])
+    end
+  end
+
 end

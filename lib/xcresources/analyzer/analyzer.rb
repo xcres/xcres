@@ -64,5 +64,17 @@ module XCResources
       end
     end
 
+    # Discover all references to resources bundles in project
+    #
+    # @param  [String] extname
+    #         the extname, which contains a leading dot
+    #         e.g.: '.bundle', '.strings'
+    #
+    # @return [Array<PBXFileReference>]
+    #
+    def find_file_refs_by_extname(extname)
+      project.files.select { |file| File.extname(file.path) == extname }
+    end
+
   end
 end

@@ -65,7 +65,7 @@ module XCResources
     # @return [Array<PBXFileReference>]
     #
     def strings_file_refs
-      @strings_file_refs ||= project.files.select { |file| File.fnmatch '*.strings', file.path }
+      @strings_file_refs ||= find_file_refs_by_extname '.strings'
     end
 
     # Select strings files by language
