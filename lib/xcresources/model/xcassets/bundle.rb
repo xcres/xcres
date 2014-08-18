@@ -34,6 +34,7 @@ module XCResources::XCAssets
     #
     def initialize(path = nil)
       @path = Pathname(path) unless path.nil?
+      @resources = []
     end
 
     # Read the resources from disk

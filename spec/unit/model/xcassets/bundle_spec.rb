@@ -28,6 +28,10 @@ module XCAssetsSpec
           subject.new(Pathname('.')).path.should.be.eql?(Pathname('.'))
         end
       end
+
+      it 'should initialize attribute resources with an empty array' do
+        subject.new.resources.should.be.eql?([])
+      end
     end
 
     describe "#read" do
