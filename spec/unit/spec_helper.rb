@@ -7,3 +7,7 @@ require 'pathname'
 def fixture_path
   @fixture_path ||= Pathname(File.expand_path('../../fixtures', __FILE__))
 end
+
+def xcodeproj
+  Xcodeproj::Project.open(fixture_path + 'Example/Example.xcodeproj')
+end

@@ -7,7 +7,8 @@ describe 'XCResources::Analyzer' do
   end
 
   before do
-    @analyzer = subject.new
+    @project = xcodeproj
+    @analyzer = subject.new(@project)
   end
 
   describe '#filter_exclusions' do
@@ -37,16 +38,17 @@ describe 'XCResources::Analyzer' do
   end
 
   describe '#find_files_by_extname' do
-    before do
-      @project = stub('Project')
-      @analyzer.stubs(:project).returns(@project)
+    it 'should return an empty list for an empty project' do
+      @analyzer.project.stubs(:files).returns([])
+      @analyzer.find_file_refs_by_extname('.bundle').should.be.eql?([])
     end
 
-    it 'should return an empty list for an empty project' do
-      @file_ref_bundle = stub('FileRef', path: 'the-whole.bundle')
-      @file_ref_jpg    = stub('FileRef', path: 'awesome.jpg')
-      @project.stubs(:files).returns([@file_ref_bundle, @file_ref_jpg])
-      @analyzer.find_file_refs_by_extname('.bundle').should.be.eql?([@file_ref_bundle])
+    it 'should return matching files' do
+      @bundle = stub('FileRef', path: 'the-whole.bundle')
+      @img    = stub('FileRef', path: 'awesome.jpg')
+      @project.stubs(:files).returns([@bundle, @img])
+      @analyzer.find_file_refs_by_extname('.bundle').should.be.eql?([@bundle])
+    end
     end
   end
 
