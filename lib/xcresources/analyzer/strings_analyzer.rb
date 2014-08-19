@@ -117,17 +117,6 @@ module XCResources
       end
     end
 
-    # Find all application targets in the project
-    #
-    # @return [Array<PBXNativeTarget>]
-    #
-    def application_targets
-      project.targets.select do |target|
-        target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget) \
-        && target.product_type == Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application]
-      end
-    end
-
     # Discover Info.plist files by build settings of all application targets
     #
     # @return [Set<Pathname>]
