@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		711976B119A3A1BE005748B4 /* doge.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 711976AF19A3A1BE005748B4 /* doge.jpeg */; };
 		71239DA81912BFF70058657F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DA71912BFF70058657F /* Foundation.framework */; };
 		71239DAA1912BFF70058657F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DA91912BFF70058657F /* CoreGraphics.framework */; };
 		71239DAC1912BFF70058657F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DAB1912BFF70058657F /* UIKit.framework */; };
@@ -31,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		711976AF19A3A1BE005748B4 /* doge.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = doge.jpeg; sourceTree = "<group>"; };
+		711976B019A3A1BE005748B4 /* nyanCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nyanCat.png; sourceTree = "<group>"; };
 		71239DA41912BFF70058657F /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71239DA71912BFF70058657F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		71239DA91912BFF70058657F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -72,6 +75,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		711976AE19A3A1BD005748B4 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				711976AF19A3A1BE005748B4 /* doge.jpeg */,
+				711976B019A3A1BE005748B4 /* nyanCat.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		71239D9B1912BFF70058657F = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +119,7 @@
 				71239DB61912BFF80058657F /* AppDelegate.h */,
 				71239DB71912BFF80058657F /* AppDelegate.m */,
 				71239DB91912BFF80058657F /* Images.xcassets */,
+				711976AE19A3A1BD005748B4 /* Images */,
 				71239DAE1912BFF70058657F /* Supporting Files */,
 			);
 			path = Example;
@@ -200,6 +213,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				711976B119A3A1BE005748B4 /* doge.jpeg in Resources */,
 				71239DB21912BFF80058657F /* InfoPlist.strings in Resources */,
 				71239DBA1912BFF80058657F /* Images.xcassets in Resources */,
 				71239DDC1912C07E0058657F /* Localizable.strings in Resources */,
