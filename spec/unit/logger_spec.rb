@@ -73,8 +73,10 @@ describe 'XCResources::LoggerSpec' do
       out.should.be.eql? "\e[31m%\e[0m"
     end
 
-    it 'fails with unescaped percents' do
-      -> { @logger.inform_colored '%', :red }.should.raise?(ArgumentError)
+    it 'doesn\'t fail because of unescaped percents' do
+      -> {
+        @logger.inform_colored '%s', :red, '%'
+      }.should.not.raise?(ArgumentError)
     end
   end
 

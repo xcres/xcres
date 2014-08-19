@@ -64,7 +64,7 @@ class XCResources::Logger
          .reject(&:empty?)
       message = parts.map do |part|
         if part[0] == '%' && part[1] != '%'
-          (part % format_args.shift).bold
+          (part % format_args.shift).bold.gsub('%', '%%')
         else
           part
         end
