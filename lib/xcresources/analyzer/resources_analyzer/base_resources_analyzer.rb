@@ -20,6 +20,11 @@ module XCResources
       #         the file paths relative to the given dir
       #
       def find_files_in_dir dir
+        unless dir.exist?
+          warn "Can't find files in dir %s as it doesn't exist!",
+            dir.relative_path_from(project.path + '..').to_s
+          return []
+        end
         Dir.chdir dir do
           Dir['**/*'].map { |path| Pathname(path) }
         end
