@@ -64,7 +64,8 @@ module XCResources
       end
     end
 
-    # Discover all references to resources bundles in project
+    # Discover all references to files with a specific extension in project,
+    # which belong to a build phase of an application target.
     #
     # @param  [String] extname
     #         the extname, which contains a leading dot
@@ -73,7 +74,29 @@ module XCResources
     # @return [Array<PBXFileReference>]
     #
     def find_file_refs_by_extname(extname)
-      project.files.select { |file| File.extname(file.path) == extname }
+      project.files.select do |file_ref|
+        File.extname(file_ref.path) == extname \
+        && is_file_ref_included_in_any_build_phase?(file_ref)
+      end
+    end
+
+    # Checks if a file ref is included in any resources build phase of any
+    # of the application targets of the #project.
+    #
+    # @param  [PBXFileReference] file_ref
+    #         the file to search for
+    #
+    # @return [Bool]
+    #
+    def is_file_ref_included_in_any_build_phase?(file_ref)
+      puts "look for: #{file_ref.inspect}"
+      application_targets.any? do |target|
+        target.build_phases.any? do |phase|
+          phase.files.any? do |build_file|
+            build_file.file_ref == file_ref
+          end
+        end
+      end
     end
 
     # Find all application targets in the project
