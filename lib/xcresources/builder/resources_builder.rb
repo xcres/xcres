@@ -46,13 +46,13 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
 
       # Skip invalid key names
       if transformed_key.length == 0
-        logger.warn "Skip invalid key: '%s'. (Was transformed to empty text", key
+        logger.warn "Skip invalid key: '%s'. (Was transformed to empty text)", key
         next
       end
 
       # Skip compiler keywords
-      if COMPILER_KEYWORDS.include? key
-        logger.warn "Skip invalid key: '%@'. (Was transformed to keyword '%s')", key, transformedKey
+      if COMPILER_KEYWORDS.include? transformed_key
+        logger.warn "Skip invalid key: '%@'. (Was transformed to keyword '%s')", key, transformed_key
         next
       end
 
