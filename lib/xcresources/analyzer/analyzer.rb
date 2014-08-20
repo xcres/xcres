@@ -89,21 +89,23 @@ module XCResources
     # @return [Bool]
     #
     def is_file_ref_included_in_application_target?(file_ref)
-      application_targets.any? do |target|
-        target.build_phases.any? do |phase|
-          phase.files.any? do |build_file|
-            if build_file.file_ref == file_ref
-              true
-            else
-              if build_file.file_ref.is_a?(Xcodeproj::Project::Object::PBXGroup)
-                build_file.file_ref.recursive_children.include?(file_ref)
-              else
-                false
-              end
-            end
+      resources_files.include?(file_ref)
+    end
+
+    # Find files in resources build phases of application targets
+    #
+    # @return [Array<PBXFileReference>]
+    #
+    def resources_files
+      application_targets.map(&:resources_build_phase).map do |phase|
+        phase.files.map do |build_file|
+          if build_file.file_ref.is_a?(Xcodeproj::Project::Object::PBXGroup)
+            build_file.file_ref.recursive_children
+          else
+            [build_file.file_ref]
           end
         end
-      end
+      end.flatten.compact
     end
 
     # Find all application targets in the project

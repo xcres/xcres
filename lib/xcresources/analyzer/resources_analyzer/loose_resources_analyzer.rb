@@ -18,7 +18,7 @@ module XCResources
       # @return [Section?]
       #
       def build_section_for_loose_images
-        image_files = find_image_files(project.files.map(&:path))
+        image_files = find_image_files(resources_files.map(&:path))
 
         log "Found #%s image files in project.", image_files.count
 
