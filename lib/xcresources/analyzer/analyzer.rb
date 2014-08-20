@@ -65,7 +65,7 @@ module XCResources
     end
 
     # Discover all references to files with a specific extension in project,
-    # which belong to a build phase of an application target.
+    # which belong to a resources build phase of an application target.
     #
     # @param  [String] extname
     #         the extname, which contains a leading dot
@@ -76,7 +76,7 @@ module XCResources
     def find_file_refs_by_extname(extname)
       project.files.select do |file_ref|
         File.extname(file_ref.path) == extname \
-        && is_file_ref_included_in_any_build_phase?(file_ref)
+        && is_file_ref_included_in_application_target?(file_ref)
       end
     end
 
@@ -88,7 +88,7 @@ module XCResources
     #
     # @return [Bool]
     #
-    def is_file_ref_included_in_any_build_phase?(file_ref)
+    def is_file_ref_included_in_application_target?(file_ref)
       application_targets.any? do |target|
         target.build_phases.any? do |phase|
           phase.files.any? do |build_file|

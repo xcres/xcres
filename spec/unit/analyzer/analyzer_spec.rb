@@ -48,7 +48,7 @@ describe 'XCResources::Analyzer' do
       @img    = stub('FileRef', path: 'awesome.jpg')
       @project.stubs(:files).returns([@bundle, @img])
 
-      @analyzer.stubs(:is_file_ref_included_in_any_build_phase?)
+      @analyzer.stubs(:is_file_ref_included_in_application_target?)
         .returns(true)
       @analyzer.find_file_refs_by_extname('.bundle').should.be.eql?([@bundle])
     end
@@ -58,9 +58,9 @@ describe 'XCResources::Analyzer' do
       @cat_img = stub('FileRef', path: 'nyancat.jpg')
       @project.stubs(:files).returns([@dog_img, @cat_img])
 
-      @analyzer.stubs(:is_file_ref_included_in_any_build_phase?)
+      @analyzer.stubs(:is_file_ref_included_in_application_target?)
         .with(@dog_img).returns(true)
-      @analyzer.stubs(:is_file_ref_included_in_any_build_phase?)
+      @analyzer.stubs(:is_file_ref_included_in_application_target?)
         .with(@cat_img).returns(false)
       @analyzer.find_file_refs_by_extname('.jpg').should.be.eql?([@dog_img])
     end
@@ -75,18 +75,18 @@ describe 'XCResources::Analyzer' do
     end
   end
 
-  describe '#is_file_ref_included_in_any_build_phase?' do
+  describe '#is_file_ref_included_in_application_target?' do
     it 'should return true for included files' do
       file = @project.files.find { |f| f.path.to_s == 'doge.jpeg' }
       file.should.be.an.instance_of?(Xcodeproj::Project::Object::PBXFileReference)
-      @analyzer.is_file_ref_included_in_any_build_phase?(file)
+      @analyzer.is_file_ref_included_in_application_target?(file)
         .should.be.true?
     end
 
     it 'should return false for non-included files' do
       file = @project.files.find { |f| f.path.to_s == 'nyanCat.png' }
       file.should.be.an.instance_of?(Xcodeproj::Project::Object::PBXFileReference)
-      @analyzer.is_file_ref_included_in_any_build_phase?(file)
+      @analyzer.is_file_ref_included_in_application_target?(file)
         .should.be.false?
     end
   end
