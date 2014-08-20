@@ -79,4 +79,19 @@ describe 'XCResources::StringsAnalyzer' do
     end
   end
 
+  describe "#find_strings_file_refs" do
+    before do
+      @project = xcodeproj
+      @analyzer = subject.new(@project)
+    end
+
+    it 'should return the strings files of the fixture project' do
+      strings_files = @analyzer.find_file_refs_by_extname('.strings')
+      strings_files.count.should.be.eql?(3)
+      strings_files[0].path.should.be.eql?('en.lproj/InfoPlist.strings')
+      strings_files[1].path.should.be.eql?('en.lproj/Localizable.strings')
+      strings_files[2].path.should.be.eql?('de.lproj/Localizable.strings')
+    end
+  end
+
 end

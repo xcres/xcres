@@ -89,11 +89,18 @@ module XCResources
     # @return [Bool]
     #
     def is_file_ref_included_in_any_build_phase?(file_ref)
-      puts "look for: #{file_ref.inspect}"
       application_targets.any? do |target|
         target.build_phases.any? do |phase|
           phase.files.any? do |build_file|
-            build_file.file_ref == file_ref
+            if build_file.file_ref == file_ref
+              true
+            else
+              if build_file.file_ref.is_a?(Xcodeproj::Project::Object::PBXGroup)
+                build_file.file_ref.recursive_children.include?(file_ref)
+              else
+                false
+              end
+            end
           end
         end
       end
