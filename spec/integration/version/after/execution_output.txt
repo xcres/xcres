@@ -1,2 +1,3 @@
- xcresources --version --verbose --no-ansi 2>&1
+ xcresources version --verbose --no-ansi 2>&1
+Ⓥ Verbose mode is enabled.
 0.2.0
