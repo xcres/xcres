@@ -90,7 +90,7 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
 
         # Ignore components which are already contained in the key, if enabled
         if options[:shorten_keys]
-          next unless key.downcase.scan(component).blank?
+          next unless result.downcase.scan(component).blank?
         end
 
         # Clean component from non alphanumeric characters
