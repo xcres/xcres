@@ -9,4 +9,4 @@ end
 
 require 'xcresources'
 
-XCResources::Command.run
+XCResources::MainCommand.run

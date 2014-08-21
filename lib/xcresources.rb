@@ -4,5 +4,5 @@ require 'active_support/core_ext/array/conversions'
 
 module XCResources
   require 'xcresources/version'
-  require 'xcresources/command'
+  require 'xcresources/command/main_command'
 end

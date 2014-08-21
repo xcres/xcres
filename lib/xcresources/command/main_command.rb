@@ -7,7 +7,7 @@ require 'xcresources/analyzer/aggregate_analyzer'
 require 'xcresources/analyzer/resources_aggregate_analyzer'
 require 'xcresources/analyzer/strings_analyzer'
 
-class XCResources::Command < Clamp::Command
+class XCResources::MainCommand < Clamp::Command
 
   include XCResources::FileHelper
 
