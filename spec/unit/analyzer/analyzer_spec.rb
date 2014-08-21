@@ -12,17 +12,39 @@ describe 'XCResources::Analyzer' do
   end
 
   describe '#new_section' do
-    describe 'with options' do
-      it 'should return a new section' do
-        @analyzer.new_section('Name', { a: 'a' }, the_answer: 42)
-          .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42)
+    describe 'without configured options' do
+      describe 'without options given as argument' do
+        it 'should return a new section' do
+          @analyzer.new_section('Name', { a: 'a' })
+            .should.be.eql? XCResources::Section.new('Name', { a: 'a' })
+        end
+      end
+
+      describe 'with options given as argument' do
+        it 'should return a new section' do
+          @analyzer.new_section('Name', { a: 'a' }, the_answer: 42)
+            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42)
+        end
       end
     end
 
-    describe 'without options' do
-      it 'should return a new section' do
-        @analyzer.new_section('Name', { a: 'a' })
-          .should.be.eql? XCResources::Section.new('Name', { a: 'a' })
+    describe 'with configured options' do
+      before do
+        @analyzer.options = { the_answer: 42, the_question: '6x7=?' }
+      end
+
+      describe 'without options given as argument' do
+        it 'should return a new section' do
+          @analyzer.new_section('Name', { a: 'a' })
+            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42,  the_question: '6x7=?')
+        end
+      end
+
+      describe 'with options given as argument' do
+        it 'should return a new section' do
+          @analyzer.new_section('Name', { a: 'a' }, the_answer: 21)
+            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 21, the_question: '6x7=?')
+        end
       end
     end
   end

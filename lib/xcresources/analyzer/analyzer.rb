@@ -17,6 +17,10 @@ module XCResources
     #         the built sections
     attr_reader :sections
 
+    # @return [Hash]
+    #         the options passed to the sections
+    attr_accessor :options
+
     # @return [Array<String>]
     #         the exclude file patterns
     attr_accessor :exclude_file_patterns
@@ -39,6 +43,7 @@ module XCResources
       @project = project
       @sections = []
       @exclude_file_patterns = []
+      @options = options
     end
 
     # Analyze the project
@@ -64,7 +69,7 @@ module XCResources
     # @return [XCResources::Section]
     #
     def new_section(name, data, options={})
-      XCResources::Section.new(name, data, options)
+      XCResources::Section.new(name, data, self.options.merge(options))
     end
 
     # Apply the configured exclude file patterns to a list of files
