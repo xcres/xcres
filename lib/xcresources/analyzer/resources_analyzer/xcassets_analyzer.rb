@@ -53,7 +53,7 @@ module XCResources
 
         section_name = "#{basename_without_ext(bundle.path)}Assets"
 
-        XCResources::Section.new section_name, section_data
+        new_section(section_name, section_data)
       end
 
     end

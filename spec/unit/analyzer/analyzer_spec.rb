@@ -11,6 +11,22 @@ describe 'XCResources::Analyzer' do
     @analyzer = subject.new(@project)
   end
 
+  describe '#new_section' do
+    describe 'with options' do
+      it 'should return a new section' do
+        @analyzer.new_section('Name', { a: 'a' }, the_answer: 42)
+          .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42)
+      end
+    end
+
+    describe 'without options' do
+      it 'should return a new section' do
+        @analyzer.new_section('Name', { a: 'a' })
+          .should.be.eql? XCResources::Section.new('Name', { a: 'a' })
+      end
+    end
+  end
+
   describe '#filter_exclusions' do
     describe 'single asterisk' do
       it 'rejects file paths on first hierarchy level' do

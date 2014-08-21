@@ -57,7 +57,7 @@ module XCResources
       end
       items = keys_by_file.values.reduce({}, :merge)
 
-      return Section.new('Strings', items)
+      new_section('Strings', items)
     end
 
     # Discover all references to .strings files in project (e.g. Localizable.strings)

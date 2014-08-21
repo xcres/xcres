@@ -50,6 +50,23 @@ module XCResources
       # Empty stub implementation
     end
 
+    # Create a new +Section+.
+    #
+    # @param  [String] name
+    #         see Section#name
+    #
+    # @param  [Hash] items
+    #         see Section#items
+    #
+    # @param  [Hash] options
+    #         see Section#options
+    #
+    # @return [XCResources::Section]
+    #
+    def new_section(name, data, options={})
+      XCResources::Section.new(name, data, options)
+    end
+
     # Apply the configured exclude file patterns to a list of files
     #
     # @param [Array<Pathname>] file_paths

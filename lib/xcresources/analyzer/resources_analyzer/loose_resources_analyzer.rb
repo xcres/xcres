@@ -26,7 +26,7 @@ module XCResources
 
         data = build_images_section_data(image_files, use_basename?: true)
 
-        XCResources::Section.new('Images', data)
+        new_section('Images', data)
       end
 
     end
