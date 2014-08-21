@@ -1,9 +1,9 @@
 const struct R {
     struct Icons {
-        /// tabbar_list.png
-        __unsafe_unretained NSString *tabbarList;
-        /// tabbar_map.png
-        __unsafe_unretained NSString *tabbarMap;
+        /// tab_bar/tabbar_list.png
+        __unsafe_unretained NSString *tabBarList;
+        /// tab_bar/tabbar_map.png
+        __unsafe_unretained NSString *tabBarMap;
     } Icons;
     struct Images {
         /// doge.jpeg

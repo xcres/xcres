@@ -62,7 +62,7 @@ class XCResources::Command < Clamp::Command
       analyzer = XCResources::AggregateAnalyzer.new(project)
       analyzer.exclude_file_patterns = exclude_file_patterns
       analyzer.logger = logger
-      analyzer.add_with_class(XCResources::ResourcesAggregateAnalyzer)
+      analyzer.add_with_class(XCResources::ResourcesAggregateAnalyzer, shorten_keys: true)
       analyzer.add_with_class(XCResources::StringsAnalyzer, default_language: default_language)
       sections = analyzer.analyze
 

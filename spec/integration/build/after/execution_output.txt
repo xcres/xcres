@@ -3,7 +3,7 @@
 ⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
 ✓ Use Example/Example.xcodeproj as XCODEPROJ.
 Ⓥ Found #1 resource bundles in project.
-Ⓥ Found bundle Icons.bundle with #4 image files of #4 total files.
+Ⓥ Found bundle Icons.bundle with #4 image files of #5 total files.
 Ⓥ Add section for Icons with 2 elements
 Ⓥ Found #1 image files in project.
 Ⓥ Found #1 xcassets bundles in project.

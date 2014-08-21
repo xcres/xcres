@@ -1,7 +1,7 @@
 const struct R R = {
     .Icons = {
-        .tabbarList = @"tabbar_list.png",
-        .tabbarMap = @"tabbar_map.png",
+        .tabBarList = @"tab_bar/tabbar_list.png",
+        .tabBarMap = @"tab_bar/tabbar_map.png",
     },
     .Images = {
         .doge = @"doge.jpeg",
