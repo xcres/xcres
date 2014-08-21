@@ -38,18 +38,23 @@ describe 'XCResources::AggregateAnalyzer' do
       @analyzer.logger = mock()
       @analyzer.exclude_file_patterns = ['foo', 'bar']
 
-      @analyzer.add_with_class(XCResources::Analyzer, {})
-      new_analyzer = @analyzer.analyzers.last
+      new_analyzer = @analyzer.add_with_class(XCResources::Analyzer, {})
+      new_analyzer.should.be.an.instance_of?(XCResources::Analyzer)
+      new_analyzer.should.be.equal?(@analyzer.analyzers.last)
       new_analyzer.project.should.be.equal?(@analyzer.project)
       new_analyzer.logger.should.be.equal?(@analyzer.logger)
       new_analyzer.exclude_file_patterns.should.be.equal?(@analyzer.exclude_file_patterns)
     end
 
     it 'should pass the options to the initializer' do
-      analyzer_class = mock()
-      options = mock()
-      analyzer_class.expects(:new).with(nil, options).returns(XCResources::Analyzer.new)
-      @analyzer.add_with_class(analyzer_class, options)
+      result = @analyzer.add_with_class(XCResources::Analyzer, the_answer: 42)
+      result.options.should.be.eql?({ the_answer: 42 })
+    end
+
+    it 'should pass the merged options to the initializer' do
+      @analyzer.options = { the_question: '6x7=?' }
+      result = @analyzer.add_with_class(XCResources::Analyzer,the_answer: 42)
+      result.options.should.be.eql?({ the_question: '6x7=?', the_answer: 42 })
     end
   end
 
