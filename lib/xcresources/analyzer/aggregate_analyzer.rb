@@ -33,11 +33,14 @@ module XCResources
     # @param [Hash] options
     #        options which will be passed on initialization
     #
+    # @return [Analyzer]
+    #
     def add_with_class(analyzer_class, options={})
       analyzer = analyzer_class.new(project, options)
       analyzer.exclude_file_patterns = exclude_file_patterns
       analyzer.logger = logger
       self.analyzers << analyzer
+      analyzer
     end
 
   end
