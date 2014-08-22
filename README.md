@@ -4,17 +4,17 @@
 
 `xcresources` searches your Xcode project for resources and generates an index
 as struct constants. So you will never have to reference a resource, without
-knowing already at compile if it exists or not.
+knowing already at compile time if it exists or not.
 
 It includes **loose images**, **.bundles**, **asset catalogs** (.xcasset)
 and even **.strings** in the index.
 
-It gives you **code autocompletion** for resources, without the need of an
-Xcode plugin and even for string keys.
+It gives you **code autocompletion** for resources and localized string keys,
+without the need of an Xcode plugin.
 
 Especially if your app is a bit more complex, this will greatly improve your
 workflow. It ensures a better quality and gives you more safety.
-You will see directly when a resource is missing, because you renamed it,
+You will see directly when a resource is missing, when you renamed it,
 or you moved it around.
 
 Furthermore it won't even bother you for trivial name changes like change
