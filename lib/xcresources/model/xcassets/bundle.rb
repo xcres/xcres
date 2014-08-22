@@ -2,7 +2,7 @@ require 'xcresources/model/xcassets/resource'
 
 module XCResources::XCAssets
 
-  # Represents the whole XCAssets bundle
+  # Represents the whole asset catalog
   #
   class Bundle
 

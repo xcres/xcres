@@ -7,8 +7,8 @@ Execute build first:
     ✓ Use Example/Example.xcodeproj as XCODEPROJ.
     Ⓥ Found #0 resource bundles in project.
     Ⓥ Found #0 image files in project.
-    Ⓥ Found #1 xcassets bundles in project.
-    Ⓥ Found xcassets bundle Images.xcassets with #2 image files.
+    Ⓥ Found #1 asset catalogs in project.
+    Ⓥ Found asset catalog Images.xcassets with #2 image files.
     Ⓥ Add section for ImagesAssets with 2 elements
     Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings"]
     Ⓥ Native development languages: ["en"]

@@ -2,7 +2,7 @@ require 'active_support/core_ext/string/inflections'
 
 module XCResources::XCAssets
 
-  # Represents a single image of a resource in a xcassets bundle
+  # Represents a single image of a resource in an asset catalog
   #
   class ResourceImage
 

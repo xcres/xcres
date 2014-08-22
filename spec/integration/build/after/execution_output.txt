@@ -6,8 +6,8 @@
 Ⓥ Found bundle Icons.bundle with #4 image files of #5 total files.
 Ⓥ Add section for Icons with 2 elements
 Ⓥ Found #1 image files in project.
-Ⓥ Found #1 xcassets bundles in project.
-Ⓥ Found xcassets bundle Images.xcassets with #3 image files.
+Ⓥ Found #1 asset catalogs in project.
+Ⓥ Found asset catalog Images.xcassets with #3 image files.
 Ⓥ Add section for ImagesAssets with 3 elements
 Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings", "en.lproj/Localizable.strings", "de.lproj/Localizable.strings"]
 Ⓥ Native development languages: ["en"]

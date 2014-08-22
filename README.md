@@ -6,8 +6,8 @@
 as struct constants. So you will never have to reference a resource, without
 knowing already at compile if it exists or not.
 
-It includes **loose images**, **.bundles**, **.xcassets** and
-even **.strings** in the index.
+It includes **loose images**, **.bundles**, **asset catalogs** (.xcasset)
+and even **.strings** in the index.
 
 It gives you **code autocompletion** for resources, without the need of an
 Xcode plugin and even for string keys.
@@ -72,9 +72,9 @@ $ xcresources install
 
 Reference your resources safely with the generated constants.
 
-### xcassets Images
+### Asset Catalogs
 
-Assuming your xcassets bunlde is named `Images.xcassets`.  
+Assuming your asset catalog is named `Images.xcassets`.  
 `xcresources` supports multiple bundles in one project.
 
 Instead of:

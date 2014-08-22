@@ -4,7 +4,7 @@ require 'xcresources/model/xcassets/resource_image'
 
 module XCResources::XCAssets
 
-  # Represents a single resource of a XCAssets bundle
+  # Represents a single resource of an asset catalog
   #
   class Resource
     include XCResources::FileHelper

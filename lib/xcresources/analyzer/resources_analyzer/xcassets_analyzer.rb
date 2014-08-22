@@ -4,7 +4,7 @@ require 'xcresources/model/xcassets/bundle'
 module XCResources
   module ResourcesAnalyzer
 
-    # A +XCAssetsAnalyzer+ scans the project for .xcassets bundles,
+    # A +XCAssetsAnalyzer+ scans the project for asset catalogs,
     # which should be included in the output file.
     #
     class XCAssetsAnalyzer < BaseResourcesAnalyzer
@@ -15,7 +15,7 @@ module XCResources
         @sections = sections.compact
       end
 
-      # Build a section for each xcassets bundle if it contains any resources
+      # Build a section for each asset catalog if it contains any resources
       #
       # @return [Array<Section>]
       #         the built sections
@@ -23,7 +23,7 @@ module XCResources
       def build_sections_for_xcassets
         file_refs = find_file_refs_by_extname '.xcassets'
 
-        log "Found #%s xcassets bundles in project.", file_refs.count
+        log "Found #%s asset catalogs in project.", file_refs.count
 
         file_refs.map do |file_ref|
           bundle = XCAssets::Bundle.open(file_ref.real_path)
@@ -33,7 +33,7 @@ module XCResources
         end.compact
       end
 
-      # Build a section for a xcassets bundle
+      # Build a section for a asset catalog
       #
       # @param  [XCAssets::Bundle] xcassets_bundle
       #         the file reference to the resources bundle file
@@ -42,7 +42,7 @@ module XCResources
       #         a section or nil
       #
       def build_section_for_xcassets bundle
-        log "Found xcassets bundle %s with #%s image files.",
+        log "Found asset catalog %s with #%s image files.",
           bundle.path.basename, bundle.resources.count
 
         return nil if bundle.resources.empty?
