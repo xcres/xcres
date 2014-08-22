@@ -47,6 +47,10 @@ describe_cli 'xcresources' do
     behaves_like cli_spec('build', '', 'build Example .')
   end
 
+  describe 'Install' do
+    behaves_like cli_spec('install', '', 'install Example')
+  end
+
   describe 'Get help' do
     behaves_like cli_spec('help', '--help')
   end

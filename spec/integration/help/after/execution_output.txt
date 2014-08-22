@@ -8,6 +8,7 @@ Parameters:
 
 Subcommands:
     build                         Build the resources index files
+    install                       Install a build phase into the project
     version                       Show the gem version
 
 Options:
