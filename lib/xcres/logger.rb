@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'colored'
 
 # A Logger utility help class
