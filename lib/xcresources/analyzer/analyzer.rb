@@ -1,3 +1,4 @@
+require 'xcodeproj'
 require 'xcresources/helper/file_helper'
 require 'xcresources/model/section'
 
@@ -9,9 +10,9 @@ module XCResources
   class Analyzer
     include XCResources::FileHelper
 
-    # @return [Xcodeproj::Project]
-    #         the Xcodeproj to analyze
-    attr_reader :project
+    # @return [PBXNativeTarget]
+    #         the application target of the #project to analyze.
+    attr_reader :target
 
     # @return [Array<Section>]
     #         the built sections
@@ -33,14 +34,14 @@ module XCResources
 
     # Initialize a new analyzer
     #
-    # @param [Xcodeproj::Project] project
-    #        see +project+.
+    # @param [PBXNativeTarget] target
+    #        see +target+.
     #
     # @param [Hash] options
     #        see subclasses.
     #
-    def initialize(project=nil, options={})
-      @project = project
+    def initialize(target=nil, options={})
+      @target = target
       @sections = []
       @exclude_file_patterns = []
       @options = options
@@ -53,6 +54,14 @@ module XCResources
     #
     def analyze
       # Empty stub implementation
+    end
+
+    # Return the Xcode project to analyze
+    #
+    # @return [Xcodeproj::Project]
+    #
+    def project
+      target.project
     end
 
     # Create a new +Section+.
@@ -119,26 +128,13 @@ module XCResources
     # @return [Array<PBXFileReference>]
     #
     def resources_files
-      application_targets.map(&:resources_build_phase).map do |phase|
-        phase.files.map do |build_file|
-          if build_file.file_ref.is_a?(Xcodeproj::Project::Object::PBXGroup)
-            build_file.file_ref.recursive_children
-          else
-            [build_file.file_ref]
-          end
+      target.resources_build_phase.files.map do |build_file|
+        if build_file.file_ref.is_a?(Xcodeproj::Project::Object::PBXGroup)
+          build_file.file_ref.recursive_children
+        else
+          [build_file.file_ref]
         end
       end.flatten.compact
-    end
-
-    # Find all application targets in the project
-    #
-    # @return [Array<PBXNativeTarget>]
-    #
-    def application_targets
-      project.targets.select do |target|
-        target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget) \
-        && target.product_type == Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application]
-      end
     end
 
   end

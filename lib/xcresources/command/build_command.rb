@@ -24,7 +24,7 @@ class XCResources::BuildCommand < XCResources::ProjectCommand
     self.output_path = locate_output_path
 
     build do |builder|
-      analyzer = XCResources::AggregateAnalyzer.new(project)
+      analyzer = XCResources::AggregateAnalyzer.new(target)
       analyzer.exclude_file_patterns = exclude_file_patterns
       analyzer.logger = logger
       analyzer.add_with_class(XCResources::ResourcesAggregateAnalyzer, shorten_keys: true)

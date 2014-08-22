@@ -7,21 +7,23 @@ describe 'XCResources::StringsAnalyzer' do
   end
 
   before do
-    @project = mock('Project')
-    @project.stubs(files: [], targets: [], path: Pathname('.'))
+    @target = stub('Target', build_configurations: [])
+    @project = stub('Project', files: [], path: Pathname('.'))
+    @target.stubs(project: @project)
 
-    @analyzer = subject.new(@project)
+    @analyzer = subject.new(@target)
     @analyzer.logger = stub('Logger', :log)
   end
 
   describe "#initialize" do
-    it 'should set given project as attribute' do
-      @analyzer = subject.new(@project)
+    it 'should set given target as attribute' do
+      @analyzer = subject.new(@target)
+      @analyzer.target.should.be.eql?(@target)
       @analyzer.project.should.be.eql?(@project)
     end
 
     it 'should set option :default_language as attribute' do
-      @analyzer = subject.new(@project, default_language: 'en')
+      @analyzer = subject.new(@target, default_language: 'en')
       @analyzer.default_language.should.be.eql?('en')
     end
   end
@@ -81,8 +83,8 @@ describe 'XCResources::StringsAnalyzer' do
 
   describe "#find_strings_file_refs" do
     before do
-      @project = xcodeproj
-      @analyzer = subject.new(@project)
+      @target = app_target
+      @analyzer = subject.new(@target)
     end
 
     it 'should return the strings files of the fixture project' do

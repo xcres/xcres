@@ -117,17 +117,15 @@ module XCResources
       end
     end
 
-    # Discover Info.plist files by build settings of all application targets
+    # Discover Info.plist files by build settings of the application target
     #
     # @return [Set<Pathname>]
     #         the relative paths to the .plist-files
     #
     def info_plist_paths
-      @info_plist_paths ||= application_targets.map do |target|
-        target.build_configurations.map do |config|
-          config.build_settings['INFOPLIST_FILE']
-        end.compact.map { |file| Pathname(file) }
-      end.flatten.to_set
+      @info_plist_paths ||= target.build_configurations.map do |config|
+        config.build_settings['INFOPLIST_FILE']
+      end.compact.map { |file| Pathname(file) }.flatten.to_set
     end
 
     # Absolute file paths to Info.plist files by build settings.

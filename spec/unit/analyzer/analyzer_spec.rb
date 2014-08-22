@@ -7,8 +7,8 @@ describe 'XCResources::Analyzer' do
   end
 
   before do
-    @project = xcodeproj
-    @analyzer = subject.new(@project)
+    @target = app_target
+    @analyzer = subject.new(@target)
   end
 
   describe '#new_section' do
@@ -84,7 +84,7 @@ describe 'XCResources::Analyzer' do
     it 'should return matching files' do
       @bundle = stub('FileRef', path: 'the-whole.bundle')
       @img    = stub('FileRef', path: 'awesome.jpg')
-      @project.stubs(:files).returns([@bundle, @img])
+      @target.project.stubs(:files).returns([@bundle, @img])
 
       @analyzer.stubs(:is_file_ref_included_in_application_target?)
         .returns(true)
@@ -94,7 +94,7 @@ describe 'XCResources::Analyzer' do
     it 'should not return files, which do not belong to an application target' do
       @dog_img = stub('FileRef', path: 'doge.jpg')
       @cat_img = stub('FileRef', path: 'nyancat.jpg')
-      @project.stubs(:files).returns([@dog_img, @cat_img])
+      @target.project.stubs(:files).returns([@dog_img, @cat_img])
 
       @analyzer.stubs(:is_file_ref_included_in_application_target?)
         .with(@dog_img).returns(true)
@@ -104,25 +104,16 @@ describe 'XCResources::Analyzer' do
     end
   end
 
-  describe '#application_targets' do
-    it 'should return the expected application target' do
-      @analyzer.application_targets.count.should.eql? 1
-      target = @analyzer.application_targets.first
-      target.should.be.an.instance_of?(Xcodeproj::Project::Object::PBXNativeTarget)
-      target.name.should.eql?('Example')
-    end
-  end
-
   describe '#is_file_ref_included_in_application_target?' do
     it 'should return true for included files' do
-      file = @project.files.find { |f| f.path.to_s == 'doge.jpeg' }
+      file = @target.project.files.find { |f| f.path.to_s == 'doge.jpeg' }
       file.should.be.an.instance_of?(Xcodeproj::Project::Object::PBXFileReference)
       @analyzer.is_file_ref_included_in_application_target?(file)
         .should.be.true?
     end
 
     it 'should return false for non-included files' do
-      file = @project.files.find { |f| f.path.to_s == 'nyanCat.png' }
+      file = @target.project.files.find { |f| f.path.to_s == 'nyanCat.png' }
       file.should.be.an.instance_of?(Xcodeproj::Project::Object::PBXFileReference)
       @analyzer.is_file_ref_included_in_application_target?(file)
         .should.be.false?

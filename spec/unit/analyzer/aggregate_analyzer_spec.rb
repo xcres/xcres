@@ -34,14 +34,14 @@ describe 'XCResources::AggregateAnalyzer' do
 
   describe '#add_with_class' do
     it 'should init an analyzer of given class with current attributes' do
-      @analyzer = subject.new(mock())
-      @analyzer.logger = mock()
+      @analyzer = subject.new(mock('Target'))
+      @analyzer.logger = mock('Logger')
       @analyzer.exclude_file_patterns = ['foo', 'bar']
 
       new_analyzer = @analyzer.add_with_class(XCResources::Analyzer, {})
       new_analyzer.should.be.an.instance_of?(XCResources::Analyzer)
       new_analyzer.should.be.equal?(@analyzer.analyzers.last)
-      new_analyzer.project.should.be.equal?(@analyzer.project)
+      new_analyzer.target.should.be.equal?(@analyzer.target)
       new_analyzer.logger.should.be.equal?(@analyzer.logger)
       new_analyzer.exclude_file_patterns.should.be.equal?(@analyzer.exclude_file_patterns)
     end

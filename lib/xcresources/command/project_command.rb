@@ -9,6 +9,7 @@ class XCResources::ProjectCommand < XCResources::Command
   option ['--[no-]documented'], :flag, 'Add documentation to the generated files', default: true
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
+  option ['-t', '--target'], 'TARGET', 'Application target to use', attribute_name: :target_name
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
   option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :default_language do |language|
@@ -42,6 +43,34 @@ class XCResources::ProjectCommand < XCResources::Command
   #
   def project
     @project ||= Xcodeproj::Project.open(xcodeproj_file_path)
+  end
+
+  # Find the application target to use
+  #
+  # @return [PBXNativeTarget]
+  #
+  def target
+    if target_name != nil
+      application_targets.find { |t| t.name == target }
+    else
+      if application_targets.count == 1
+        application_targets.first
+      else
+        raise ArgumentError.new 'Multiple application target in project. ' \
+          'Please select one by specifying the option `--target TARGET`.'
+      end
+    end
+  end
+
+  # Find all application targets in the project
+  #
+  # @return [Array<PBXNativeTarget>]
+  #
+  def application_targets
+    @application_targets ||= project.targets.select do |target|
+      target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget) \
+        && target.product_type == Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application]
+    end
   end
 
   def find_xcodeproj
