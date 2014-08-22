@@ -41,6 +41,11 @@ describe 'XCResources::StringBuilder' do
       @builder.write '}'
       @builder.result.should.be.eql?("{foo\n}")
     end
+
+    it 'should write just a new line' do
+      @builder.writeln
+      @builder.result.should.be.eql?("\n")
+    end
   end
 
   describe '#section'  do

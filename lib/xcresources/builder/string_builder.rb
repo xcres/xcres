@@ -17,7 +17,7 @@ class XCResources::StringBuilder
 
   alias write :<<
 
-  def writeln input
+  def writeln input=''
     self << input + "\n"
   end
 
