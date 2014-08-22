@@ -6,6 +6,11 @@ begin
     RuboCop::RakeTask.new do |task|
       task.patterns = ['lib/**/*.rb']
     end
+
+    desc 'Run inch to see documentation coverage'
+    task :doc do
+      sh 'bundle exec inch'
+    end
   end
 
   namespace :spec do
