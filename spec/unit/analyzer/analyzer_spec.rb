@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::Analyzer' do
+describe 'XCRes::Analyzer' do
 
   def subject
-    XCResources::Analyzer
+    XCRes::Analyzer
   end
 
   before do
@@ -16,14 +16,14 @@ describe 'XCResources::Analyzer' do
       describe 'without options given as argument' do
         it 'should return a new section' do
           @analyzer.new_section('Name', { a: 'a' })
-            .should.be.eql? XCResources::Section.new('Name', { a: 'a' })
+            .should.be.eql? XCRes::Section.new('Name', { a: 'a' })
         end
       end
 
       describe 'with options given as argument' do
         it 'should return a new section' do
           @analyzer.new_section('Name', { a: 'a' }, the_answer: 42)
-            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42)
+            .should.be.eql? XCRes::Section.new('Name', { a: 'a' }, the_answer: 42)
         end
       end
     end
@@ -36,14 +36,14 @@ describe 'XCResources::Analyzer' do
       describe 'without options given as argument' do
         it 'should return a new section' do
           @analyzer.new_section('Name', { a: 'a' })
-            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 42,  the_question: '6x7=?')
+            .should.be.eql? XCRes::Section.new('Name', { a: 'a' }, the_answer: 42,  the_question: '6x7=?')
         end
       end
 
       describe 'with options given as argument' do
         it 'should return a new section' do
           @analyzer.new_section('Name', { a: 'a' }, the_answer: 21)
-            .should.be.eql? XCResources::Section.new('Name', { a: 'a' }, the_answer: 21, the_question: '6x7=?')
+            .should.be.eql? XCRes::Section.new('Name', { a: 'a' }, the_answer: 21, the_question: '6x7=?')
         end
       end
     end

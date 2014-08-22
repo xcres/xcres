@@ -1,6 +1,6 @@
- xcresources --help --verbose --no-ansi 2>&1
+ xcres --help --verbose --no-ansi 2>&1
 Usage:
-    xcresources [OPTIONS] SUBCOMMAND [ARG] ...
+    xcres [OPTIONS] SUBCOMMAND [ARG] ...
 
 Parameters:
     SUBCOMMAND                    subcommand

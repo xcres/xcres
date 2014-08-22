@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::StringBuilder' do
+describe 'XCRes::StringBuilder' do
 
   def subject
-    XCResources::StringBuilder
+    XCRes::StringBuilder
   end
 
   before do

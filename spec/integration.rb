@@ -32,10 +32,10 @@ CLIntegracon.configure do |c|
 end
 
 
-describe_cli 'xcresources' do
+describe_cli 'xcres' do
 
   subject do |s|
-    s.executable = "#{BIN}/xcresources"
+    s.executable = "#{BIN}/xcres"
     s.default_args = [
       '--verbose',
       '--no-ansi'

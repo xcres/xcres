@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::Section' do
+describe 'XCRes::Section' do
 
   def subject
-    XCResources::Section
+    XCRes::Section
   end
 
   describe '#initialize' do

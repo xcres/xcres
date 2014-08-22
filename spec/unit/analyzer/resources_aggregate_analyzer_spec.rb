@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::ResourcesAggregateAnalyzer' do
+describe 'XCRes::ResourcesAggregateAnalyzer' do
 
   def subject
-    XCResources::ResourcesAggregateAnalyzer
+    XCRes::ResourcesAggregateAnalyzer
   end
 
   before do
@@ -18,11 +18,11 @@ describe 'XCResources::ResourcesAggregateAnalyzer' do
       loose_image_section = stub('Loose Images Section')
       xcassets_section = stub('XCAssets Section')
 
-      XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer.any_instance
         .expects(:analyze).returns([bundle_section_a, bundle_section_b])
-      XCResources::ResourcesAnalyzer::LooseResourcesAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::LooseResourcesAnalyzer.any_instance
         .expects(:analyze).returns(loose_image_section)
-      XCResources::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
         .expects(:analyze).returns(xcassets_section)
 
       @analyzer.analyze.should.eql?([bundle_section_a, bundle_section_b, loose_image_section, xcassets_section])
@@ -32,11 +32,11 @@ describe 'XCResources::ResourcesAggregateAnalyzer' do
       bundle_section = stub('Bundle Section')
       xcassets_section = stub('XCAssets Section')
 
-      XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer.any_instance
         .expects(:analyze).returns(bundle_section)
-      XCResources::ResourcesAnalyzer::LooseResourcesAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::LooseResourcesAnalyzer.any_instance
         .expects(:analyze).returns([])
-      XCResources::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
+      XCRes::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
         .expects(:analyze).returns(xcassets_section)
 
       @analyzer.analyze.should.eql?([bundle_section, xcassets_section])

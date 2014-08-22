@@ -1,7 +1,7 @@
 require 'bacon'
 require 'pretty_bacon'
 require 'mocha-on-bacon'
-require 'xcresources'
+require 'xcres'
 require 'pathname'
 
 def fixture_path

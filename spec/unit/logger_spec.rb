@@ -1,9 +1,9 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe 'XCResources::LoggerSpec' do
+describe 'XCRes::LoggerSpec' do
 
   def subject
-    XCResources::Logger
+    XCRes::Logger
   end
 
   before do

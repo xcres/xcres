@@ -199,7 +199,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = XCResources;
+				ORGANIZATIONNAME = XCRes;
 				TargetAttributes = {
 					71098AA91920EF5700403326 = {
 						TestTargetID = 71098A881920EF5700403326;

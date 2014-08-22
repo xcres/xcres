@@ -29,7 +29,7 @@
 			<key>shellPath</key>
 			<string>/bin/sh</string>
 			<key>shellScript</key>
-			<string>xcresources build $PROJECT_FILE_PATH $SRCROOT/Example/Resources/R
+			<string>xcres build $PROJECT_FILE_PATH $SRCROOT/Example/Resources/R
 </string>
 			<key>showEnvVarsInLog</key>
 			<string>1</string>
@@ -54,7 +54,7 @@
 				<key>LastUpgradeCheck</key>
 				<string>0510</string>
 				<key>ORGANIZATIONNAME</key>
-				<string>XCResources</string>
+				<string>XCRes</string>
 				<key>TargetAttributes</key>
 				<dict>
 					<key>71239DBE1912BFF80058657F</key>

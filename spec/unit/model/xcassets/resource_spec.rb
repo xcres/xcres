@@ -1,7 +1,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 module XCAssetsSpec
-  describe 'XCResources::XCAssets::Resource' do
+  describe 'XCRes::XCAssets::Resource' do
 
     def subject
       Resource

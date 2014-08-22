@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::AggregateAnalyzer' do
+describe 'XCRes::AggregateAnalyzer' do
 
   def subject
-    XCResources::AggregateAnalyzer
+    XCRes::AggregateAnalyzer
   end
 
   before do
@@ -38,8 +38,8 @@ describe 'XCResources::AggregateAnalyzer' do
       @analyzer.logger = mock('Logger')
       @analyzer.exclude_file_patterns = ['foo', 'bar']
 
-      new_analyzer = @analyzer.add_with_class(XCResources::Analyzer, {})
-      new_analyzer.should.be.an.instance_of?(XCResources::Analyzer)
+      new_analyzer = @analyzer.add_with_class(XCRes::Analyzer, {})
+      new_analyzer.should.be.an.instance_of?(XCRes::Analyzer)
       new_analyzer.should.be.equal?(@analyzer.analyzers.last)
       new_analyzer.target.should.be.equal?(@analyzer.target)
       new_analyzer.logger.should.be.equal?(@analyzer.logger)
@@ -47,13 +47,13 @@ describe 'XCResources::AggregateAnalyzer' do
     end
 
     it 'should pass the options to the initializer' do
-      result = @analyzer.add_with_class(XCResources::Analyzer, the_answer: 42)
+      result = @analyzer.add_with_class(XCRes::Analyzer, the_answer: 42)
       result.options.should.be.eql?({ the_answer: 42 })
     end
 
     it 'should pass the merged options to the initializer' do
       @analyzer.options = { the_question: '6x7=?' }
-      result = @analyzer.add_with_class(XCResources::Analyzer,the_answer: 42)
+      result = @analyzer.add_with_class(XCRes::Analyzer,the_answer: 42)
       result.options.should.be.eql?({ the_question: '6x7=?', the_answer: 42 })
     end
   end

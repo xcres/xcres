@@ -1,13 +1,13 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::ProjectCommand' do
+describe 'XCRes::ProjectCommand' do
 
   def subject
-    XCResources::ProjectCommand
+    XCRes::ProjectCommand
   end
 
   before do
-    @cmd = subject.new('xcresources', [], {})
+    @cmd = subject.new('xcres', [], {})
     @cmd.stubs(:project).returns(xcodeproj)
   end
 

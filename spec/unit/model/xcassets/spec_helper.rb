@@ -1,11 +1,11 @@
 require File.expand_path('../../../spec_helper', __FILE__)
-require 'xcresources/model/xcassets/bundle'
+require 'xcres/model/xcassets/bundle'
 
 module XCAssetsSpec
   # Bring the classes into the namespace in which the specs are defined.
   # This is better than into the global namespace, which could influence the
   # behavior of other specs.
-  include XCResources::XCAssets
+  include XCRes::XCAssets
 
   module Helper
     def xcassets_fixture_path

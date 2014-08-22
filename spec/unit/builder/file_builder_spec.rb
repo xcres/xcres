@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::FileBuilder' do
+describe 'XCRes::FileBuilder' do
 
   def subject
-    XCResources::FileBuilder
+    XCRes::FileBuilder
   end
 
   before do
@@ -31,7 +31,7 @@ describe 'XCResources::FileBuilder' do
 
     it 'should pass a StringBuilder as first argument to the given block' do
       @builder.build_contents do |builder|
-        builder.should.be.an.instance_of?(XCResources::StringBuilder)
+        builder.should.be.an.instance_of?(XCRes::StringBuilder)
       end
     end
   end

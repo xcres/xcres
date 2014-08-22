@@ -1,9 +1,9 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
-describe 'XCResources::ResourcesAnalyzer::LooseResourcesAnalyzer' do
+describe 'XCRes::ResourcesAnalyzer::LooseResourcesAnalyzer' do
 
   def subject
-    XCResources::ResourcesAnalyzer::LooseResourcesAnalyzer
+    XCRes::ResourcesAnalyzer::LooseResourcesAnalyzer
   end
 
   before do

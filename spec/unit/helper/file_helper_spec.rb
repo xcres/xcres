@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::FileHelper' do
+describe 'XCRes::FileHelper' do
 
   def subject
-    Class.new.class_eval { include XCResources::FileHelper }.new
+    Class.new.class_eval { include XCRes::FileHelper }.new
   end
 
   describe '#basename_without_ext' do

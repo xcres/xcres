@@ -1,8 +1,8 @@
-# xcresources
+# xcres
 
 [![Twitter: @mrackwitz](https://img.shields.io/badge/contact-@mrackwitz-blue.svg?style=flat)](https://twitter.com/mrackwitz)
 
-`xcresources` searches your Xcode project for resources and generates an index
+`xcres` searches your Xcode project for resources and generates an index
 as struct constants. So you will never have to reference a resource, without
 knowing already at compile time if it exists or not.
 
@@ -57,14 +57,14 @@ const struct R {
 Install the gem on your machine:
 
 ```bash
-$ gem install xcresources
+$ gem install xcres
 ```
 
 Use the automatic integration to add a build phase to your project,
 by executing the following command:
 
 ```bash
-$ xcresources install
+$ xcres install
 ```
 
 
@@ -75,7 +75,7 @@ Reference your resources safely with the generated constants.
 ### Asset Catalogs
 
 Assuming your asset catalog is named `Images.xcassets`.  
-`xcresources` supports multiple bundles in one project.
+`xcres` supports multiple bundles in one project.
 
 Instead of:
 

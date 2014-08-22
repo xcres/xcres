@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'XCResources::StringsAnalyzer' do
+describe 'XCRes::StringsAnalyzer' do
 
   def subject
-    XCResources::StringsAnalyzer
+    XCRes::StringsAnalyzer
   end
 
   before do
@@ -39,7 +39,7 @@ describe 'XCResources::StringsAnalyzer' do
   describe "#build_section" do
     it 'should return an empty section if there are no strings files' do
       @analyzer.stubs(:strings_file_refs).returns([])
-      @analyzer.build_section.should.be.eql?(XCResources::Section.new 'Strings', {})
+      @analyzer.build_section.should.be.eql?(XCRes::Section.new 'Strings', {})
     end
 
     it 'should return a new section if there are strings files' do
@@ -52,7 +52,7 @@ describe 'XCResources::StringsAnalyzer' do
       @analyzer.stubs(:keys_by_file)
         .with(Pathname('en.lproj/Localizable.strings'))
         .returns({ 'greeting' => { value: 'greeting' }})
-      @analyzer.build_section.should.be.eql?(XCResources::Section.new 'Strings', { 'greeting' => { value: 'greeting' }})
+      @analyzer.build_section.should.be.eql?(XCRes::Section.new 'Strings', { 'greeting' => { value: 'greeting' }})
     end
   end
 

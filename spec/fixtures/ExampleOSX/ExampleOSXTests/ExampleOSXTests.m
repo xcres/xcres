@@ -3,7 +3,7 @@
 //  ExampleOSXTests
 //
 //  Created by Marius Rackwitz on 12.05.14.
-//  Copyright (c) 2014 XCResources. All rights reserved.
+//  Copyright (c) 2014 XCRes. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

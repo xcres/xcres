@@ -1,9 +1,9 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
-describe 'XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer' do
+describe 'XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer' do
 
   def subject
-    XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer
+    XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer
   end
 
   before do
@@ -20,7 +20,7 @@ describe 'XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer' do
     it 'should build sections for given bundles' do
       mock_bundle_a = mock('BundleFileRef').stubs(path: 'A.bundle', real_path: 'b/A.bundle')
       mock_bundle_b = mock('BundleFileRef').stubs(path: 'B.bundle', real_path: 'b/B.bundle')
-      section = XCResources::Section.new('A', { 'a' => 'a.gif' })
+      section = XCRes::Section.new('A', { 'a' => 'a.gif' })
       @analyzer.expects(:find_bundle_file_refs).returns([mock_bundle_a, mock_bundle_b])
       @analyzer.expects(:build_section_for_bundle).with(mock_bundle_a).returns(section)
       @analyzer.expects(:build_section_for_bundle).with(mock_bundle_b).returns(nil)
@@ -50,7 +50,7 @@ describe 'XCResources::ResourcesAnalyzer::BundleResourcesAnalyzer' do
 
     it 'should build a new section if the bundle contain valid images' do
       @analyzer.expects(:find_files_in_dir).with(@mock_bundle.real_path).returns([Pathname('a.gif')])
-      @analyzer.build_section_for_bundle(@mock_bundle).should.be.eql?(XCResources::Section.new('A', 'a' => 'a.gif'))
+      @analyzer.build_section_for_bundle(@mock_bundle).should.be.eql?(XCRes::Section.new('A', 'a' => 'a.gif'))
     end
   end
 
