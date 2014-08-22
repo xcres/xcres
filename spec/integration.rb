@@ -1,6 +1,7 @@
 require 'bacon'
 require 'pretty_bacon'
 require 'clintegracon'
+require File.expand_path('../spec_helper/xcodeproj_project_yaml', __FILE__)
 
 ROOT = Pathname.new(File.expand_path('../..', __FILE__))
 BIN  = ROOT + 'bin'
@@ -15,7 +16,19 @@ CLIntegracon.configure do |c|
   c.ignores '**.DS_Store'
   c.ignores '.gitkeep'
   c.ignores %r[/xcuserdata/]
-  c.ignores %r(^Example/Example[./])
+
+  # Transform produced project files to YAMLs
+  c.transform_produced "**/*.xcodeproj" do |path|
+    # Creates a YAML representation of the Xcodeproj files
+    # which should be used as a reference for comparison.
+    xcodeproj = Xcodeproj::Project.open(path)
+    File.open("#{path}.yaml", "w") do |file|
+      file.write xcodeproj.to_yaml
+    end
+  end
+
+  # So we don't need to compare them directly
+  c.ignores %r[\.xcodeproj/]
 end
 
 
