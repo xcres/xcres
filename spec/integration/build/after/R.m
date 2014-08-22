@@ -1,3 +1,5 @@
+#import "R.h"
+
 const struct R R = {
     .Icons = {
         .tabBarList = @"tab_bar/tabbar_list.png",

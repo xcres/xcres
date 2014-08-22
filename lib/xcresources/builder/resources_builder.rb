@@ -129,6 +129,8 @@ class XCResources::ResourcesBuilder < XCResources::FileBuilder
     end
 
     def build_impl_contents m_file
+      m_file.writeln '#import "R.h"'
+      m_file.writeln
       m_file.writeln 'const struct %s %s = {' % [resources_constant_name, resources_constant_name]
       m_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|
