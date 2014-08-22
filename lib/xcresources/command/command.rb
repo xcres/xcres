@@ -20,6 +20,7 @@ class XCResources::Command < Clamp::Command
     super
   rescue ArgumentError => error
     fail error
+    exit 1
   end
 
   def execute
