@@ -19,7 +19,7 @@ or you moved it around.
 
 Furthermore it won't even bother you for trivial name changes like change
 capitalization or converting name scheme from *train-case* or *snake_case* to
-*camelCase* and vice-versa.
+*camelCase* and vice versa.
 
 It will warn you in Xcode on build, if certain resources or string keys can't be
 references, because their name contain invalid chars, duplicates in the
