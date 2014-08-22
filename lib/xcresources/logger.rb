@@ -22,12 +22,17 @@ class XCResources::Logger
   attr_accessor :colored
   alias :colored? colored
 
+  # @return [String]
+  #         the indentation of the output, empty string by default.
+  attr_accessor :indentation
+
   # Initialize a new logger
   #
   def initialize
     self.silent = false
     self.verbose = false
     self.colored = true
+    self.indentation = ''
   end
 
   # Prints a formatted message
@@ -40,7 +45,7 @@ class XCResources::Logger
   #        which will fill the format placeholders used in the message
   #
   def inform message, *format_args
-    puts message % format_args unless silent?
+    puts indentation + message % format_args unless silent?
   end
 
   # Prints a formatted message in a given color, and prints its arguments

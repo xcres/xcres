@@ -33,12 +33,22 @@ describe 'XCResources::LoggerSpec' do
     it 'should set attribute silent to false by default' do
       @logger.silent.should.be.false?
     end
+
+    it 'should set attribute indentation to an empty string by default' do
+      @logger.indentation.should.be.eql?('')
+    end
   end
 
   describe '#inform' do
     it 'prints the message' do
       @logger.inform '%s %s %s', 'a', 'b', 'c'
       out.should.be.eql? 'a b c'
+    end
+
+    it 'prints the message with indentation if set' do
+      @logger.indentation = '    '
+      @logger.inform 'attention'
+      out.should.be.eql? '    attention'
     end
   end
 
