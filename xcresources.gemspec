@@ -7,11 +7,17 @@ Gem::Specification.new do |spec|
   spec.name          = "xcresources"
   spec.version       = XCResources::VERSION
   spec.authors       = ["Marius Rackwitz"]
+  spec.homepage      = "https://github.com/mrackwitz/xcresources"
   spec.email         = ["git@mariusrackwitz.de"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
   spec.license       = "MIT"
+
+  spec.description   = "xcresources searches your Xcode project for resources" \
+                       "and generates an index as struct constants."
+  spec.summary       = %q{
+  `xcresources` searches your Xcode project for resources and generates an index
+  as struct constants. So you will never have to reference a resource, without
+  knowing already at compile if it exists or not.
+  }
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
