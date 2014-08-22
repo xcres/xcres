@@ -60,6 +60,18 @@ class XCResources::InstallCommand < XCResources::ProjectCommand
     # Add .m file to source build phase, if it doesn't not already exist there
     target.source_build_phase.add_file_reference(m_file, true)
 
+    # Add .h file to prefix header
+    prefix_headers.each do |path|
+      realpath = project_realdir + path
+      next unless File.exist?(realpath)
+      File.open(realpath, 'a+') do |f|
+        import_snippet = "#import \"#{h_file.path}\""
+        unless f.readlines.include?(import_snippet)
+          f.write "\n#{import_snippet}\n"
+        end
+      end
+    end
+
     project.save()
 
     success 'Successfully integrated into %s', project_path
@@ -85,6 +97,17 @@ class XCResources::InstallCommand < XCResources::ProjectCommand
       end
     end
     attribute_values
+  end
+
+  # Discover prefix header by build settings of the application target
+  #
+  # @return [Set<Pathname>]
+  #         the relative paths to the .pch files
+  #
+  def prefix_headers
+    @prefix_headers ||= target.build_configurations.map do |config|
+      config.build_settings['GCC_PREFIX_HEADER']
+    end.compact.map { |file| Pathname(file) }.flatten.to_set
   end
 
 end
