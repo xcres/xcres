@@ -54,10 +54,17 @@ const struct R {
 
 ## Installation
 
+`xcres` is built with Ruby and it will be installable with the default
+Ruby available on OS X. You can use a Ruby Version manager, if you know
+what you're doing.
+Using the default Ruby install will require you to use sudo when
+installing gems. (This is only an issue for the duration of the gem
+installation, though.)
+
 Install the gem on your machine:
 
 ```bash
-$ gem install xcres
+$ [sudo] gem install xcres
 ```
 
 Use the automatic integration to add a build phase to your project,
