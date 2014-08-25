@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'mocha-on-bacon'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'inch'
+  spec.add_development_dependency 'psych'
 
   spec.add_runtime_dependency 'clamp', '~> 0.6.3'
   spec.add_runtime_dependency 'colored', '~> 1.2'
