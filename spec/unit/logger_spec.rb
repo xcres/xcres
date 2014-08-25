@@ -12,7 +12,7 @@ describe 'XCRes::LoggerSpec' do
     @logger = subject.new
 
     # Capture the STDOUT
-    @out = StringIO.new
+    @out = StringIO.new("")
     $stdout = @out
     def out
       @out.string.chomp
