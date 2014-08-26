@@ -43,9 +43,9 @@ const struct R {
         __unsafe_unretained NSString *defaultAvatar;
     } ImagesAssets;
     struct Strings {
-        /// Alert title shown if a wrong password was entered.
+        /// Password wrong!
         __unsafe_unretained NSString *errorTitleWrongPassword;
-        /// Alert message shown if a wrong password was entered.
+        /// Please enter the correct password.
         __unsafe_unretained NSString *errorMessageWrongPassword;
     } Strings;
 } R;
