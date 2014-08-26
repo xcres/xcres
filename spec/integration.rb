@@ -44,7 +44,13 @@ describe_cli 'xcres' do
   end
 
   describe 'Build' do
-    behaves_like cli_spec('build', '', 'build Example .')
+    describe 'with default settings' do
+      behaves_like cli_spec('build', '', 'build Example .')
+    end
+
+    describe 'with variable INFOPLIST_PATH' do
+      behaves_like cli_spec('build-var-infoplist', '', 'build Example .')
+    end
   end
 
   describe 'Install' do

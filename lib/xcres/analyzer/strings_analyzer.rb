@@ -134,7 +134,16 @@ module XCRes
     #         the absolute paths to the .plist-files
     #
     def absolute_info_plist_paths
-      info_plist_paths.map { |path| absolute_project_file_path(path) }
+      info_plist_paths.map do |path|
+        absolute_project_file_path(path)
+      end.select do |path|
+        if path.to_s.include?('$')
+          warn "Couldn't resolve all placeholders in INFOPLIST_FILE %s.", path.to_s
+          false
+        else
+          true
+        end
+      end
     end
 
     # Find the native development languages by trying to use the
@@ -192,7 +201,12 @@ module XCRes
     # @return [Pathname]
     #
     def absolute_project_file_path(file_path)
-      (project.path + "../#{file_path}").realpath
+      source_root = (project.path + '..').realpath
+      if file_path.to_s.include?('$')
+        Pathname(file_path.to_s.gsub(/\$[({]?SRCROOT[)}]?/, source_root.to_s))
+      else
+        source_root + file_path
+      end
     end
 
     # Get relative file paths
