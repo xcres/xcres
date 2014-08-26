@@ -18,13 +18,13 @@ const struct R {
         __unsafe_unretained NSString *launch;
     } ImagesAssets;
     struct Strings {
-        /// 
+        /// Bar String
         __unsafe_unretained NSString *bar;
-        /// 
+        /// Only in english
         __unsafe_unretained NSString *enExclusive;
-        /// An Example Comment
+        /// Lorem Ipsum
         __unsafe_unretained NSString *example;
-        /// Foo Comment
+        /// Foo String
         __unsafe_unretained NSString *foo;
     } Strings;
 } R;

@@ -1,6 +1,5 @@
 require 'xcres/analyzer/analyzer'
-require 'apfel'
-require 'xcres/helper/apfel+parse_utf16'
+require 'json'
 
 module XCRes
 
@@ -163,6 +162,23 @@ module XCRes
       `/usr/libexec/PlistBuddy -c "Print :#{key}" #{path}`.chomp
     end
 
+    # Read a .strings file given as a path
+    #
+    # @param [Pathname] path
+    #        the path of the strings file
+    #
+    # @return [Hash]
+    #
+    def read_strings_file(path)
+      raise ArgumentError, "File '#{path}' doesn't exist" unless path.exist?
+      raise ArgumentError, "File '#{path}' is not a file" unless path.file?
+      error = `plutil -lint -s "#{path}"`
+      return warn "File '#{path}' is malformed:\n#{error}" unless $?.success?
+      json = `plutil -convert json "#{path}" -o -`
+      return warn "File '#{path}' couldn't be converted to JSON." unless $?.success?
+      JSON.parse(json)
+    end
+
     # Calculate the absolute path for a file path given relative to the
     # project / its `$SRCROOT`.
     #
@@ -201,13 +217,10 @@ module XCRes
     def keys_by_file(path)
       begin
         # Load strings file contents
-        strings_file = Apfel.parse(path) rescue Apfel.parse_utf16(path)
+        strings = read_strings_file(path)
 
-        keys = Hash[strings_file.kv_pairs.map do |kv_pair|
-          # WORKAROUND: Needed for single-line comments
-          comment = kv_pair.comment.gsub /^\s*\/\/\s*/, ''
-
-          [kv_pair.key, { value: kv_pair.key, comment: comment }]
+        keys = Hash[strings.map do |key, value|
+          [key, { value: key, comment: value }]
         end]
 
         log 'Found %s keys in file %s', keys.count, path
