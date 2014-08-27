@@ -114,8 +114,8 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
   #
   def prefix_headers
     @prefix_headers ||= target.build_configurations.map do |config|
-      config.build_settings['GCC_PREFIX_HEADER']
-    end.compact.map { |file| Pathname(file) }.flatten.to_set
+      Pathname(config.build_settings['GCC_PREFIX_HEADER'])
+    end.flatten.to_set
   end
 
 end
