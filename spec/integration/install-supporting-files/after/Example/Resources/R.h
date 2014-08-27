@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 const struct R {
     struct ImagesAssets {
         /// AppIcon

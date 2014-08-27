@@ -110,6 +110,8 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
     end
 
     def build_header_contents h_file
+      h_file.writeln '#import <Foundation/Foundation.h>'
+      h_file.writeln
       h_file.writeln 'const struct %s {' % resources_constant_name
       h_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|

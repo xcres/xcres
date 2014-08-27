@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 const struct R {
     struct Icons {
         /// tab_bar/tabbar_list.png
