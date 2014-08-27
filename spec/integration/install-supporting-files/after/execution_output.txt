@@ -2,7 +2,7 @@
 Ⓥ Verbose mode is enabled.
 ⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
 ✓ Use Example/Example.xcodeproj as XCODEPROJ.
-Ⓥ Found target group, will use its path as base output path.
+Ⓥ Didn't found target group, expected a group with path 'Example'.
 Execute build first:
     Ⓥ Verbose mode is enabled.
     ✓ Use Example/Example.xcodeproj as XCODEPROJ.
@@ -11,12 +11,13 @@ Execute build first:
     Ⓥ Found #1 asset catalogs in project.
     Ⓥ Found asset catalog Images.xcassets with #2 image files.
     Ⓥ Add section for ImagesAssets with 2 elements
-    Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings"]
+    Ⓥ Strings files in project: ["InfoPlist.strings"]
     Ⓥ Native development languages: ["en"]
     Ⓥ Used languages for .strings files: ["en"]
     Ⓥ Preferred languages: ["en"]
-    Ⓥ Strings files after language selection: ["en.lproj/InfoPlist.strings"]
+    Ⓥ Strings files after language selection: ["InfoPlist.strings"]
     Ⓥ Non-ignored .strings files: []
     ✓ Directory did not exist. Will been created.
-    ✓ Successfully updated: ROOT/tmp/integration/install/Example/Example/Resources/R.h
+    ✓ Successfully updated: ROOT/tmp/integration/install-supporting-files/Example/Resources/R.h
+⚠ Didn't found support files group
 ✓ Successfully integrated into Example/Example.xcodeproj

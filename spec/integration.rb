@@ -54,7 +54,13 @@ describe_cli 'xcres' do
   end
 
   describe 'Install' do
-    behaves_like cli_spec('install', '', 'install Example')
+    describe 'with default template' do
+      behaves_like cli_spec('install', '', 'install Example')
+    end
+
+    describe 'with moved supporting files' do
+      behaves_like cli_spec('install-supporting-files', '', 'install Example')
+    end
   end
 
   describe 'Get help' do

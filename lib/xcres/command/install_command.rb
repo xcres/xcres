@@ -13,13 +13,22 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
   def execute
     super
 
-    # Get main group and target-specific group and ensure that they exist
+    # Get main group and ensure that it exists
     main_group = project.main_group
     raise ArgumentError, "Didn't found main group" if main_group.nil?
-    src_group = main_group.groups.find { |g| g.path == target.name }
-    raise ArgumentError, "Didn't found target group, expected a group with path '#{target.name}'" if src_group.nil?
 
-    output_path = src_group.real_path + 'Resources/R'
+    # Locate the output path
+    base_output_path = src_root_path
+
+    # Get target-specific group, if the default project layout is in use
+    src_group = main_group.groups.find { |g| g.path == target.name }
+    if src_group != nil
+      log "Found target group, will use its path as base output path."
+      base_output_path = src_group.real_path
+    else
+      log "Didn't found target group, expected a group with path '#{target.name}'."
+    end
+    output_path = base_output_path + 'Resources/R'
 
     inform 'Execute build first:'
 
@@ -46,11 +55,13 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
     # Find 'Supporting Files' group
     groups = main_group.recursive_children_groups
     support_files_group = groups.find { |g| g.name == 'Supporting Files' }
-    raise ArgumentError, "Didn't found support files group" if support_files_group.nil?
+    warn "Didn't found support files group" if support_files_group.nil?
+
+    parent_group = support_files_group || src_group || main_group
 
     # Find or create 'Resources' group in 'Supporting Files'
-    res_group = support_files_group.groups.find { |g| g.name == 'Resources' }
-    res_group ||= support_files_group.new_group('Resources', Pathname('Resources'))
+    res_group = parent_group.groups.find { |g| g.name == 'Resources' }
+    res_group ||= parent_group.new_group('Resources', Pathname('Resources'))
 
     # Find or create references to resources index files
     h_file = res_group.find_file_by_path('R.h') || res_group.new_file('R.h')
