@@ -40,8 +40,7 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
     target.build_phases.insert(index, build_phase)
 
     # Set shell script
-    project_realdir = project_path.realpath + '..' # should be same as $SRCROOT
-    script_output_path = output_path.relative_path_from(project_realdir)
+    script_output_path = output_path.relative_path_from(src_root_path)
     build_phase.shell_script = "xcres build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
 
     # Find 'Supporting Files' group
@@ -62,7 +61,7 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
 
     # Add .h file to prefix header
     prefix_headers.each do |path|
-      realpath = project_realdir + path
+      realpath = src_root_path + path
       next unless File.exist?(realpath)
       File.open(realpath, 'a+') do |f|
         import_snippet = "#import \"#{h_file.path}\""
@@ -83,6 +82,15 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
   #
   def project_path
     project.path.relative_path_from(Pathname.pwd)
+  end
+
+  # Return the path, which would be represented by the value of the
+  # build setting `$SRCROOT`.
+  #
+  # @return [Pathname]
+  #
+  def src_root_path
+    project_path.realpath + '..'
   end
 
   # Return a hash of attribute values
