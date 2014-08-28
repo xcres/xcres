@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-const struct R {
+extern const struct R {
     struct Icons {
         /// tab_bar/tabbar_list.png
         __unsafe_unretained NSString *tabBarList;
