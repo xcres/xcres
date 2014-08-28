@@ -61,6 +61,10 @@ describe_cli 'xcres' do
     describe 'without supporting files' do
       behaves_like cli_spec('install-no-supporting-files', '', 'install Example')
     end
+
+    describe 'with moved supporting files' do
+      behaves_like cli_spec('install-moved-supporting-files', '', 'install Example')
+    end
   end
 
   describe 'Get help' do

@@ -10,33 +10,83 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
 
   inherit_parameters!
 
+  # Execute the command
+  #
+  # @return [void]
+  #
   def execute
     super
 
+    # Locate the parent group, where the built files will been added to
+    parent_group = find_parent_group
+
+    # Locate the output path
+    output_path = parent_group.real_path + 'Resources/R'
+
+    inform 'Execute build first:'
+    build(output_path)
+
+    integrate!(output_path, parent_group)
+
+    success 'Successfully integrated into %s', project_path
+  end
+
+  # Find parent group, where the built files will been added to.
+  # It will return the first group, which was found of the following list.
+  #   * 'Supporting Files' group
+  #   * target-specific group
+  #   * main group
+  #
+  # @raise [ArgumentError]
+  #        if no main group exists, which means that the project is invalid
+  #
+  # @return [PBXGroup]
+  #
+  def find_parent_group
     # Get main group and ensure that it exists
     main_group = project.main_group
     raise ArgumentError, "Didn't found main group" if main_group.nil?
-
-    # Locate the output path
-    base_output_path = src_root_path
 
     # Get target-specific group, if the default project layout is in use
     src_group = main_group.groups.find { |g| g.path == target.name }
     if src_group != nil
       log "Found target group, will use its path as base output path."
-      base_output_path = src_group.real_path
     else
       log "Didn't found target group, expected a group with path '#{target.name}'."
     end
-    output_path = base_output_path + 'Resources/R'
 
-    inform 'Execute build first:'
+    # Find 'Supporting Files' group
+    groups = main_group.recursive_children_groups
+    support_files_group = groups.find { |g| g.name == 'Supporting Files' }
+    warn "Didn't found support files group" if support_files_group.nil?
 
-    # Execute build command
+    support_files_group || src_group || main_group
+  end
+
+  # Trigger a build for the current project
+  #
+  # @param [Pathname] output_path
+  #        the argument OUTPUT_PATH for the build subcommand
+  #
+  # @return [void]
+  #
+  def build(output_path)
     build_cmd = XCRes::BuildCommand.new("#{invocation_path} build", context, attribute_values)
     build_cmd.logger.indentation = '    '
     build_cmd.run([project_path.to_s, output_path.relative_path_from(Pathname.pwd).to_s])
+  end
 
+  # Integrate the build phase and add the built files to the project
+  #
+  # @param [Pathname] output_path
+  #        the argument OUTPUT_PATH for the build subcommand
+  #
+  # @param [PBXGroup] parent_group
+  #        the group where to integrate
+  #
+  # @return [void]
+  #
+  def integrate!(output_path, parent_group)
     # Find or create shell script build phase
     build_phase = target.shell_script_build_phases.find do |bp|
       bp.name == BUILD_PHASE_NAME
@@ -51,13 +101,6 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
     # Set shell script
     script_output_path = output_path.relative_path_from(src_root_path)
     build_phase.shell_script = "xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
-
-    # Find 'Supporting Files' group
-    groups = main_group.recursive_children_groups
-    support_files_group = groups.find { |g| g.name == 'Supporting Files' }
-    warn "Didn't found support files group" if support_files_group.nil?
-
-    parent_group = support_files_group || src_group || main_group
 
     # Find or create 'Resources' group in 'Supporting Files'
     res_group = parent_group.groups.find { |g| g.name == 'Resources' }
@@ -83,8 +126,6 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
     end
 
     project.save()
-
-    success 'Successfully integrated into %s', project_path
   end
 
   # Return a relative path to the project
