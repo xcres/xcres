@@ -18,6 +18,6 @@ Execute build first:
     Ⓥ Strings files after language selection: ["InfoPlist.strings"]
     Ⓥ Non-ignored .strings files: []
     ✓ Directory did not exist. Will been created.
-    ✓ Successfully updated: ROOT/tmp/integration/install-supporting-files/Example/Resources/R.h
+    ✓ Successfully updated: ROOT/tmp/integration/install-no-supporting-files/Example/Resources/R.h
 ⚠ Didn't found support files group
 ✓ Successfully integrated into Example/Example.xcodeproj
