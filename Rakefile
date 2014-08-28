@@ -4,6 +4,13 @@ begin
   require 'bundler/gem_tasks'
   require 'rubocop/rake_task'
 
+  namespace :install do
+    desc 'Install the gem as current user (NOT RECOMMENDED)'
+    task :user => ['build'] do
+      sh "gem install #{Dir['pkg/*.gem'].sort.last} --user-install"
+    end
+  end
+
   namespace :lint do
     RuboCop::RakeTask.new do |task|
       task.patterns = ['lib/**/*.rb']
