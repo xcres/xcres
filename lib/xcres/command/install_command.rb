@@ -50,7 +50,7 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
 
     # Set shell script
     script_output_path = output_path.relative_path_from(src_root_path)
-    build_phase.shell_script = "xcres build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
+    build_phase.shell_script = "xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
 
     # Find 'Supporting Files' group
     groups = main_group.recursive_children_groups

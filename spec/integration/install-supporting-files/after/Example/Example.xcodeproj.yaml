@@ -34,7 +34,7 @@ Targets:
         outputPaths: []
         shellPath: "/bin/sh"
         shellScript: |
-          xcres build $PROJECT_FILE_PATH $SRCROOT/Resources/R
+          xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/Resources/R
         showEnvVarsInLog: '1'
         buildActionMask: '2147483647'
         runOnlyForDeploymentPostprocessing: '0'
