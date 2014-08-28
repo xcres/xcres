@@ -118,9 +118,9 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
       realpath = src_root_path + path
       next unless File.exist?(realpath)
       File.open(realpath, 'a+') do |f|
-        import_snippet = "#import \"#{h_file.path}\""
+        import_snippet = "#import \"#{h_file.path}\"\n"
         unless f.readlines.include?(import_snippet)
-          f.write "\n#{import_snippet}\n"
+          f.write "\n#{import_snippet}"
         end
       end
     end

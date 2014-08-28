@@ -58,6 +58,10 @@ describe_cli 'xcres' do
       behaves_like cli_spec('install', '', 'install Example')
     end
 
+    describe 'with existing installation' do
+      behaves_like cli_spec('install-again', '', 'install Example')
+    end
+
     describe 'without supporting files' do
       behaves_like cli_spec('install-no-supporting-files', '', 'install Example')
     end
