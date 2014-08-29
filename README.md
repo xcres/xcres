@@ -29,7 +29,11 @@ references, because their name contain invalid chars, duplicates in the
 *camelCase* variant with another key, or would be equal to a protected compiler
 key word.
 
-The generated index could look like below:
+The generated index could look like below.
+
+While this is still **Objective-C**, `xcres` is compatible with **Swift**.
+All you need to do is to add an import to the generated header to your
+project's bridging header.
 
 ```objc
 const struct R {
