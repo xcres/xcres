@@ -3,6 +3,7 @@
 [![Twitter: @mrackwitz](https://img.shields.io/badge/contact-@mrackwitz-blue.svg?style=flat)](https://twitter.com/mrackwitz)
 [![Gem](https://img.shields.io/gem/v/xcres.svg?style=flat)](http://rubygems.org/gems/xcres)
 [![Build Status](https://img.shields.io/travis/mrackwitz/xcres/master.svg?style=flat)](https://travis-ci.org/mrackwitz/xcres)
+[![Inline Docs](http://inch-ci.org/github/mrackwitz/xcres.svg?branch=master&style=flat)](http://inch-ci.org/github/mrackwitz/xcres)
 
 `xcres` searches your Xcode project for resources and generates an index
 as struct constants. So you will never have to reference a resource, without
