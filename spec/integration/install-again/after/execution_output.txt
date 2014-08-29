@@ -17,5 +17,7 @@ Execute build first:
     Ⓥ Preferred languages: ["en"]
     Ⓥ Strings files after language selection: ["en.lproj/InfoPlist.strings"]
     Ⓥ Non-ignored .strings files: []
+    ✓ Existing file is up-to-date. Don't touch.
+    ✓ Existing file is up-to-date. Don't touch.
     ✓ Successfully updated: ROOT/tmp/integration/install-again/Example/Example/Resources/R.h
 ✓ Successfully integrated into Example/Example.xcodeproj

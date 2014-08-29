@@ -42,8 +42,7 @@ class XCRes::FileBuilder
       write_file tmp_file_path, contents
 
       # Diff current version and temporary file
-      `/usr/bin/diff -q #{tmp_file_path} #{file_path}`
-      if $?
+      if FileUtils.compare_file(tmp_file_path, file_path)
         logger.success "Existing file is up-to-date. Don't touch."
         return
       end
