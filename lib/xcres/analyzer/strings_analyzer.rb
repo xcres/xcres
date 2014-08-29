@@ -240,7 +240,7 @@ module XCRes
         strings = read_strings_file(path)
 
         keys = Hash[strings.map do |key, value|
-          [key, { value: key, comment: value }]
+          [key, { value: key, comment: value.gsub(/[\r\n]/, ' ') }]
         end]
 
         log 'Found %s keys in file %s', keys.count, path
