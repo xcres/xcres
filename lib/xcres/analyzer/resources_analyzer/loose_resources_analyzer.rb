@@ -13,6 +13,10 @@ module XCRes
         @sections = [build_section_for_loose_images].compact
       end
 
+      def exclude_file_patterns
+        super + ['Default.*', 'Default@2x.*', 'Default-568h@2x.*']
+      end
+
       # Build a section for loose image resources in the project
       #
       # @return [Section?]

@@ -51,6 +51,10 @@ describe_cli 'xcres' do
     describe 'with variable INFOPLIST_PATH' do
       behaves_like cli_spec('build-var-infoplist', '', 'build Example .')
     end
+
+    describe 'with resource which has a protected name' do
+      behaves_like cli_spec('build-keyword-clash', '', 'build Example .')
+    end
   end
 
   describe 'Install' do
