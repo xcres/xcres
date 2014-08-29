@@ -6,9 +6,9 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
   include XCRes::FileHelper
 
   COMPILER_KEYWORDS = %w{
-    auto, break, case, char, const, continue, default, do, double, else, enum, extern, float, for, goto, if, inline,
-    int, long, register, restrict, return, short, signed, sizeof, static, struct, switch, typedef, union, unsigned,
-    void, volatile, while
+    auto break case char const continue default do double else enum extern float
+    for goto if inline int long register restrict return short signed sizeof
+    static struct switch typedef union unsigned void volatile while
   }
 
   # @return [String]
@@ -20,6 +20,10 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
   #         documentation for each key, true by default
   attr_accessor :documented
   alias :documented? :documented
+
+  # @return [Hash{String => {String => String}}]
+  #         the sections, which will been written to the built files
+  attr_reader :sections
 
   # Initialize a new instance
   #
@@ -36,7 +40,7 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
     @resources_constant_name ||= basename_without_ext output_path
   end
 
-  def add_section name, items, options = []
+  def add_section name, items, options = {}
     raise ArgumentError.new 'No items given!' if items.nil?
 
     transformed_items = {}
@@ -52,7 +56,7 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
 
       # Skip compiler keywords
       if COMPILER_KEYWORDS.include? transformed_key
-        logger.warn "Skip invalid key: '%@'. (Was transformed to keyword '%s')", key, transformed_key
+        logger.warn "Skip invalid key: '%s'. (Was transformed to keyword '%s')", key, transformed_key
         next
       end
 

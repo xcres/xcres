@@ -29,4 +29,22 @@ describe 'XCRes::ResourcesBuilder' do
     end
   end
 
+  describe '#add_section' do
+    it 'should raise if no items are given' do
+      -> {
+        @builder.add_section 'Test', nil
+      }.should.raise?(ArgumentError, 'No items are given!')
+    end
+
+    it 'should not add keys, which are protected keywords' do
+      @builder.logger.expects(:warn).twice
+      @builder.add_section 'Test', {
+        'default' => 'Default.png',
+        'cat' => 'cat.gif',
+        'auto' => 'auto.jpg'
+      }
+      @builder.sections.should.be.eql?('Test' => { 'cat' => 'cat.gif' })
+    end
+  end
+
 end
