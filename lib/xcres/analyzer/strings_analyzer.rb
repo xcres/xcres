@@ -189,7 +189,9 @@ module XCRes
       return warn "File %s is malformed:\n#{error}", path.to_s unless $?.success?
       json_or_error = `plutil -convert json "#{path}" -o -`.chomp
       return warn "File %s couldn't be converted to JSON.\n#{json_or_error}", path.to_s unless $?.success?
-      JSON.parse(json_or_error)
+      JSON.parse(json_or_error.force_encoding('UTF-8'))
+    rescue EncodingError => e
+      raise StandardError, "Encoding error in #{path}: #{e}"
     end
 
     # Calculate the absolute path for a file path given relative to the
