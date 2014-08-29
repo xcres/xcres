@@ -18,7 +18,9 @@ class XCRes::Command < Clamp::Command
   #
   def run(arguments)
     super
-  rescue ArgumentError => error
+  rescue Clamp::HelpWanted => e
+    raise e # Clamp will handle this for us
+  rescue StandardError => error
     fail error
     exit 1
   end
