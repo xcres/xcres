@@ -103,6 +103,14 @@ Just write:
 [UIImage imageNamed:R.ImagesAssets.personDefaultAvatar]
 ```
 
+##### How to Add a New Resource
+
+1. Add it to your asset catalog.
+- Trigger a build. (**⌘ + B**)
+- The new key will be available under
+  `R.${catalogName}Assets.${keyName:camelCase}`
+  and is ready for use in your code now.
+
 
 ### Loose Images
 
@@ -118,6 +126,13 @@ Just write:
 [UIImage imageNamed:R.Images.tableHeaderBackgroundImage]
 ```
 
+##### How to Add a New Loose Image
+
+1. Drop the image in your project.
+- Trigger a build. (**⌘ + B**)
+- The new key will be available under `R.Images.${keyName:camelCase}`
+  and is ready for use in your code now.
+
 
 ### Strings
 
@@ -132,3 +147,16 @@ Just write:
 ```objc
 NSLocalizedString(R.Strings.errorMessageWrongPassword, @"Message shown if a wrong password was entered.")
 ```
+
+
+##### How to Add a New String
+
+With xcres your workflow for adding new strings will change slightly.
+
+1. Create a new string (at least) in your project's native development
+  language in one of the strings files included in your target.
+  (By default this will be `en.lproj/Localizable.strings`)
+- Trigger a build. (**⌘ + B**)
+- The new key will be available under `R.Strings.${keyName:camelCase}`
+  and is ready for use in your code now.
+
