@@ -160,3 +160,22 @@ With xcres your workflow for adding new strings will change slightly.
 - The new key will be available under `R.Strings.${keyName:camelCase}`
   and is ready for use in your code now.
 
+
+## Known Issues & Tips
+
+One minor drawback is that `genstrings` will not be helpful anymore.
+But this tool is mostly useful in the first step, when bootstrapping
+your project, until you care about internationalization and want to
+provide translations.
+
+xcres generally assumes that you don't use natural language for keys,
+as this will led very fast to ambiguities. It will filter out unwanted
+chars when transforming your keys to camel case notation, but it will
+also warn you about those. It can be a help, if you want to migrate
+your project to non-natural language keys.
+
+
+## License
+
+xcres is available under MIT License.
+See the LICENSE file for more info.
