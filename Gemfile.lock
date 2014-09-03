@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcres (0.4.0)
+    xcres (0.4.1)
       activesupport (>= 3.2.15, < 4)
       clamp (~> 0.6.3)
       colored (~> 1.2)
