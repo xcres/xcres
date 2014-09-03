@@ -85,6 +85,11 @@ describe 'XCRes::LoggerSpec' do
       out.should.be.eql? "\e[31m%\e[0m"
     end
 
+    it 'works with empty arrays' do
+      @logger.inform_colored '%s', :red, []
+      out.should.be.eql? "\e[31m\e[1m[]\e[0m\e[0m"
+    end
+
     it 'doesn\'t fail because of unescaped percents' do
       -> {
         @logger.inform_colored '%s', :red, '%'
