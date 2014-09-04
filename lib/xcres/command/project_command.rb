@@ -9,7 +9,7 @@ class XCRes::ProjectCommand < XCRes::Command
   option ['--[no-]documented'], :flag, 'Add documentation to the generated files', default: true
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
-  option ['-t', '--target'], 'TARGET', 'Application target to use', attribute_name: :target_name
+  option ['-t', '--target'], 'TARGET', 'Target to search & analyze', attribute_name: :target_name
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
   option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :default_language do |language|
@@ -50,8 +50,12 @@ class XCRes::ProjectCommand < XCRes::Command
   # @return [PBXNativeTarget]
   #
   def target
-    if target_name != nil
-      application_targets.find { |t| t.name == target_name }
+    @target ||= if target_name != nil
+      target = native_targets.find { |t| t.name == target_name }
+      if target.nil?
+        raise ArgumentError.new "Unknown target '#{target_name}'. "
+      end
+      target
     else
       if application_targets.count == 1
         application_targets.first
@@ -62,14 +66,23 @@ class XCRes::ProjectCommand < XCRes::Command
     end
   end
 
+  # Find all native targets in the project
+  #
+  # @return [Array<PBXNativeTarget>]
+  #
+  def native_targets
+    @native_targets ||= project.targets.select do |target|
+      target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget)
+    end
+  end
+
   # Find all application targets in the project
   #
   # @return [Array<PBXNativeTarget>]
   #
   def application_targets
-    @application_targets ||= project.targets.select do |target|
-      target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget) \
-        && target.product_type == Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application]
+    @application_targets ||= native_targets.select do |target|
+      target.product_type == Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application]
     end
   end
 
