@@ -51,7 +51,7 @@ class XCRes::ProjectCommand < XCRes::Command
   #
   def target
     if target_name != nil
-      application_targets.find { |t| t.name == target }
+      application_targets.find { |t| t.name == target_name }
     else
       if application_targets.count == 1
         application_targets.first
