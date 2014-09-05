@@ -1,0 +1,33 @@
+# General
+*.rbc
+*.gem
+.DS_Store
+
+# Yardoc
+.yardoc
+/doc
+
+# Specs
+tmp
+spec/reports
+test/tmp
+test/version_tmp
+
+# Examples
+DerivedData
+
+# IDEs
+xcuserdata
+*.xccheckout
+.idea/
+
+# RVM files
+/.rvmrc
+/.ruby-version
+/.ruby-gemset
+
+# RBENV files
+/.rbenv-version
+
+# Bundler files
+/.bundle
