@@ -1,4 +1,4 @@
-# xcres
+# <center>![xcres](/../assets/xcres_banner.png?raw=true)</center>
 
 [![Twitter: @mrackwitz](https://img.shields.io/badge/contact-@mrackwitz-blue.svg?style=flat)](https://twitter.com/mrackwitz)
 [![Gem](https://img.shields.io/gem/v/xcres.svg?style=flat)](http://rubygems.org/gems/xcres)
@@ -174,6 +174,11 @@ as this will led very fast to ambiguities. It will filter out unwanted
 chars when transforming your keys to camel case notation, but it will
 also warn you about those. It can be a help, if you want to migrate
 your project to non-natural language keys.
+
+
+## Credits
+
+The logo was designed by [@kuchengnom](https://github.com/kuchengnom).
 
 
 ## License
