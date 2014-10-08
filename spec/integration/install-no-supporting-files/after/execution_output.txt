@@ -2,8 +2,8 @@
 Ⓥ Verbose mode is enabled.
 ⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
 ✓ Use Example/Example.xcodeproj as XCODEPROJ.
-Ⓥ Didn't found target group, expected a group with path 'Example'.
-⚠ Didn't found support files group
+Ⓥ Didn't find target group, expected a group with path 'Example'.
+⚠ Didn't find support files group
 Execute build first:
     Ⓥ Verbose mode is enabled.
     ✓ Use Example/Example.xcodeproj as XCODEPROJ.
@@ -18,6 +18,6 @@ Execute build first:
     Ⓥ Preferred languages: ["en"]
     Ⓥ Strings files after language selection: ["InfoPlist.strings"]
     Ⓥ Non-ignored .strings files: []
-    ✓ Directory did not exist. Will been created.
+    ✓ Directory did not exist. Will be created.
     ✓ Successfully updated: ROOT/tmp/integration/install-no-supporting-files/Example/Resources/R.h
 ✓ Successfully integrated into Example/Example.xcodeproj
