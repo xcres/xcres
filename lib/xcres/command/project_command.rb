@@ -13,7 +13,7 @@ class XCRes::ProjectCommand < XCRes::Command
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
   option ['-l', '--language'], 'LANGUAGE', 'Default language to build the keys', attribute_name: :default_language do |language|
-    raise ArgumentError.new 'Expected a two-letter code conforming ISO 639-1 as LANGUAGE' unless String(language).length == 2
+    raise ArgumentError.new 'Expected a two-letter code conforming to ISO 639-1 as LANGUAGE' unless String(language).length == 2
     language
   end
 
@@ -101,7 +101,7 @@ class XCRes::ProjectCommand < XCRes::Command
 
   def discover_xcodeproj_file_path!
     if xcodeproj_file_path.nil?
-      warn 'Argument XCODEPROJ is not set. Use the current directory.'
+      warn 'Argument XCODEPROJ is not set. Using the current directory.'
       discover_xcodeproj_file_path_in_dir! '.'
     elsif Dir.exist?(xcodeproj_file_path) && !File.fnmatch('*.xcodeproj', xcodeproj_file_path)
       warn 'Argument XCODEPROJ is a directory. ' \
