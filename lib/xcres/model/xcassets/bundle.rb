@@ -43,7 +43,7 @@ module XCRes::XCAssets
     #
     def read
       @resource_paths = Dir.chdir(path) do
-        Dir['*'].map { |p| Pathname(p) }
+        Dir['**/Contents.json'].map { |p| Pathname(p) + '..' }
       end
       @resources = @resource_paths.map do |path|
         Resource.new(self, path)
