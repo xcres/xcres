@@ -31,7 +31,11 @@ module XCAssetsSpec
             "idiom" => "universal",
             "scale" => "2x",
             "filename" => "doge@2x.png"
-          }
+          },
+          {
+            "idiom" => "universal",
+            "scale" => "3x"
+          },
         ],
         "info" => expected_info
       }
@@ -130,6 +134,7 @@ module XCAssetsSpec
           @res.images.should.be.eql? [
             ResourceImage.new(idiom: 'universal', scale: 1, filename: 'doge.png'),
             ResourceImage.new(idiom: 'universal', scale: 2, filename: 'doge@2x.png'),
+            ResourceImage.new(idiom: 'universal', scale: 3),
           ]
         end
       end

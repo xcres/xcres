@@ -77,6 +77,7 @@ module XCAssetsSpec
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '29x29'),
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '40x40'),
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '60x60'),
+              ResourceImage.new(idiom: 'iphone', scale: 3, size: '60x60'),
             ]
           end
         end
@@ -106,6 +107,7 @@ module XCAssetsSpec
             @res.images.should.be.eql? [
               ResourceImage.new(idiom: 'universal', scale: 1, filename: 'doge.png'),
               ResourceImage.new(idiom: 'universal', scale: 2, filename: 'doge@2x.png'),
+              ResourceImage.new(idiom: 'universal', scale: 3),
             ]
           end
         end
