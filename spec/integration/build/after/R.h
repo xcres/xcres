@@ -23,6 +23,8 @@ extern const struct R {
         __unsafe_unretained NSString *app;
         /// Doge
         __unsafe_unretained NSString *doge;
+        /// GrumpyCat
+        __unsafe_unretained NSString *grumpyCat;
         /// LaunchImage
         __unsafe_unretained NSString *launch;
     } ImagesAssets;

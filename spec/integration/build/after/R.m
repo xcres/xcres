@@ -18,6 +18,7 @@ const struct R R = {
     .ImagesAssets = {
         .app = @"AppIcon",
         .doge = @"Doge",
+        .grumpyCat = @"GrumpyCat",
         .launch = @"LaunchImage",
     },
     .Strings = {
