@@ -45,20 +45,20 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
   def find_parent_group
     # Get main group and ensure that it exists
     main_group = project.main_group
-    raise ArgumentError, "Didn't found main group" if main_group.nil?
+    raise ArgumentError, "Didn't find main group" if main_group.nil?
 
     # Get target-specific group, if the default project layout is in use
     src_group = main_group.groups.find { |g| g.path == target.name }
     if src_group != nil
       log "Found target group, will use its path as base output path."
     else
-      log "Didn't found target group, expected a group with path '#{target.name}'."
+      log "Didn't find target group, expected a group with path '#{target.name}'."
     end
 
     # Find 'Supporting Files' group
     groups = main_group.recursive_children_groups
     support_files_group = groups.find { |g| g.name == 'Supporting Files' }
-    warn "Didn't found support files group" if support_files_group.nil?
+    warn "Didn't find support files group" if support_files_group.nil?
 
     support_files_group || src_group || main_group
   end

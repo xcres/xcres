@@ -10,7 +10,7 @@ class XCRes::FileBuilder
     # Ensure that the given directory exists
     output_dir = File.dirname output_path
     unless Dir.exist? output_dir
-      logger.success 'Directory did not exist. Will been created.'
+      logger.success 'Directory did not exist. Will be created.'
       Dir.mkdir output_dir
     end
 
