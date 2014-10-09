@@ -49,6 +49,12 @@ module XCAssetsSpec
       end
 
       shared 'XCAssets resource' do
+        path = @name
+
+        before do
+          @res = @bundle.resources.find { |r| r.path.to_s == path }
+        end
+
         it 'should match the info' do
           @res.info.should.be.eql?({ "version" => 1, "author" => "xcode" })
         end
@@ -56,13 +62,7 @@ module XCAssetsSpec
 
       describe 'resources' do
         describe 'AppIcon.appiconset' do
-          before { @res = @bundle.resources[0] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('AppIcon.appiconset')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'AppIcon'
@@ -83,13 +83,7 @@ module XCAssetsSpec
         end
 
         describe 'Doge.imageset' do
-          before { @res = @bundle.resources[1] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('Doge.imageset')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'Doge'
@@ -113,13 +107,7 @@ module XCAssetsSpec
         end
 
         describe 'LaunchImage.launchimage' do
-          before { @res = @bundle.resources[2] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('LaunchImage.launchimage')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'LaunchImage'
