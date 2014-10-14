@@ -20,16 +20,37 @@ describe 'XCRes::ResourcesAnalyzer::BaseResourcesAnalyzer' do
       @analyzer.build_images_section_data([]).should.eql?({})
     end
 
-    describe 'option use_basename? is not given' do
+    describe 'option use_basename is not given' do
       it 'builds an items hash and keep the path' do
         @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')])
           .should.eql?({ 'b/a' => 'b/a.gif' })
       end
     end
 
-    describe 'option use_basename? is given as true' do
+    describe 'option use_basename is given as []' do
+      it 'builds an items hash and keep the path' do
+        @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')], use_basename: [])
+          .should.eql?({ 'b/a' => 'b/a.gif' })
+      end
+    end
+
+    describe 'option use_basename is given as [:key]' do
       it 'builds an items hash and remove the path' do
-        @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')], use_basename?: true)
+        @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')], use_basename: [:key])
+          .should.eql?({ 'a' => 'b/a.gif' })
+      end
+    end
+
+    describe 'option use_basename is given as [:path]' do
+      it 'builds an items hash and remove the path' do
+        @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')], use_basename: [:path])
+          .should.eql?({ 'b/a' => 'a.gif' })
+      end
+    end
+
+    describe 'option use_basename is given as [:key,:path]' do
+      it 'builds an items hash and remove the path' do
+        @analyzer.build_images_section_data([Pathname('b/a.m'), Pathname('b/a.gif')], use_basename: [:key, :path])
           .should.eql?({ 'a' => 'a.gif' })
       end
     end
@@ -78,19 +99,31 @@ describe 'XCRes::ResourcesAnalyzer::BaseResourcesAnalyzer' do
       @analyzer.build_section_data([]).should.be.eql?({})
     end
 
-    it 'returns a hash with the basename if option use_basename? is enabled' do
+    it 'returns a hash with the basename if option use_basename is [:key]' do
       @analyzer.expects(:key_from_path).with('b').returns('b')
-      @analyzer.build_section_data(@file_paths, use_basename?: true)
+      @analyzer.build_section_data(@file_paths, use_basename: [:key])
+        .should.be.eql?({ 'b' => 'a/b' })
+    end
+
+    it 'returns a hash with the basename if option use_basename is [:path]' do
+      @analyzer.expects(:key_from_path).with('a/b').returns('a/b')
+      @analyzer.build_section_data(@file_paths, use_basename: [:path])
+        .should.be.eql?({ 'a/b' => 'b' })
+    end
+
+    it 'returns a hash with the basename if option use_basename is [:key, :path]' do
+      @analyzer.expects(:key_from_path).with('b').returns('b')
+      @analyzer.build_section_data(@file_paths, use_basename: [:key, :path])
         .should.be.eql?({ 'b' => 'b' })
     end
 
-    it 'returns a hash with relative paths if option use_basename? is disabled' do
+    it 'returns a hash with relative paths if option use_basename is []' do
       @analyzer.expects(:key_from_path).with('a/b').returns('a/b')
-      @analyzer.build_section_data(@file_paths, use_basename?: false)
+      @analyzer.build_section_data(@file_paths, use_basename: [])
         .should.be.eql?({ 'a/b' => 'a/b' })
     end
 
-    it 'returns a hash with relative paths if option use_basename? is not given' do
+    it 'returns a hash with relative paths if option use_basename is not given' do
       @analyzer.expects(:key_from_path).with('a/b').returns('a/b')
       @analyzer.build_section_data(@file_paths)
         .should.be.eql?({ 'a/b' => 'a/b' })

@@ -28,7 +28,7 @@ module XCRes
 
         return nil if image_files.empty?
 
-        data = build_images_section_data(image_files, use_basename?: true)
+        data = build_images_section_data(image_files, use_basename: [:key, :path])
 
         new_section('Images', data)
       end
