@@ -9,7 +9,8 @@ module XCRes
     class BundleResourcesAnalyzer < BaseResourcesAnalyzer
 
       def analyze
-        @sections = build_sections_for_bundles.compact
+        @sections = build_sections_for_bundles
+        super
       end
 
       # Build a section for each bundle if it contains any resources
@@ -42,7 +43,7 @@ module XCRes
       # @param  [PBXFileReference] bundle_file_ref
       #         the file reference to the resources bundle file
       #
-      # @return [Section?]
+      # @return [Section]
       #         a section or nil
       #
       def build_section_for_bundle bundle_file_ref
@@ -51,14 +52,8 @@ module XCRes
 
         log "Found bundle %s with #%s image files of #%s total files.", bundle_file_ref.path, image_files.count, bundle_files.count
 
-        return nil if image_files.empty?
-
-        section_data = build_images_section_data(image_files)
-
-        return nil if section_data.empty?
-
         section_name = basename_without_ext(bundle_file_ref.path)
-
+        section_data = build_images_section_data(image_files)
         new_section(section_name, section_data)
       end
 
