@@ -47,7 +47,10 @@ module XCRes
 
         return nil if bundle.resources.empty?
 
-        section_data = build_images_section_data(bundle.resources.map(&:name))
+        section_data = build_images_section_data(bundle.resources.map(&:path), {
+          use_basename:     [:path],
+          path_without_ext: true
+        })
 
         return nil if section_data.empty?
 
