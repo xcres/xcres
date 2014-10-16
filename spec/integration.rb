@@ -16,6 +16,7 @@ CLIntegracon.configure do |c|
   c.ignores '**.DS_Store'
   c.ignores '.gitkeep'
   c.ignores %r[/xcuserdata/]
+  c.ignores %r[/DerivedData/]
 
   # Transform produced project files to YAMLs
   c.transform_produced "**/*.xcodeproj" do |path|

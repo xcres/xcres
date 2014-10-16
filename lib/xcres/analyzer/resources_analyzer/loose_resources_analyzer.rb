@@ -10,7 +10,8 @@ module XCRes
     class LooseResourcesAnalyzer < BaseResourcesAnalyzer
 
       def analyze
-        @sections = [build_section_for_loose_images].compact
+        @sections = [build_section_for_loose_images]
+        super
       end
 
       def exclude_file_patterns
@@ -19,16 +20,14 @@ module XCRes
 
       # Build a section for loose image resources in the project
       #
-      # @return [Section?]
+      # @return [Section]
       #
       def build_section_for_loose_images
         image_files = find_image_files(resources_files.map(&:path))
 
         log "Found #%s image files in project.", image_files.count
 
-        return nil if image_files.empty?
-
-        data = build_images_section_data(image_files, use_basename?: true)
+        data = build_images_section_data(image_files, use_basename: [:key, :path])
 
         new_section('Images', data)
       end

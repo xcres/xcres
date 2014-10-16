@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "doge.png"
+      "filename" : "GrumpyCat.jpg"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "doge@2x.png"
+      "filename" : "GrumpyCat@2x.jpg"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "GrumpyCat@3x.jpg"
     }
   ],
   "info" : {

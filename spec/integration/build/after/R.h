@@ -21,6 +21,8 @@ extern const struct R {
     struct ImagesAssets {
         /// AppIcon
         __unsafe_unretained NSString *app;
+        /// GrumpyCat
+        __unsafe_unretained NSString *catsGrumpy;
         /// Doge
         __unsafe_unretained NSString *doge;
         /// LaunchImage

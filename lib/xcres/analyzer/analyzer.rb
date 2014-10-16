@@ -53,7 +53,7 @@ module XCRes
     #         the built sections
     #
     def analyze
-      # Empty stub implementation
+      @sections = @sections.compact.reject { |s| s.items.nil? || s.items.empty? }
     end
 
     # Return the Xcode project to analyze

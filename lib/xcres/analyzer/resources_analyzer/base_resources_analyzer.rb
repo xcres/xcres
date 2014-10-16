@@ -79,20 +79,27 @@ module XCRes
       #
       # @param  [Hash] options
       #         valid options are:
-      #         * [Bool] :use_basename?
-      #           if set, it will only use the basename of the path for the key
+      #         * [Array<Symbol>] :use_basename
+      #           can contain :key and :path
       #
       # @return [Hash{String => Pathname}]
       #
       def build_section_data file_paths, options={}
-        options = { use_basename?: false }.merge options
+        options = {
+          use_basename: [],
+          path_without_ext: false,
+        }.merge options
 
         # Transform image file paths to keys
         keys_to_paths = {}
         for path in file_paths
-          path = options[:use_basename?] ? File.basename(path) : path.to_s
-          key = key_from_path(path)
-          keys_to_paths[key] = path
+          basename = File.basename(path)
+          key = key_from_path(options[:use_basename].include?(:key) ? basename : path.to_s)
+          transformed_path = options[:use_basename].include?(:path) ? basename : path
+          if options[:path_without_ext]
+            transformed_path = transformed_path.to_s.sub /#{File.extname(path)}$/, ''
+          end
+          keys_to_paths[key] = transformed_path.to_s
         end
 
         keys_to_paths

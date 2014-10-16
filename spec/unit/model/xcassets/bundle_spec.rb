@@ -43,12 +43,19 @@ module XCAssetsSpec
       it 'should set the resource paths' do
         @bundle.resource_paths.should.be.eql? [
           Pathname('AppIcon.appiconset'),
+          Pathname('Cats/GrumpyCat.imageset'),
           Pathname('Doge.imageset'),
           Pathname('LaunchImage.launchimage'),
         ]
       end
 
       shared 'XCAssets resource' do
+        path = @name
+
+        before do
+          @res = @bundle.resources.find { |r| r.path.to_s == path }
+        end
+
         it 'should match the info' do
           @res.info.should.be.eql?({ "version" => 1, "author" => "xcode" })
         end
@@ -56,13 +63,7 @@ module XCAssetsSpec
 
       describe 'resources' do
         describe 'AppIcon.appiconset' do
-          before { @res = @bundle.resources[0] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('AppIcon.appiconset')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'AppIcon'
@@ -77,18 +78,37 @@ module XCAssetsSpec
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '29x29'),
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '40x40'),
               ResourceImage.new(idiom: 'iphone', scale: 2, size: '60x60'),
+              ResourceImage.new(idiom: 'iphone', scale: 3, size: '60x60'),
+            ]
+          end
+        end
+
+        describe 'Cats/GrumpyCat.imageset' do
+          behaves_like 'XCAssets resource'
+
+          it 'should match the name' do
+            @res.name.should.be.eql? 'GrumpyCat'
+          end
+
+          it 'should match the type' do
+            @res.type.should.be.eql? 'imageset'
+          end
+
+          it 'should match the info' do
+            @res.info.should.be.eql?({ "version" => 1, "author" => "xcode" })
+          end
+
+          it 'should match the images' do
+            @res.images.should.be.eql? [
+                ResourceImage.new(idiom: 'universal', scale: 1, filename: 'GrumpyCat.jpg'),
+                ResourceImage.new(idiom: 'universal', scale: 2, filename: 'GrumpyCat@2x.jpg'),
+                ResourceImage.new(idiom: 'universal', scale: 3, filename: 'GrumpyCat@3x.jpg'),
             ]
           end
         end
 
         describe 'Doge.imageset' do
-          before { @res = @bundle.resources[1] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('Doge.imageset')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'Doge'
@@ -106,18 +126,13 @@ module XCAssetsSpec
             @res.images.should.be.eql? [
               ResourceImage.new(idiom: 'universal', scale: 1, filename: 'doge.png'),
               ResourceImage.new(idiom: 'universal', scale: 2, filename: 'doge@2x.png'),
+              ResourceImage.new(idiom: 'universal', scale: 3),
             ]
           end
         end
 
         describe 'LaunchImage.launchimage' do
-          before { @res = @bundle.resources[2] }
-
           behaves_like 'XCAssets resource'
-
-          it 'should match the path' do
-            @res.path.should.be.eql? Pathname('LaunchImage.launchimage')
-          end
 
           it 'should match the name' do
             @res.name.should.be.eql? 'LaunchImage'

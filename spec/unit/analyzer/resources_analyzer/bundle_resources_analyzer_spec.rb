@@ -39,13 +39,13 @@ describe 'XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer' do
 
     it 'should return nil if the bundle does not contain any images' do
       @analyzer.expects(:find_files_in_dir).with(@mock_bundle.real_path).returns([Pathname('a.m')])
-      @analyzer.build_section_for_bundle(@mock_bundle).should.be.nil?
+      @analyzer.build_section_for_bundle(@mock_bundle).items.should.be.empty
     end
 
     it 'should return nil if the bundle does not contain any valid images' do
       @analyzer.expects(:find_files_in_dir).with(@mock_bundle.real_path).returns([Pathname('a.gif')])
       @analyzer.exclude_file_patterns = ['a.gif']
-      @analyzer.build_section_for_bundle(@mock_bundle).should.be.nil?
+      @analyzer.build_section_for_bundle(@mock_bundle).items.should.be.empty
     end
 
     it 'should build a new section if the bundle contain valid images' do

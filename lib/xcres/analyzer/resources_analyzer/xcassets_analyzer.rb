@@ -10,9 +10,8 @@ module XCRes
     class XCAssetsAnalyzer < BaseResourcesAnalyzer
 
       def analyze
-        sections = []
-        sections += build_sections_for_xcassets
-        @sections = sections.compact
+        @sections = build_sections_for_xcassets
+        super
       end
 
       # Build a section for each asset catalog if it contains any resources
@@ -38,21 +37,18 @@ module XCRes
       # @param  [XCAssets::Bundle] xcassets_bundle
       #         the file reference to the resources bundle file
       #
-      # @return [Section?]
+      # @return [Section]
       #         a section or nil
       #
       def build_section_for_xcassets bundle
         log "Found asset catalog %s with #%s image files.",
           bundle.path.basename, bundle.resources.count
 
-        return nil if bundle.resources.empty?
-
-        section_data = build_images_section_data(bundle.resources.map(&:name))
-
-        return nil if section_data.empty?
-
         section_name = "#{basename_without_ext(bundle.path)}Assets"
-
+        section_data = build_images_section_data(bundle.resources.map(&:path), {
+          use_basename:     [:path],
+          path_without_ext: true
+        })
         new_section(section_name, section_data)
       end
 
