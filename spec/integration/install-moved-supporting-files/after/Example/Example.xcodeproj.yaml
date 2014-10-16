@@ -35,7 +35,7 @@ Targets:
         shellPath: "/bin/sh"
         shellScript: |
           xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/Supporting_Files/Resources/R
-        showEnvVarsInLog: '1'
+        showEnvVarsInLog: '0'
         buildActionMask: '2147483647'
         runOnlyForDeploymentPostprocessing: '0'
     - SourcesBuildPhase:
