@@ -169,7 +169,7 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
     @prefix_headers ||= target.build_configurations.map do |config|
       setting = config.build_settings['GCC_PREFIX_HEADER']
       if setting == nil
-        return []
+        return ''
       else
         return Pathname(setting)
       end
