@@ -170,7 +170,7 @@ module XCRes
     def read_plist_key(path, key)
       raise ArgumentError, 'Path is required, but nil' if path.nil?
       raise ArgumentError, 'Key is required, but nil' if key.nil?
-      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" #{path}`.chomp
+      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" "#{path}"`.chomp
       raise ArgumentError, out unless $?.success?
       out
     end
