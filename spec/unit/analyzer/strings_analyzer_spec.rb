@@ -13,6 +13,8 @@ describe 'XCRes::StringsAnalyzer' do
 
     @analyzer = subject.new(@target)
     @analyzer.logger = stub('Logger', :log)
+    @analyzer.expects(:warn).never
+    @analyzer.expects(:error).never
   end
 
   describe "#initialize" do
