@@ -239,6 +239,9 @@ module XCRes
         # Load strings file contents
         strings = read_strings_file(path)
 
+        # Reject generated identifiers used by Interface Builder
+        strings.reject! { |key, _| /^[a-zA-Z0-9]{3}(-[a-zA-Z0-9]{3}){2}/.match(key) }
+
         keys = Hash[strings.map do |key, value|
           [key, { value: key, comment: value.gsub(/[\r\n]/, ' ') }]
         end]
