@@ -185,10 +185,10 @@ module XCRes
     def read_strings_file(path)
       raise ArgumentError, "File '#{path}' doesn't exist" unless path.exist?
       raise ArgumentError, "File '#{path}' is not a file" unless path.file?
-      error = `plutil -lint -s "#{path}"`
-      return warn "File %s is malformed:\n#{error}", path.to_s unless $?.success?
+      error = `plutil -lint -s "#{path}" 2>&1`
+      raise ArgumentError, "File %s is malformed:\n#{error}" % path.to_s unless $?.success?
       json_or_error = `plutil -convert json "#{path}" -o -`.chomp
-      return warn "File %s couldn't be converted to JSON.\n#{json_or_error}", path.to_s unless $?.success?
+      raise ArgumentError, "File %s couldn't be converted to JSON.\n#{json_or_error}" % path.to_s unless $?.success?
       JSON.parse(json_or_error.force_encoding('UTF-8'))
     rescue EncodingError => e
       raise StandardError, "Encoding error in #{path}: #{e}"
