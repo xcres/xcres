@@ -13,6 +13,8 @@ describe 'XCRes::StringsAnalyzer' do
 
     @analyzer = subject.new(@target)
     @analyzer.logger = stub('Logger', :log)
+    @analyzer.expects(:warn).never
+    @analyzer.expects(:error).never
   end
 
   describe "#initialize" do
@@ -93,6 +95,36 @@ describe 'XCRes::StringsAnalyzer' do
       strings_files[0].path.should.be.eql?('en.lproj/InfoPlist.strings')
       strings_files[1].path.should.be.eql?('en.lproj/Localizable.strings')
       strings_files[2].path.should.be.eql?('de.lproj/Localizable.strings')
+    end
+  end
+
+  describe "#read_strings_file" do
+    it 'should read a valid file' do
+      @analyzer.read_strings_file(fixture_path + 'Example/Example/en.lproj/Localizable.strings').should == {
+        "foo"               => "Foo String",
+        "bar"               => "Bar String",
+        "en_exclusive"      => "Only in english",
+        "example"           => "Lorem Ipsum",
+        "123-abc-3e7.text"  => "Hello Storyboards",
+      }
+    end
+
+    it 'should raise an error for an invalid file' do
+      proc do
+        @analyzer.read_strings_file(fixture_path + 'StringsFiles/syntax_error_missing_semicolon.strings')
+      end.should.raise(StandardError).message.should.include "Old-style plist parser: missing semicolon in dictionary on line 2."
+    end
+  end
+
+  describe "#keys_by_file" do
+    it 'should return the string keys hash' do
+      path = fixture_path + 'Example/Example/en.lproj/Localizable.strings'
+      @analyzer.keys_by_file(path).should == {
+        "foo"          => { value: "foo",          comment: "Foo String"      },
+        "bar"          => { value: "bar",          comment: "Bar String"      },
+        "en_exclusive" => { value: "en_exclusive", comment: "Only in english" },
+        "example"      => { value: "example",      comment: "Lorem Ipsum"     },
+      }
     end
   end
 
