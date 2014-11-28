@@ -215,18 +215,6 @@ module XCRes
       end
     end
 
-    # Get relative file paths
-    #
-    # @return [Array<Pathname>]
-    #
-    def strings_file_paths
-      project_dir = project.path + '..'
-      project_dir_realpath = project_dir.realpath
-      strings_file_refs.map(&:real_path).map do |path|
-        project_dir + path.relative_path_from(project_dir_realpath) rescue path
-      end
-    end
-
     # Read a file and collect all its keys
     #
     # @param  [Pathname] path
