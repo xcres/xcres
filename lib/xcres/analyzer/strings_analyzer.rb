@@ -168,10 +168,11 @@ module XCRes
     # @return [String]
     #
     def read_plist_key(path, key)
+      raise ArgumentError, "File '#{path}' doesn't exist" unless path.exist?
       raise ArgumentError, 'Path is required, but nil' if path.nil?
       raise ArgumentError, 'Key is required, but nil' if key.nil?
-      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" "#{path}"`.chomp
-      raise ArgumentError, out unless $?.success?
+      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" "#{path}" 2>&1`.chomp
+      raise ArgumentError, "Error reading plist: #{out}" unless $?.success?
       out
     end
 

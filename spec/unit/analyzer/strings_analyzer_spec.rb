@@ -150,6 +150,21 @@ describe 'XCRes::StringsAnalyzer' do
         @analyzer.read_plist_key(@plist_path, :CFBundleDevelopmentRegion)
           .should == 'en'
       end
+
+      it 'should raise an ArgumentError on non-existing files' do
+        plist_path = Pathname('NonExisting.plist')
+        proc do
+          @analyzer.read_plist_key(plist_path, :XCResNonExistingKey)
+        end.should.raise(ArgumentError).message
+          .should == "File 'NonExisting.plist' doesn't exist"
+      end
+
+      it 'should raise an ArgumentError on non-existing keys' do
+        proc do
+          @analyzer.read_plist_key(@plist_path, :XCResNonExistingKey)
+        end.should.raise(ArgumentError).message
+          .should == 'Error reading plist: Print: Entry, ":XCResNonExistingKey", Does Not Exist'
+      end
     end
 
     describe '#absolute_project_file_path' do
