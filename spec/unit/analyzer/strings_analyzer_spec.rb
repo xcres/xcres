@@ -87,6 +87,9 @@ describe 'XCRes::StringsAnalyzer' do
     before do
       @target = app_target
       @analyzer = subject.new(@target)
+      @analyzer.logger = stub('Logger', :log)
+      @analyzer.expects(:warn).never
+      @analyzer.expects(:error).never
     end
 
     describe "#strings_file_refs" do
