@@ -98,6 +98,109 @@ describe 'XCRes::StringsAnalyzer' do
         strings_files[2].path.should.be.eql?('de.lproj/Localizable.strings')
       end
     end
+
+    describe '#derive_used_languages' do
+      it 'should find used languages' do
+        languages = @analyzer.derive_used_languages(@analyzer.strings_file_refs)
+        languages.should == ['en', 'de'].to_set
+      end
+    end
+
+    describe '#used_languages' do
+      it 'should return english and german as used languages' do
+        @analyzer.used_languages.should == ['en', 'de'].to_set
+      end
+    end
+
+    describe '#info_plist_paths' do
+      it 'should return a set with the configured paths of the project' do
+        @analyzer.info_plist_paths.should == [Pathname('Example/Example-Info.plist')].to_set
+      end
+    end
+
+    describe '#absolute_info_plist_paths' do
+      it 'should resolve the path if it is relative' do
+        @analyzer.absolute_project_file_path('Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+
+      it 'should resolve the path if $SRCROOT is used' do
+        @analyzer.absolute_project_file_path('$SRCROOT/Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+    end
+
+    describe '#native_dev_languages' do
+      it 'should return english' do
+        @analyzer.native_dev_languages.should == ['en'].to_set
+      end
+    end
+
+    describe '#read_plist_key' do
+      before do
+        @plist_path = fixture_path + 'Example/Example/Example-Info.plist'
+      end
+
+      it 'should read and return existing keys' do
+        @analyzer.read_plist_key(@plist_path, :CFBundleDevelopmentRegion)
+          .should == 'en'
+      end
+    end
+
+    describe '#absolute_project_file_path' do
+      it 'should treat relative paths correctly' do
+        @analyzer.absolute_project_file_path('Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+
+      it 'should replace $SRCROOT with project path' do
+        @analyzer.absolute_project_file_path('$SRCROOT/Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+
+      it 'should replace ${SRCROOT} with project path' do
+        @analyzer.absolute_project_file_path('${SRCROOT}/Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+
+      it 'should replace $(SRCROOT) with project path' do
+        @analyzer.absolute_project_file_path('$(SRCROOT)/Info.plist')
+          .relative_path_from(fixture_path)
+          .should == Pathname('Example/Info.plist')
+      end
+    end
+
+    describe '#selected_strings_file_refs' do
+      describe 'for english development language' do
+        before do
+          @analyzer.stubs(:languages).returns ['en']
+        end
+
+        it 'should return the selected strings file refs' do
+          strings_files = @analyzer.selected_strings_file_refs
+          strings_files.count.should.be.eql?(2)
+          strings_files[0].path.should.be.eql?('en.lproj/InfoPlist.strings')
+          strings_files[1].path.should.be.eql?('en.lproj/Localizable.strings')
+        end
+      end
+
+      describe 'for german development language' do
+        before do
+          @analyzer.stubs(:languages).returns ['de']
+        end
+
+        it 'should return the selected strings file refs' do
+          @analyzer.stubs(:languages).returns ['de']
+          strings_files = @analyzer.selected_strings_file_refs
+          strings_files.count.should.be.eql?(1)
+          strings_files[0].path.should.be.eql?('de.lproj/Localizable.strings')
+        end
+      end
     end
   end
 
