@@ -139,6 +139,14 @@ describe 'XCRes::StringsAnalyzer' do
       it 'should return english' do
         @analyzer.native_dev_languages.should == ['en'].to_set
       end
+
+      describe 'with non-configured Info.plist' do
+        it 'should warn on missing plists' do
+          @target.build_configurations[0].build_settings['INFOPLIST_FILE'] = 'NonExisting.plist'
+          @analyzer.expects(:warn).once
+          @analyzer.native_dev_languages.should == ['en'].to_set
+        end
+      end
     end
 
     describe '#read_plist_key' do

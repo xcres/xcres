@@ -153,8 +153,12 @@ module XCRes
     #
     def native_dev_languages
       @native_dev_languages ||= absolute_info_plist_paths.map do |path|
-        read_plist_key(path, :CFBundleDevelopmentRegion)
-      end.to_set
+        begin
+          read_plist_key(path, :CFBundleDevelopmentRegion)
+        rescue ArgumentError => e
+          warn e
+        end
+      end.compact.to_set
     end
 
     # Extracts a given key from a plist file given as a path
