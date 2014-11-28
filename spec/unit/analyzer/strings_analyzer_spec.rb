@@ -83,18 +83,21 @@ describe 'XCRes::StringsAnalyzer' do
     end
   end
 
-  describe "#strings_file_refs" do
+  describe "with fixture project" do
     before do
       @target = app_target
       @analyzer = subject.new(@target)
     end
 
-    it 'should return the strings files of the fixture project' do
-      strings_files = @analyzer.strings_file_refs
-      strings_files.count.should.be.eql?(3)
-      strings_files[0].path.should.be.eql?('en.lproj/InfoPlist.strings')
-      strings_files[1].path.should.be.eql?('en.lproj/Localizable.strings')
-      strings_files[2].path.should.be.eql?('de.lproj/Localizable.strings')
+    describe "#strings_file_refs" do
+      it 'should return the strings files of the fixture project' do
+        strings_files = @analyzer.strings_file_refs
+        strings_files.count.should.be.eql?(3)
+        strings_files[0].path.should.be.eql?('en.lproj/InfoPlist.strings')
+        strings_files[1].path.should.be.eql?('en.lproj/Localizable.strings')
+        strings_files[2].path.should.be.eql?('de.lproj/Localizable.strings')
+      end
+    end
     end
   end
 
