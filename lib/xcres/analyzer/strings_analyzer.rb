@@ -153,8 +153,12 @@ module XCRes
     #
     def native_dev_languages
       @native_dev_languages ||= absolute_info_plist_paths.map do |path|
-        read_plist_key(path, :CFBundleDevelopmentRegion)
-      end.to_set
+        begin
+          read_plist_key(path, :CFBundleDevelopmentRegion)
+        rescue ArgumentError => e
+          warn e
+        end
+      end.compact.to_set
     end
 
     # Extracts a given key from a plist file given as a path
@@ -168,10 +172,11 @@ module XCRes
     # @return [String]
     #
     def read_plist_key(path, key)
+      raise ArgumentError, "File '#{path}' doesn't exist" unless path.exist?
       raise ArgumentError, 'Path is required, but nil' if path.nil?
       raise ArgumentError, 'Key is required, but nil' if key.nil?
-      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" "#{path}"`.chomp
-      raise ArgumentError, out unless $?.success?
+      out = `/usr/libexec/PlistBuddy -c "Print :#{key}" "#{path}" 2>&1`.chomp
+      raise ArgumentError, "Error reading plist: #{out}" unless $?.success?
       out
     end
 
@@ -212,18 +217,6 @@ module XCRes
         Pathname(file_path.to_s.gsub(/\$[({]?SRCROOT[)}]?/, source_root.to_s))
       else
         source_root + file_path
-      end
-    end
-
-    # Get relative file paths
-    #
-    # @return [Array<Pathname>]
-    #
-    def strings_file_paths
-      project_dir = project.path + '..'
-      project_dir_realpath = project_dir.realpath
-      strings_file_refs.map(&:real_path).map do |path|
-        project_dir + path.relative_path_from(project_dir_realpath) rescue path
       end
     end
 

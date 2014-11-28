@@ -108,20 +108,21 @@ class XCRes::Logger
 
   # Print a warning log message in yellow color
   #
-  # @param [String] message
+  # @param [String|Exception] message_or_exception
   #        the message, which can have format placeholders
   #
   # @param [#to_s...] format_args
   #        will be passed as right hand side to the percent operator,
   #        which will fill the format placeholders used in the message
   #
-  def warn message, *format_args
+  def warn message_or_exception, *format_args
+    message, _ = coerce_to_message(message_or_exception)
     inform_colored '⚠' + ' ' + message, :yellow, *format_args
   end
 
   # Print a log message to indicate failure of an operation in red color
   #
-  # @param [String|Exception] message
+  # @param [String|Exception] message_or_exception
   #        The message, which can have format placeholders,
   #        can also be a kind of Exception, then its message would been
   #        used instead. The backtrace will be only printed, if the verbose
@@ -131,18 +132,38 @@ class XCRes::Logger
   #        will be passed as right hand side to the percent operator,
   #        which will fill the format placeholders used in the message
   #
-  def fail message, *format_args
-    exception = nil
-    if message.kind_of? Exception
-      exception = message
-      message = exception.message
-    end
-
+  def fail message_or_exception, *format_args
+    message, exception = coerce_to_message(message_or_exception)
     inform_colored '✗' + ' ' + message, :red, *format_args
 
     if verbose? && exception != nil
       log "Backtrace:\n"+exception.backtrace.join("\n"), :red
     end
+  end
+
+  private
+
+  # Coerces the given message or an exception to a string, and yields them as
+  # separated parameters to a block, which allows further handling.
+  #
+  # @param [#to_s] message_or_exception
+  #        Can be a String message or an exception
+  #
+  # @return [String,Exception?] message,exception
+  #         An array on first place is either the first argument or the
+  #         exception's message. If the given argument +message_or_exception+
+  #         is an exception, then it is the second element in the result.
+  #
+  def coerce_to_message(message_or_exception)
+    exception = nil
+    if message_or_exception.kind_of? Exception
+      exception = message_or_exception
+      message = exception.message
+    else
+      message = message_or_exception.to_s
+    end
+
+    return message, exception
   end
 
 end

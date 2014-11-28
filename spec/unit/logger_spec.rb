@@ -122,6 +122,11 @@ describe 'XCRes::LoggerSpec' do
       @logger.warn 'test'
       out.should.be.eql? "\e[33m⚠ test\e[0m"
     end
+
+    it 'accepts an Exception as message' do
+      @logger.warn StandardError.new('test')
+      out.should.be.eql? "\e[33m⚠ test\e[0m"
+    end
   end
 
   describe '#fail' do
