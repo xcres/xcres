@@ -2,6 +2,7 @@ require 'xcres/analyzer/aggregate_analyzer'
 require 'xcres/analyzer/resources_analyzer/bundle_resources_analyzer'
 require 'xcres/analyzer/resources_analyzer/loose_resources_analyzer'
 require 'xcres/analyzer/resources_analyzer/xcassets_analyzer'
+require 'xcres/analyzer/resources_analyzer/font_resources_analyzer'
 
 module XCRes
 
@@ -19,6 +20,7 @@ module XCRes
       add_with_class ResourcesAnalyzer::BundleResourcesAnalyzer
       add_with_class ResourcesAnalyzer::LooseResourcesAnalyzer
       add_with_class ResourcesAnalyzer::XCAssetsAnalyzer
+      add_with_class ResourcesAnalyzer::FontResourcesAnalyzer
       super
     end
 

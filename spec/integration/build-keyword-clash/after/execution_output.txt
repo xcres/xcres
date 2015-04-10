@@ -5,6 +5,7 @@
 Ⓥ Found #0 resource bundles in project.
 Ⓥ Found #3 image files in project.
 Ⓥ Found #0 asset catalogs in project.
+Ⓥ Found #0 fonts in project.
 Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings"]
 Ⓥ Native development languages: ["en"]
 Ⓥ Used languages for .strings files: ["en"]

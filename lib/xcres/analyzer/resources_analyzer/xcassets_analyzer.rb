@@ -21,6 +21,7 @@ module XCRes
       #
       def build_sections_for_xcassets
         file_refs = find_file_refs_by_extname '.xcassets'
+        file_refs = filter_ref_exclusions(file_refs)
 
         log "Found #%s asset catalogs in project.", file_refs.count
 

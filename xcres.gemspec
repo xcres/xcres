@@ -4,15 +4,15 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'xcres/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "xcres"
+  spec.name          = 'xcres'
   spec.version       = XCRes::VERSION
-  spec.authors       = ["Marius Rackwitz"]
-  spec.homepage      = "https://github.com/mrackwitz/xcres"
-  spec.email         = ["git@mariusrackwitz.de"]
-  spec.license       = "MIT"
+  spec.authors       = ['Marius Rackwitz']
+  spec.homepage      = 'https://github.com/mrackwitz/xcres'
+  spec.email         = ['git@mariusrackwitz.de']
+  spec.license       = 'MIT'
 
-  spec.description   = "xcres searches your Xcode project for resources" \
-                       "and generates an index as struct constants."
+  spec.description   = 'xcres searches your Xcode project for resources' \
+                       'and generates an index as struct constants.'
   spec.summary       = %q{
   `xcres` searches your Xcode project for resources and generates an index
   as struct constants. So you will never have to reference a resource, without
@@ -24,8 +24,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency 'bundler', '~> 1.3'
+  spec.add_development_dependency 'rake'
   spec.add_development_dependency 'bacon', '~> 1.1'
   spec.add_development_dependency 'prettybacon'
   spec.add_development_dependency 'mocha'

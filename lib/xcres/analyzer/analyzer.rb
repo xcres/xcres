@@ -81,6 +81,18 @@ module XCRes
       XCRes::Section.new(name, data, self.options.merge(options))
     end
 
+    # Check if the given path matches the configured exclude file pattern
+    #
+    # @param Pathname path
+    #        the path to match against
+    #
+    # @param [Bool]
+    #        the match result
+    #
+    def should_exclude_path path
+      exclude_file_patterns.any? { |pattern| File.fnmatch("#{pattern}", path) || File.fnmatch("**/#{pattern}", path) }
+    end
+
     # Apply the configured exclude file patterns to a list of files
     #
     # @param [Array<Pathname>] file_paths
@@ -91,7 +103,21 @@ module XCRes
     #
     def filter_exclusions file_paths
       file_paths.reject do |path|
-        exclude_file_patterns.any? { |pattern| File.fnmatch("#{pattern}", path) || File.fnmatch("**/#{pattern}", path) }
+        should_exclude_path path
+      end
+    end
+
+    # Apply the configured exclude file patterns to a list of file references
+    #
+    # @param [Array<PBXFileReference>] file_references
+    #        the list of files to filter
+    #
+    # @param [Array<PBXFileReference>]
+    #        the filtered list of files
+    #
+    def filter_ref_exclusions file_references
+      file_references.reject do |ref|
+        should_exclude_path ref.path
       end
     end
 

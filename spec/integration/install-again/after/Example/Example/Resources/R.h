@@ -14,6 +14,4 @@ extern const struct R {
         /// LaunchImage
         __unsafe_unretained NSString *launch;
     } ImagesAssets;
-    struct Strings {
-    } Strings;
 } R;
