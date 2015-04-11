@@ -78,13 +78,10 @@ EOS
     super
 
     # Build file contents and write them to disk
-    write_file_eventually "#{output_path}.h", (build_contents do |h_file|
-      build_header_contents h_file
+    write_file_eventually "#{output_path}.swift", (build_contents do |swift_file|
+      build_swift_contents swift_file
     end)
 
-    write_file_eventually "#{output_path}.m", (build_contents do |m_file|
-      build_impl_contents m_file
-    end)
   end
 
   protected
@@ -162,6 +159,28 @@ EOS
         end
       end
       m_file.writeln '};'
+    end
+
+    def build_swift_contents swift_file
+      swift_file.writeln BANNER
+      swift_file.writeln
+      swift_file.writeln
+      swift_file.writeln 'public enum %s {' % resources_constant_name
+      swift_file.section do |struct|
+        enumerate_sections do |section_key, enumerate_keys|
+          struct.writeln 'public enum %s : String {' % section_key
+          struct.section do |section_struct|
+            enumerate_keys.call do |key, value, comment|
+              if documented?
+                section_struct.writeln '/// %s' % (comment || value) #unless comment.nil?
+              end
+              section_struct.writeln 'case %s = "%s"' % [key, value]
+            end
+          end
+          struct.writeln '}'
+        end
+      end
+      swift_file.writeln '}'
     end
 
     def enumerate_sections

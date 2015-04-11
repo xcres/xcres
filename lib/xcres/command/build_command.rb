@@ -36,7 +36,7 @@ class XCRes::BuildCommand < XCRes::ProjectCommand
       end
     end
 
-    success 'Successfully updated: %s', "#{output_path}.h"
+    success 'Successfully updated: %s', "#{output_path}.swift"
   end
 
   def derive_resources_constant_name
