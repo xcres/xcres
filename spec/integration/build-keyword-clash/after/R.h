@@ -8,6 +8,4 @@
 #import <Foundation/Foundation.h>
 
 extern const struct R {
-    struct Strings {
-    } Strings;
 } R;

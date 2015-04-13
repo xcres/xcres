@@ -9,6 +9,7 @@
 Ⓥ Found #1 asset catalogs in project.
 Ⓥ Found asset catalog Images.xcassets with #4 image files.
 Ⓥ Add section for ImagesAssets with 4 elements
+Ⓥ Found #0 fonts in project.
 Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings", "en.lproj/Localizable.strings", "de.lproj/Localizable.strings"]
 Ⓥ Native development languages: ["en"]
 Ⓥ Used languages for .strings files: ["en", "de"]

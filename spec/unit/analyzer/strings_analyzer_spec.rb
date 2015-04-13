@@ -39,9 +39,9 @@ describe 'XCRes::StringsAnalyzer' do
   end
 
   describe "#build_section" do
-    it 'should return an empty section if there are no strings files' do
+    it 'shouldn\'t return a section if there are no strings files' do
       @analyzer.stubs(:strings_file_refs).returns([])
-      @analyzer.build_section.should.be.eql?(XCRes::Section.new 'Strings', {})
+      @analyzer.build_section.should.be.eql?(nil)
     end
 
     it 'should return a new section if there are strings files' do

@@ -17,6 +17,7 @@ describe 'XCRes::ResourcesAggregateAnalyzer' do
       bundle_section_b = stub('Bundle Section B')
       loose_image_section = stub('Loose Images Section')
       xcassets_section = stub('XCAssets Section')
+      font_section = stub('Font Section')
 
       XCRes::ResourcesAnalyzer::BundleResourcesAnalyzer.any_instance
         .expects(:analyze).returns([bundle_section_a, bundle_section_b])
@@ -24,11 +25,13 @@ describe 'XCRes::ResourcesAggregateAnalyzer' do
         .expects(:analyze).returns(loose_image_section)
       XCRes::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
         .expects(:analyze).returns(xcassets_section)
+      XCRes::ResourcesAnalyzer::FontResourcesAnalyzer.any_instance
+          .expects(:analyze).returns(font_section)
 
-      @analyzer.analyze.should.eql?([bundle_section_a, bundle_section_b, loose_image_section, xcassets_section])
+      @analyzer.analyze.should.eql?([bundle_section_a, bundle_section_b, loose_image_section, xcassets_section, font_section])
     end
 
-    it 'should return only bundle sections if there are no loose images' do
+    it 'should return only bundle sections if there are no loose images or fonts' do
       bundle_section = stub('Bundle Section')
       xcassets_section = stub('XCAssets Section')
 
@@ -38,6 +41,8 @@ describe 'XCRes::ResourcesAggregateAnalyzer' do
         .expects(:analyze).returns([])
       XCRes::ResourcesAnalyzer::XCAssetsAnalyzer.any_instance
         .expects(:analyze).returns(xcassets_section)
+      XCRes::ResourcesAnalyzer::FontResourcesAnalyzer.any_instance
+          .expects(:analyze).returns([])
 
       @analyzer.analyze.should.eql?([bundle_section, xcassets_section])
     end

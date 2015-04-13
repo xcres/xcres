@@ -15,21 +15,10 @@
 		71239DB41912BFF80058657F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71239DB31912BFF80058657F /* main.m */; };
 		71239DB81912BFF80058657F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71239DB71912BFF80058657F /* AppDelegate.m */; };
 		71239DBA1912BFF80058657F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71239DB91912BFF80058657F /* Images.xcassets */; };
-		71239DC11912BFF80058657F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DC01912BFF80058657F /* XCTest.framework */; };
-		71239DC21912BFF80058657F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DA71912BFF70058657F /* Foundation.framework */; };
-		71239DC31912BFF80058657F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71239DAB1912BFF70058657F /* UIKit.framework */; };
 		71239DDC1912C07E0058657F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71239DDE1912C07E0058657F /* Localizable.strings */; };
+		F9D5FE161AD931B1003A7832 /* DayRoman-Expert.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9D5FE141AD931B1003A7832 /* DayRoman-Expert.ttf */; };
+		F9D5FE171AD931B1003A7832 /* DayRoman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9D5FE151AD931B1003A7832 /* DayRoman.ttf */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		71239DC41912BFF80058657F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 71239D9C1912BFF70058657F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 71239DA31912BFF70058657F;
-			remoteInfo = Example;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		711976AF19A3A1BE005748B4 /* doge.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = doge.jpeg; sourceTree = "<group>"; };
@@ -45,10 +34,11 @@
 		71239DB61912BFF80058657F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		71239DB71912BFF80058657F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		71239DB91912BFF80058657F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		71239DBF1912BFF80058657F /* ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71239DC01912BFF80058657F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		71239DDD1912C07E0058657F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		71239DDF1912C1040058657F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F9D5FE141AD931B1003A7832 /* DayRoman-Expert.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DayRoman-Expert.ttf"; path = "Fonts/DayRoman-Expert.ttf"; sourceTree = "<group>"; };
+		F9D5FE151AD931B1003A7832 /* DayRoman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DayRoman.ttf; path = Fonts/DayRoman.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,16 +49,6 @@
 				71239DAA1912BFF70058657F /* CoreGraphics.framework in Frameworks */,
 				71239DAC1912BFF70058657F /* UIKit.framework in Frameworks */,
 				71239DA81912BFF70058657F /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		71239DBC1912BFF80058657F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				71239DC11912BFF80058657F /* XCTest.framework in Frameworks */,
-				71239DC31912BFF80058657F /* UIKit.framework in Frameworks */,
-				71239DC21912BFF80058657F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				71239DA41912BFF70058657F /* Example.app */,
-				71239DBF1912BFF80058657F /* ExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,6 +99,7 @@
 				71239DB71912BFF80058657F /* AppDelegate.m */,
 				71239DB91912BFF80058657F /* Images.xcassets */,
 				711976AE19A3A1BD005748B4 /* Images */,
+				F9D5FE131AD931A1003A7832 /* Fonts */,
 				71239DAE1912BFF70058657F /* Supporting Files */,
 			);
 			path = Example;
@@ -135,6 +115,15 @@
 				71239DDE1912C07E0058657F /* Localizable.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F9D5FE131AD931A1003A7832 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F9D5FE141AD931B1003A7832 /* DayRoman-Expert.ttf */,
+				F9D5FE151AD931B1003A7832 /* DayRoman.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,24 +146,6 @@
 			productReference = 71239DA41912BFF70058657F /* Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		71239DBE1912BFF80058657F /* ExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 71239DD31912BFF80058657F /* Build configuration list for PBXNativeTarget "ExampleTests" */;
-			buildPhases = (
-				71239DBB1912BFF80058657F /* Sources */,
-				71239DBC1912BFF80058657F /* Frameworks */,
-				71239DBD1912BFF80058657F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				71239DC51912BFF80058657F /* PBXTargetDependency */,
-			);
-			name = ExampleTests;
-			productName = ExampleTests;
-			productReference = 71239DBF1912BFF80058657F /* ExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -183,11 +154,6 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = XCRes;
-				TargetAttributes = {
-					71239DBE1912BFF80058657F = {
-						TestTargetID = 71239DA31912BFF70058657F;
-					};
-				};
 			};
 			buildConfigurationList = 71239D9F1912BFF70058657F /* Build configuration list for PBXProject "Example" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -203,7 +169,6 @@
 			projectRoot = "";
 			targets = (
 				71239DA31912BFF70058657F /* Example */,
-				71239DBE1912BFF80058657F /* ExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -216,14 +181,9 @@
 				711976B119A3A1BE005748B4 /* doge.jpeg in Resources */,
 				71239DB21912BFF80058657F /* InfoPlist.strings in Resources */,
 				71239DBA1912BFF80058657F /* Images.xcassets in Resources */,
+				F9D5FE171AD931B1003A7832 /* DayRoman.ttf in Resources */,
+				F9D5FE161AD931B1003A7832 /* DayRoman-Expert.ttf in Resources */,
 				71239DDC1912C07E0058657F /* Localizable.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		71239DBD1912BFF80058657F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,22 +199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		71239DBB1912BFF80058657F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		71239DC51912BFF80058657F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 71239DA31912BFF70058657F /* Example */;
-			targetProxy = 71239DC41912BFF80058657F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		71239DB01912BFF70058657F /* InfoPlist.strings */ = {
@@ -373,46 +318,6 @@
 			};
 			name = Release;
 		};
-		71239DD41912BFF80058657F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Example/Example-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "ExampleTests/ExampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		71239DD51912BFF80058657F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Example/Example-Prefix.pch";
-				INFOPLIST_FILE = "ExampleTests/ExampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -430,15 +335,6 @@
 			buildConfigurations = (
 				71239DD11912BFF80058657F /* Debug */,
 				71239DD21912BFF80058657F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		71239DD31912BFF80058657F /* Build configuration list for PBXNativeTarget "ExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				71239DD41912BFF80058657F /* Debug */,
-				71239DD51912BFF80058657F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

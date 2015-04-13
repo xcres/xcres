@@ -56,7 +56,11 @@ module XCRes
       end
       items = keys_by_file.values.reduce({}, :merge)
 
-      new_section('Strings', items)
+      if items.count > 0
+        new_section('Strings', items)
+      else
+        nil
+      end
     end
 
     # Discover all references to .strings files in project (e.g. Localizable.strings)
