@@ -11,8 +11,6 @@ public class R {
         /// LaunchImage
         case launch = "LaunchImage"
     }
-    public enum Strings: String {
-    }
 }
 
 public extension R.Strings {

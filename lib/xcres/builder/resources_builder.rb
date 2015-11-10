@@ -229,6 +229,8 @@ EOS
     def enumerate_sections
       # Iterate sections ordered by key
       for section_key, section_content in @sections.sort
+        next if section_content.length == 0
+
         # Pass section key and block to yield the keys ordered
         proc = Proc.new do |&block|
           for key, value in section_content.sort
