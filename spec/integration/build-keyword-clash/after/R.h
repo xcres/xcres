@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern const struct R {
+FOUNDATION_EXTERN const struct R {
     struct Strings {
     } Strings;
 } R;

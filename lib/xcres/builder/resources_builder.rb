@@ -166,7 +166,7 @@ EOS
       h_file.writeln
       h_file.writeln '#import <Foundation/Foundation.h>'
       h_file.writeln
-      h_file.writeln 'extern const struct %s {' % resources_constant_name
+      h_file.writeln 'FOUNDATION_EXTERN const struct %s {' % resources_constant_name
       h_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|
           struct.writeln 'struct %s {' % section_key
