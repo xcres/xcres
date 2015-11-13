@@ -37,7 +37,7 @@ All you need to do is to add an import to the generated header to your
 project's bridging header.
 
 ```objc
-const struct R {
+FOUNDATION_EXTERN const struct R {
     struct Images {
         /// doge.jpeg
         __unsafe_unretained NSString *doge;
