@@ -238,6 +238,7 @@ describe 'XCRes::StringsAnalyzer' do
         "en_exclusive"      => "Only in english",
         "example"           => "Lorem Ipsum",
         "123-abc-3e7.text"  => "Hello Storyboards",
+        "123-ab-3e7.text"   => "Hello Storyboards",
       }
     end
 
