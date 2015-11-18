@@ -128,19 +128,17 @@ EOS
       h_file.writeln
       h_file.writeln 'FOUNDATION_EXTERN const struct %s {' % resources_constant_name
       h_file.section do |struct|
-        enumerate_sections do |section_key, enumerate_keys, contents_count|
-          if contents_count > 0
-            struct.writeln 'struct %s {' % section_key
-            struct.section do |section_struct|
-              enumerate_keys.call do |key, value, comment|
-                if documented?
-                  section_struct.writeln '/// %s' % (comment || value) #unless comment.nil?
-                end
-                section_struct.writeln '__unsafe_unretained NSString *%s;' % key
+        enumerate_sections do |section_key, enumerate_keys|
+          struct.writeln 'struct %s {' % section_key
+          struct.section do |section_struct|
+            enumerate_keys.call do |key, value, comment|
+              if documented?
+                section_struct.writeln '/// %s' % (comment || value) #unless comment.nil?
               end
+              section_struct.writeln '__unsafe_unretained NSString *%s;' % key
             end
-            struct.writeln '} %s;' % section_key
           end
+          struct.writeln '} %s;' % section_key
         end
       end
       h_file.writeln '} %s;' % resources_constant_name
@@ -153,16 +151,14 @@ EOS
       m_file.writeln
       m_file.writeln 'const struct %s %s = {' % [resources_constant_name, resources_constant_name]
       m_file.section do |struct|
-        enumerate_sections do |section_key, enumerate_keys, contents_count|
-          if contents_count > 0
-            struct.writeln '.%s = {' % section_key
-            struct.section do |section_struct|
-              enumerate_keys.call do |key, value|
-                section_struct.writeln '.%s = @"%s",' % [key, value]
-              end
+        enumerate_sections do |section_key, enumerate_keys|
+          struct.writeln '.%s = {' % section_key
+          struct.section do |section_struct|
+            enumerate_keys.call do |key, value|
+              section_struct.writeln '.%s = @"%s",' % [key, value]
             end
-            struct.writeln '},'
           end
+          struct.writeln '},'
         end
       end
       m_file.writeln '};'
@@ -171,6 +167,9 @@ EOS
     def enumerate_sections
       # Iterate sections ordered by key
       for section_key, section_content in @sections.sort
+
+        next if section_content.length == 0
+
         # Pass section key and block to yield the keys ordered
         proc = Proc.new do |&block|
           for key, value in section_content.sort
