@@ -180,7 +180,7 @@ EOS
             end
           end
         end
-        yield section_key, proc, section_content.length
+        yield section_key, proc
       end
     end
 
