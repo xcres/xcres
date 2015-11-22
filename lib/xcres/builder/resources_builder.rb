@@ -188,12 +188,10 @@ EOS
 
     def build_swift_contents swift_file
       swift_file.writeln BANNER
-      swift_file.writeln
-      swift_file.writeln
       swift_file.writeln 'public enum %s {' % resources_constant_name
       swift_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|
-          struct.writeln 'public enum %s : String {' % section_key
+          struct.writeln 'public enum %s: String {' % section_key
           struct.section do |section_struct|
             enumerate_keys.call do |key, value, comment|
               if documented?
