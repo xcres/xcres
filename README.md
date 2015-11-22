@@ -32,10 +32,35 @@ keyword.
 
 The generated index could look like below.
 
-While this is still **Objective-C**, `xcres` is compatible with **Swift**.
-All you need to do is to add an import to the generated header to your
-project's bridging header.
+`xcres` can generate code both as **Swift** or **Objective-C**.
+If you are using both in your project choose **Objective-C** and add an import to
+the generated header to your project's bridging header.
 
+**Swift**
+```swift
+public class R {
+    public enum Images: String {
+        /// doge.jpeg
+        case doge = "doge.jpeg"
+    }
+    public enum ImagesAssets: String {
+        /// AppIcon
+        case app = "AppIcon"
+        /// LaunchImage
+        case launch = "LaunchImage"
+        /// DefaultAvatar
+        case defaultAvatar = "DefaultAvatar"
+    }
+    public enum Strings: String {
+        /// Title shown if a wrong password was entered.
+        case errorTitleWrongPassword = "error_title_wrong_password"
+        /// Message shown if a wrong password was entered.
+        case errorMessageWrongPassword = "error_message_wrong_password"
+    }
+}
+```
+
+**Objective-C**
 ```objc
 const struct R {
     struct Images {
@@ -78,6 +103,12 @@ $ [sudo] gem install xcres
 Use the automatic integration to add a build phase to your project,
 by executing the following command:
 
+**Swift**
+```bash
+$ xcres install --swift
+```
+
+**Objective-C**
 ```bash
 $ xcres install
 ```
@@ -145,6 +176,12 @@ NSLocalizedString(@"error_message_wrong_password", @"Message shown if a wrong pa
 
 Just write:
 
+**Swift**
+```swift
+R.Strings.errorMessageWrongPassword.localizedValue
+```
+
+**Objective-C**
 ```objc
 NSLocalizedString(R.Strings.errorMessageWrongPassword, @"Message shown if a wrong password was entered.")
 ```
