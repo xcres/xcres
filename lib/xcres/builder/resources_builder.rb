@@ -19,6 +19,16 @@ EOS
     static struct switch typedef union unsigned void volatile while
   }
 
+  SWIFT_EXTENSIONS = <<EOS
+public extension %s.Strings {
+    public var localizedValue: String {
+        return NSLocalizedString(self.rawValue,
+                                 bundle: NSBundle(forClass: R.self),
+                                 comment: "")
+    }
+}
+EOS
+
   # @return [String]
   #         the name of the constant in the generated file(s)
   attr_accessor :resources_constant_name
@@ -188,7 +198,7 @@ EOS
 
     def build_swift_contents swift_file
       swift_file.writeln BANNER
-      swift_file.writeln 'public enum %s {' % resources_constant_name
+      swift_file.writeln 'public class %s {' % resources_constant_name
       swift_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|
           struct.writeln 'public enum %s: String {' % section_key
@@ -204,6 +214,8 @@ EOS
         end
       end
       swift_file.writeln '}'
+      swift_file.writeln
+      swift_file.writeln SWIFT_EXTENSIONS % resources_constant_name
     end
 
     def enumerate_sections
