@@ -13,10 +13,17 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
 //
 EOS
 
-  COMPILER_KEYWORDS = %w{
+  OBJC_COMPILER_KEYWORDS = %w{
     auto break case char const continue default do double else enum extern float
     for goto if inline int long register restrict return short signed sizeof
     static struct switch typedef union unsigned void volatile while
+  }
+
+  SWIFT_COMPILER_KEYWORDS = %w{
+    class deinit enum extension func import init internal let operator private
+    protocol public static struct subscript typealias var break case continue
+    default do else fallthrough for if in return switch where while as
+    dynamicType false is nil self Self super true
   }
 
   SWIFT_EXTENSIONS = <<EOS
@@ -80,7 +87,8 @@ EOS
       end
 
       # Skip compiler keywords
-      if COMPILER_KEYWORDS.include? transformed_key
+      compiler_keywords = swift? ? SWIFT_COMPILER_KEYWORDS : OBJC_COMPILER_KEYWORDS
+      if compiler_keywords.include? transformed_key
         logger.warn "Skip invalid key: '%s'. (Was transformed to keyword '%s')", key, transformed_key
         next
       end
