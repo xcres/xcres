@@ -100,7 +100,8 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
 
     # Set shell script
     script_output_path = output_path.relative_path_from(src_root_path)
-    build_phase.shell_script = "xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
+    documented_argument = documented? ? "--documented" : "--no-documented"
+    build_phase.shell_script = "xcres --no-ansi build #{documented_argument} $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
     build_phase.show_env_vars_in_log = '0'
 
     # Find or create 'Resources' group in 'Supporting Files'
