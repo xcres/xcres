@@ -15,6 +15,10 @@ describe 'XCRes::ResourcesBuilder' do
     it 'should set attribute documented to true' do
       @builder.documented.should.be.true?
     end
+
+    it 'should set attribute swift to false' do
+      @builder.swift.should.be.false?
+    end
   end
 
   describe "#resources_constant_name" do
@@ -23,7 +27,12 @@ describe 'XCRes::ResourcesBuilder' do
       @builder.resources_constant_name.should.be.eql?('test')
     end
 
-    it 'should fallback to the basename of the output path' do
+    it 'should fallback to the basename of the output path [swift]' do
+      @builder.output_path = 'test/R.swift'
+      @builder.resources_constant_name.should.be.eql?('R')
+    end
+    
+    it 'should fallback to the basename of the output path [objc]' do
       @builder.output_path = 'test/R.m'
       @builder.resources_constant_name.should.be.eql?('R')
     end
@@ -36,14 +45,29 @@ describe 'XCRes::ResourcesBuilder' do
       }.should.raise?(ArgumentError, 'No items are given!')
     end
 
-    it 'should not add keys, which are protected keywords' do
+    it 'should not add keys, which are protected keywords [swift]' do
+      @builder.logger.expects(:warn).twice
+      @builder.swift = true
+      @builder.add_section 'Test', {
+        'default' => 'Default.png',
+        'cat' => 'cat.gif',
+        'auto' => 'auto.jpg',
+        'internal' => 'internal.png'
+      }
+      @builder.sections.should.be.eql?('Test' => { 'cat' => 'cat.gif',
+                                                  'auto' => 'auto.jpg' })
+    end
+
+    it 'should not add keys, which are protected keywords [objc]' do
       @builder.logger.expects(:warn).twice
       @builder.add_section 'Test', {
         'default' => 'Default.png',
         'cat' => 'cat.gif',
-        'auto' => 'auto.jpg'
+        'auto' => 'auto.jpg',
+        'internal' => 'internal.png'
       }
-      @builder.sections.should.be.eql?('Test' => { 'cat' => 'cat.gif' })
+      @builder.sections.should.be.eql?('Test' => { 'cat' => 'cat.gif',
+                                              'internal' => 'internal.png' })
     end
   end
 
