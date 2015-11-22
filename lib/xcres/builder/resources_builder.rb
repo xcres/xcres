@@ -29,6 +29,12 @@ EOS
   attr_accessor :documented
   alias :documented? :documented
 
+  # @return [Bool]
+  #         whether Swift code should be generated,
+  #         Objective-C used if false, false by default
+  attr_accessor :swift
+  alias :swift? :swift
+
   # @return [Hash{String => {String => String}}]
   #         the sections, which will been written to the built files
   attr_reader :sections
@@ -38,6 +44,7 @@ EOS
   def initialize
     @sections = {}
     self.documented = true
+    self.swift = false
   end
 
   # Extract resource name from #output_path, if not customized
@@ -77,11 +84,11 @@ EOS
   def build
     super
 
-    # Build file contents and write them to disk
-    write_file_eventually "#{output_path}.swift", (build_contents do |swift_file|
-      build_swift_contents swift_file
-    end)
-
+    if swift?
+      build_and_write_swift
+    else
+      build_and_write_objc
+    end
   end
 
   protected
@@ -116,6 +123,24 @@ EOS
       end
 
       result
+    end
+
+    def build_and_write_swift
+      # Build file contents and write them to disk
+      write_file_eventually "#{output_path}.swift", (build_contents do |swift_file|
+        build_swift_contents swift_file
+      end)
+    end
+
+    def build_and_write_objc
+      # Build file contents and write them to disk
+      write_file_eventually "#{output_path}.h", (build_contents do |h_file|
+        build_header_contents h_file
+      end)
+
+      write_file_eventually "#{output_path}.m", (build_contents do |m_file|
+        build_impl_contents m_file
+      end)
     end
 
     def build_header_contents h_file

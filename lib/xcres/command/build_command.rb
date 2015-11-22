@@ -36,7 +36,11 @@ class XCRes::BuildCommand < XCRes::ProjectCommand
       end
     end
 
-    success 'Successfully updated: %s', "#{output_path}.swift"
+    if swift?
+      success 'Successfully updated: %s', "#{output_path}.swift"
+    else
+      success 'Successfully updated: %s', "#{output_path}.h"
+    end
   end
 
   def derive_resources_constant_name
@@ -72,6 +76,7 @@ class XCRes::BuildCommand < XCRes::ProjectCommand
     builder.output_path = output_path
     builder.logger = logger
     builder.documented = documented?
+    builder.swift = swift?
     builder.resources_constant_name = resources_constant_name
 
     yield builder
