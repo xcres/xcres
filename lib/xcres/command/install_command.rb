@@ -100,28 +100,35 @@ class XCRes::InstallCommand < XCRes::ProjectCommand
 
     # Set shell script
     script_output_path = output_path.relative_path_from(src_root_path)
-    build_phase.shell_script = "xcres --no-ansi build $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
+    documented_argument = documented? ? "--documented" : "--no-documented"
+    swift_argument = swift? ? "--swift" : "--no-swift"
+    build_phase.shell_script = "xcres --no-ansi build #{documented_argument} #{swift_argument} $PROJECT_FILE_PATH $SRCROOT/#{script_output_path}\n"
     build_phase.show_env_vars_in_log = '0'
 
     # Find or create 'Resources' group in 'Supporting Files'
     res_group = parent_group.groups.find { |g| g.name == 'Resources' }
     res_group ||= parent_group.new_group('Resources', Pathname('Resources'))
 
-    # Find or create references to resources index files
-    h_file = res_group.find_file_by_path('R.h') || res_group.new_file('R.h')
-    m_file = res_group.find_file_by_path('R.m') || res_group.new_file('R.m')
-
-    # Add .m file to source build phase, if it doesn't not already exist there
-    target.source_build_phase.add_file_reference(m_file, true)
-
-    # Add .h file to prefix header
-    prefix_headers.each do |path|
-      realpath = src_root_path + path
-      next unless File.exist?(realpath)
-      File.open(realpath, 'a+') do |f|
-        import_snippet = "#import \"#{h_file.path}\"\n"
-        unless f.readlines.include?(import_snippet)
-          f.write "\n#{import_snippet}"
+    if swift?
+      # Find or create references to resources index files
+      swift_file = res_group.find_file_by_path('R.swift') || res_group.new_file('R.swift')
+      # Add .swift file to source build phase, if it doesn't not already exist there
+      target.source_build_phase.add_file_reference(swift_file, true)
+    else
+      # Find or create references to resources index files
+      h_file = res_group.find_file_by_path('R.h') || res_group.new_file('R.h')
+      m_file = res_group.find_file_by_path('R.m') || res_group.new_file('R.m')
+      # Add .m file to source build phase, if it doesn't not already exist there
+      target.source_build_phase.add_file_reference(m_file, true)
+      # Add .h file to prefix header
+      prefix_headers.each do |path|
+        realpath = src_root_path + path
+        next unless File.exist?(realpath)
+        File.open(realpath, 'a+') do |f|
+          import_snippet = "#import \"#{h_file.path}\"\n"
+          unless f.readlines.include?(import_snippet)
+            f.write "\n#{import_snippet}"
+          end
         end
       end
     end

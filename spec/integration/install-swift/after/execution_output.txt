@@ -1,0 +1,22 @@
+ xcres --verbose --no-ansi install --swift Example 2>&1
+Ⓥ Verbose mode is enabled.
+⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
+✓ Use Example/Example.xcodeproj as XCODEPROJ.
+Ⓥ Found target group, will use its path as base output path.
+Execute build first:
+    Ⓥ Verbose mode is enabled.
+    ✓ Use Example/Example.xcodeproj as XCODEPROJ.
+    Ⓥ Found #0 resource bundles in project.
+    Ⓥ Found #0 image files in project.
+    Ⓥ Found #1 asset catalogs in project.
+    Ⓥ Found asset catalog Images.xcassets with #2 image files.
+    Ⓥ Add section for ImagesAssets with 2 elements
+    Ⓥ Strings files in project: ["en.lproj/InfoPlist.strings"]
+    Ⓥ Native development languages: ["en"]
+    Ⓥ Used languages for .strings files: ["en"]
+    Ⓥ Preferred languages: ["en"]
+    Ⓥ Strings files after language selection: ["en.lproj/InfoPlist.strings"]
+    Ⓥ Non-ignored .strings files: []
+    ✓ Directory did not exist. Will be created.
+    ✓ Successfully updated: ROOT/tmp/integration/install-swift/Example/Example/Resources/R.swift
+✓ Successfully integrated into Example/Example.xcodeproj

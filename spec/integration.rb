@@ -56,6 +56,10 @@ describe_cli 'xcres' do
     describe 'with resource which has a protected name' do
       behaves_like cli_spec('build-keyword-clash', '', 'build Example .')
     end
+
+    describe 'with swift' do
+      behaves_like cli_spec('build-swift', '', 'build --swift Example .')
+    end
   end
 
   describe 'Install' do
@@ -73,6 +77,10 @@ describe_cli 'xcres' do
 
     describe 'with moved supporting files' do
       behaves_like cli_spec('install-moved-supporting-files', '', 'install Example')
+    end
+
+    describe 'with Swift' do
+      behaves_like cli_spec('install-swift', '', 'install --swift Example')
     end
   end
 

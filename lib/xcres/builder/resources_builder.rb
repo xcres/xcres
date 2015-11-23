@@ -13,11 +13,28 @@ class XCRes::ResourcesBuilder < XCRes::FileBuilder
 //
 EOS
 
-  COMPILER_KEYWORDS = %w{
+  OBJC_COMPILER_KEYWORDS = %w{
     auto break case char const continue default do double else enum extern float
     for goto if inline int long register restrict return short signed sizeof
     static struct switch typedef union unsigned void volatile while
   }
+
+  SWIFT_COMPILER_KEYWORDS = %w{
+    class deinit enum extension func import init internal let operator private
+    protocol public static struct subscript typealias var break case continue
+    default do else fallthrough for if in return switch where while as
+    dynamicType false is nil self Self super true
+  }
+
+  SWIFT_EXTENSIONS = <<EOS
+public extension %s.Strings {
+    public var localizedValue: String {
+        return NSLocalizedString(self.rawValue,
+                                 bundle: NSBundle(forClass: R.self),
+                                 comment: "")
+    }
+}
+EOS
 
   # @return [String]
   #         the name of the constant in the generated file(s)
@@ -29,6 +46,12 @@ EOS
   attr_accessor :documented
   alias :documented? :documented
 
+  # @return [Bool]
+  #         whether Swift code should be generated,
+  #         Objective-C used if false, false by default
+  attr_accessor :swift
+  alias :swift? :swift
+
   # @return [Hash{String => {String => String}}]
   #         the sections, which will been written to the built files
   attr_reader :sections
@@ -38,6 +61,7 @@ EOS
   def initialize
     @sections = {}
     self.documented = true
+    self.swift = false
   end
 
   # Extract resource name from #output_path, if not customized
@@ -63,7 +87,8 @@ EOS
       end
 
       # Skip compiler keywords
-      if COMPILER_KEYWORDS.include? transformed_key
+      compiler_keywords = swift? ? SWIFT_COMPILER_KEYWORDS : OBJC_COMPILER_KEYWORDS
+      if compiler_keywords.include? transformed_key
         logger.warn "Skip invalid key: '%s'. (Was transformed to keyword '%s')", key, transformed_key
         next
       end
@@ -77,14 +102,11 @@ EOS
   def build
     super
 
-    # Build file contents and write them to disk
-    write_file_eventually "#{output_path}.h", (build_contents do |h_file|
-      build_header_contents h_file
-    end)
-
-    write_file_eventually "#{output_path}.m", (build_contents do |m_file|
-      build_impl_contents m_file
-    end)
+    if swift?
+      build_and_write_swift
+    else
+      build_and_write_objc
+    end
   end
 
   protected
@@ -119,6 +141,24 @@ EOS
       end
 
       result
+    end
+
+    def build_and_write_swift
+      # Build file contents and write them to disk
+      write_file_eventually "#{output_path}.swift", (build_contents do |swift_file|
+        build_swift_contents swift_file
+      end)
+    end
+
+    def build_and_write_objc
+      # Build file contents and write them to disk
+      write_file_eventually "#{output_path}.h", (build_contents do |h_file|
+        build_header_contents h_file
+      end)
+
+      write_file_eventually "#{output_path}.m", (build_contents do |m_file|
+        build_impl_contents m_file
+      end)
     end
 
     def build_header_contents h_file
@@ -162,6 +202,28 @@ EOS
         end
       end
       m_file.writeln '};'
+    end
+
+    def build_swift_contents swift_file
+      swift_file.writeln BANNER
+      swift_file.writeln 'public class %s {' % resources_constant_name
+      swift_file.section do |struct|
+        enumerate_sections do |section_key, enumerate_keys|
+          struct.writeln 'public enum %s: String {' % section_key
+          struct.section do |section_struct|
+            enumerate_keys.call do |key, value, comment|
+              if documented?
+                section_struct.writeln '/// %s' % (comment || value) #unless comment.nil?
+              end
+              section_struct.writeln 'case %s = "%s"' % [key, value]
+            end
+          end
+          struct.writeln '}'
+        end
+      end
+      swift_file.writeln '}'
+      swift_file.writeln
+      swift_file.writeln SWIFT_EXTENSIONS % resources_constant_name
     end
 
     def enumerate_sections

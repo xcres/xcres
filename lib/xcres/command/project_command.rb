@@ -9,6 +9,7 @@ class XCRes::ProjectCommand < XCRes::Command
   option ['--[no-]documented'], :flag, 'Add documentation to the generated files', default: true
   #option ['-d', '--dry-run'], :flag, 'Does nothing on the file system'
 
+  option ['--[no-]swift'], :flag, 'Generate file as Swift code', default: false
   option ['-t', '--target'], 'TARGET', 'Target to search & analyze', attribute_name: :target_name
   option ['-x', '--exclude'], 'FILE_PATTERN', 'File pattern which should be excluded (default: ["InfoPlist.strings"])', multivalued: true, attribute_name: :exclude_file_patterns, default: ['InfoPlist.strings']
   option ['-n', '--name'], 'NAME', 'Name of the resources constant (default: `basename OUTPUT_PATH`)', attribute_name: :resources_constant_name
