@@ -12,6 +12,4 @@ const struct R R = {
         .app = @"AppIcon",
         .launch = @"LaunchImage",
     },
-    .Strings = {
-    },
 };
