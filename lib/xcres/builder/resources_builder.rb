@@ -140,7 +140,8 @@ EOS
         end
       end
 
-      result
+      # If the first character is not a letter, prefix it with an underscore
+      result.gsub(/^[^_a-z]/i, '_\0')
     end
 
     def build_and_write_swift

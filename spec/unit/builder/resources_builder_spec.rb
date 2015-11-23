@@ -38,6 +38,21 @@ describe 'XCRes::ResourcesBuilder' do
     end
   end
 
+  describe '#transform_key' do
+    it 'should transform to camelCase' do
+      @builder.send(:transform_key, 'ab_cd_ef', {}).should == 'abCdEf'
+      @builder.send(:transform_key, 'ab/cd/ef', {}).should == 'abCdEf'
+      @builder.send(:transform_key, 'Ab_1cdEf', {}).should == 'ab1cdEf'
+    end
+
+    it 'should prefix the key with an underscore if the first character is not a letter' do
+      @builder.send(:transform_key, '_a',  {}).should == 'a'
+      @builder.send(:transform_key, '1',   {}).should == '_1'
+      @builder.send(:transform_key, '_1',  {}).should == '_1'
+      @builder.send(:transform_key, '1ab', {}).should == '_1ab'
+    end
+  end
+
   describe '#add_section' do
     it 'should raise if no items are given' do
       -> {
