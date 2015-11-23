@@ -216,6 +216,7 @@ your project to non-natural language keys.
 ## Credits
 
 The logo was designed by [@kuchengnom](https://github.com/kuchengnom).
+Swift support was implemented by [@timbodeit](https://github.com/timbodeit).
 
 
 ## License
