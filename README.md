@@ -26,7 +26,7 @@ capitalization or converting name scheme from *train-case* or *snake_case* to
 *camelCase* and vice versa.
 
 It will warn you in Xcode on build, if certain resources or string keys can't be
-references, because their name contain invalid chars, duplicates in the
+referenced, because their name contain invalid chars, duplicates in the
 *camelCase* variant with another key, or would be equal to a protected compiler
 keyword.
 
