@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern const struct R {
+FOUNDATION_EXTERN const struct R {
     struct Icons {
         /// tab_bar/tabbar_list.png
         __unsafe_unretained NSString *tabBarList;

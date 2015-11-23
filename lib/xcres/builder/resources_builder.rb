@@ -166,7 +166,7 @@ EOS
       h_file.writeln
       h_file.writeln '#import <Foundation/Foundation.h>'
       h_file.writeln
-      h_file.writeln 'extern const struct %s {' % resources_constant_name
+      h_file.writeln 'FOUNDATION_EXTERN const struct %s {' % resources_constant_name
       h_file.section do |struct|
         enumerate_sections do |section_key, enumerate_keys|
           struct.writeln 'struct %s {' % section_key
@@ -229,6 +229,9 @@ EOS
     def enumerate_sections
       # Iterate sections ordered by key
       for section_key, section_content in @sections.sort
+
+        next if section_content.length == 0
+
         # Pass section key and block to yield the keys ordered
         proc = Proc.new do |&block|
           for key, value in section_content.sort

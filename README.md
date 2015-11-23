@@ -62,7 +62,7 @@ public class R {
 
 **Objective-C**
 ```objc
-const struct R {
+FOUNDATION_EXTERN const struct R {
     struct Images {
         /// doge.jpeg
         __unsafe_unretained NSString *doge;
