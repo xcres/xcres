@@ -32,8 +32,10 @@ Targets:
         inputPaths: []
         outputPaths: []
         shellPath: "/bin/sh"
-        shellScript: |
-          xcres --no-ansi build --documented --no-swift $PROJECT_FILE_PATH $SRCROOT/Example/Resources/R
+        shellScript: 'xcres --no-ansi build --documented --no-swift $PROJECT_FILE_PATH
+          $SRCROOT/Example/Resources/R
+
+'
         showEnvVarsInLog: '0'
         buildActionMask: '2147483647'
         runOnlyForDeploymentPostprocessing: '0'
