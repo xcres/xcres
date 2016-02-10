@@ -17,7 +17,7 @@ GEM
     bacon (1.2.0)
     claide (0.9.1)
     clamp (0.6.5)
-    clintegracon (0.8.1)
+    clintegracon (0.5.2)
       colored (~> 1.2)
       diffy
     coderay (1.1.0)
