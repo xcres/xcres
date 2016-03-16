@@ -4,5 +4,5 @@ source 'https://rubygems.org'
 gemspec
 
 group 'development' do
-  gem 'clintegracon'
+  gem 'clintegracon', '~> 0.5.2'
 end
