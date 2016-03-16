@@ -13,7 +13,7 @@ CLIntegracon.configure do |c|
   c.hook_into :bacon
 
   c.ignores '.DS_Store'
-  c.ignores '**.DS_Store'
+  c.ignores '**/.DS_Store'
   c.ignores '.gitkeep'
   c.ignores %r[/xcuserdata/]
   c.ignores %r[/DerivedData/]

@@ -17,7 +17,7 @@ GEM
     bacon (1.2.0)
     claide (0.9.1)
     clamp (0.6.5)
-    clintegracon (0.5.2)
+    clintegracon (0.8.1)
       colored (~> 1.2)
       diffy
     coderay (1.1.1)
@@ -73,7 +73,7 @@ PLATFORMS
 DEPENDENCIES
   bacon (~> 1.1)
   bundler (~> 1.3)
-  clintegracon (~> 0.5.2)
+  clintegracon
   inch
   mocha
   mocha-on-bacon

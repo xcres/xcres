@@ -1,4 +1,4 @@
- xcres --verbose --no-ansi install Example 2>&1
+ ROOT/bin/xcres --verbose --no-ansi install Example 2>&1
 Ⓥ Verbose mode is enabled.
 ⚠ Argument XCODEPROJ is a directory. Try to locate the Xcode project in this directory.
 ✓ Use Example/Example.xcodeproj as XCODEPROJ.
@@ -18,5 +18,5 @@ Execute build first:
     Ⓥ Strings files after language selection: ["InfoPlist.strings"]
     Ⓥ Non-ignored .strings files: []
     ✓ Directory did not exist. Will be created.
-    ✓ Successfully updated: ROOT/tmp/integration/install-moved-supporting-files/Example/Supporting_Files/Resources/R.h
+    ✓ Successfully updated: ROOT/tmp/integration/install-moved-supporting-files/transformed/Example/Supporting_Files/Resources/R.h
 ✓ Successfully integrated into Example/Example.xcodeproj

@@ -1,4 +1,4 @@
- xcres --help --verbose --no-ansi 2>&1
+ ROOT/bin/xcres --help --verbose --no-ansi 2>&1
 Usage:
     xcres [OPTIONS] SUBCOMMAND [ARG] ...
 
