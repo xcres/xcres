@@ -113,7 +113,7 @@ EOS
 
     def transform_key key, options
       # Split the key into components
-      components = key.underscore.split /[_\/ ]/
+      components = key.underscore.split /[\.\-\/ ]/
 
       # Build the new key incremental
       result = ''
