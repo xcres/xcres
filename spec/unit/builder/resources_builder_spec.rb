@@ -31,7 +31,7 @@ describe 'XCRes::ResourcesBuilder' do
       @builder.output_path = 'test/R.swift'
       @builder.resources_constant_name.should.be.eql?('R')
     end
-    
+
     it 'should fallback to the basename of the output path [objc]' do
       @builder.output_path = 'test/R.m'
       @builder.resources_constant_name.should.be.eql?('R')
@@ -43,6 +43,8 @@ describe 'XCRes::ResourcesBuilder' do
       @builder.send(:transform_key, 'ab_cd_ef', {}).should == 'abCdEf'
       @builder.send(:transform_key, 'ab/cd/ef', {}).should == 'abCdEf'
       @builder.send(:transform_key, 'Ab_1cdEf', {}).should == 'ab1cdEf'
+      @builder.send(:transform_key, 'ab.cd.ef', {}).should == 'abCdEf'
+      @builder.send(:transform_key, 'Ab.1cdEf', {}).should == 'ab1cdEf'
     end
 
     it 'should prefix the key with an underscore if the first character is not a letter' do
